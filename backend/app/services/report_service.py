@@ -33,6 +33,7 @@ def generate_json_report(
             "metrics": analysis.get("metrics", []),
             "policy_compliance": analysis.get("policy_compliance", {}),
             "recommendations": analysis.get("recommendations", []),
+            "impact_simulation": analysis.get("impact_simulation", {}),
         }
 
     if explain:

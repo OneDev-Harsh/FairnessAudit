@@ -201,6 +201,7 @@ def _generate_adult_income() -> pd.DataFrame:
         "hours.per.week": hours_per_week,
         "income": income,
         "income_prediction": prediction,
+        "prediction_probability": np.round(prob_pred, 4),
     })
 
 
@@ -248,6 +249,7 @@ def _generate_compas() -> pd.DataFrame:
         "two_year_recid": two_year_recid,
         "score_text": score_text,
         "predicted_recid": predicted_recid,
+        "prediction_probability": np.round(prob_pred, 4),
     })
 
 

@@ -17,6 +17,12 @@ class Settings(BaseSettings):
     MAX_FILE_SIZE_MB: int = 50
     SAMPLE_DATA_DIR: str = "app/data/samples"
 
+    # AI & Cloud Integrations
+    GEMINI_API_KEY: str = ""
+    GCP_PROJECT_ID: str = ""
+    ALERT_EMAIL: str = ""
+    WEBHOOK_URL: str = ""
+
     class Config:
         env_file = ".env"
         extra = "ignore"

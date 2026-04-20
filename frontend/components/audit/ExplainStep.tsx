@@ -11,6 +11,7 @@ import {
 import { ExplainResponse, FeatureImportance } from '@/lib/api';
 import { formatNumber, CHART_COLORS } from '@/lib/utils';
 import { AiSummaryBox } from './AiSummaryBox';
+import { Skeleton } from '../ui/Skeleton';
 
 interface ExplainStepProps {
   response?: ExplainResponse;
@@ -51,13 +52,25 @@ function ImportanceBar({ feat, maxVal }: { feat: FeatureImportance; maxVal: numb
 export function ExplainStep({ response, loading, onRunExplain, onContinue, onRunMitigation }: ExplainStepProps) {
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 gap-6">
-        <div className="w-16 h-16 border-2 border-purple-400 border-t-transparent rounded-full spinner" />
-        <div className="text-center">
-          <p className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>Computing SHAP Explanations</p>
-          <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
-            Training model and computing feature attributions...
-          </p>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="md:col-span-2 glass-card p-6 space-y-4">
+            <div className="flex gap-3">
+              <Skeleton width="40px" height="40px" className="rounded-xl" />
+              <div className="space-y-2">
+                <Skeleton width="150px" height="1.2rem" />
+                <Skeleton width="100px" height="0.8rem" />
+              </div>
+            </div>
+            <Skeleton width="100%" height="4rem" />
+          </div>
+          <div className="glass-card p-5 space-y-4">
+            <Skeleton width="120px" height="1.2rem" />
+            <Skeleton width="100%" height="3rem" />
+          </div>
+        </div>
+        <div className="chart-container h-[300px]">
+          <Skeleton width="100%" height="100%" />
         </div>
       </div>
     );
@@ -181,15 +194,25 @@ export function ExplainStep({ response, loading, onRunExplain, onContinue, onRun
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex items-center gap-4 justify-end">
-        <button className="btn-ghost" onClick={onRunExplain} disabled={loading}>
-          <RefreshCw size={16} /> Re-compute
-        </button>
-        <button className="btn-primary px-8" onClick={onRunMitigation} disabled={loading}>
-          <Zap size={18} /> Run Mitigation & Continue <ArrowRight size={18} />
-        </button>
+      {/* Sticky Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+            <Brain size={14} className="text-purple-400" />
+            <span>SHAP values provide an unified measure of feature importance.</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="btn-ghost" onClick={onRunExplain} disabled={loading}>
+              <RefreshCw size={16} /> Re-compute
+            </button>
+            <button className="btn-primary px-8" onClick={onRunMitigation} disabled={loading}>
+              <Zap size={18} /> Mitigation Strategy <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
       </div>
+      {/* Spacer for sticky bar */}
+      <div className="h-24" />
     </div>
   );
 }

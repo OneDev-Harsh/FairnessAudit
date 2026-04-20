@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import {
   Shield, ArrowRight, BarChart3, Brain, Zap, CheckCircle,
   Scale, Eye, GitCompare, FileText, Sparkles, ChevronRight,
-  UploadCloud, Settings, Search, LayoutPanelLeft, ShieldAlert, ShieldCheck
+  UploadCloud, Settings, Search, LayoutPanelLeft, ShieldAlert, ShieldCheck, Play
 } from 'lucide-react';
 
 const features = [
@@ -70,158 +70,284 @@ const mainSteps = [
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--bg-primary)] overflow-x-hidden">
+      {/* Dynamic Background Effects */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/10 blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-500/10 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.03]" 
+             style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      </div>
+
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4"
-        style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)', backdropFilter: 'blur(10px)' }}>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20" style={{ background: 'var(--accent-primary)' }}>
-            <Shield size={18} color="white" />
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 transition-all"
+        style={{ background: 'rgba(10, 11, 15, 0.7)', borderBottom: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}>
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform" 
+               style={{ background: 'linear-gradient(135deg, var(--accent-primary), #818cf8)' }}>
+            <Shield size={20} color="white" />
           </div>
-          <span className="font-bold text-lg tracking-tight" style={{ color: 'var(--text-primary)' }}>FairnessAudit</span>
+          <span className="font-bold text-xl tracking-tight text-white">FairnessAudit</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
+            <a href="#features" className="hover:text-white transition-colors">Features</a>
+            <a href="#workflow" className="hover:text-white transition-colors">Workflow</a>
+            <a href="#compliance" className="hover:text-white transition-colors">Compliance</a>
+          </div>
           <Link href="/audit">
-            <button className="btn-primary text-sm shadow-lg shadow-indigo-500/20">
-              Launch Audit <ArrowRight size={16} />
+            <button className="btn-primary text-sm shadow-xl shadow-indigo-500/20 py-2.5 px-6">
+              Launch Console <ArrowRight size={16} />
             </button>
           </Link>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-40 pb-24 px-8 text-center max-w-6xl mx-auto relative">
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-500/10 blur-[120px] rounded-full -z-10" />
-        
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+      {/* Hero Section with 3D Dash Preview */}
+      <section className="relative pt-48 pb-32 px-8 overflow-hidden">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6">
+              <Sparkles size={14} className="text-indigo-400" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-300">Google Solution Challenge 2026</span>
+            </div>
+            <h1 className="text-6xl md:text-7xl font-black mb-8 leading-[1.05] tracking-tight text-white">
+              Trustworthy AI <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-emerald-400">
+                Built for Everyone.
+              </span>
+            </h1>
+            <p className="text-lg text-white/60 mb-10 leading-relaxed max-w-xl">
+              Detect bias, explain decisions, and mitigate discrimination with our 
+              enterprise-grade fairness suite. Secure, compliant, and powered by Gemini 2.0.
+            </p>
+            <div className="flex items-center gap-4 flex-wrap">
+              <Link href="/audit">
+                <button className="btn-primary text-lg px-10 py-5 shadow-2xl shadow-indigo-500/30 group">
+                  Start Full Audit 
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+              <Link href="/audit?demo=true">
+                <button className="px-8 py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-bold text-lg hover:bg-white/10 transition-all flex items-center gap-2">
+                  <Play size={18} fill="currentColor" /> Try Demo
+                </button>
+              </Link>
+            </div>
+            
+            <div className="mt-12 flex items-center gap-8 text-white/40 grayscale opacity-50">
+               <div className="flex items-center gap-2 font-bold italic"><Shield size={16}/> SOC2 READY</div>
+               <div className="flex items-center gap-2 font-bold italic"><GitCompare size={16}/> ISO 27001</div>
+               <div className="flex items-center gap-2 font-bold italic"><Scale size={16}/> GDPR COMPLIANT</div>
+            </div>
+          </motion.div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 leading-[1.1] tracking-tight">
-            Responsible AI <br />
-            <span className="gradient-text">Auditing Simplified.</span>
-          </h1>
+          {/* 3D Dashboard Preview */}
+          <motion.div
+            initial={{ opacity: 0, rotateY: 20, rotateX: 10, scale: 0.9 }}
+            whileInView={{ opacity: 1, rotateY: 15, rotateX: 5, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative hidden lg:block perspective-2000"
+          >
+            <div className="absolute inset-0 bg-indigo-500/20 blur-[100px] rounded-full -z-10 animate-pulse" />
+            <div className="glass-card p-2 rounded-3xl border border-white/20 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transform-gpu hover:rotate-y-0 hover:rotate-x-0 transition-transform duration-700 ease-out">
+               <div className="bg-[#0f1117] rounded-2xl overflow-hidden aspect-[4/3] relative">
+                  {/* Mock UI Elements */}
+                  <div className="absolute top-0 left-0 right-0 h-10 bg-white/5 flex items-center px-4 gap-2 border-b border-white/10">
+                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
+                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
+                     <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
+                  </div>
+                  <div className="p-6 pt-16">
+                     <div className="flex justify-between items-end mb-8">
+                        <div>
+                           <div className="w-32 h-2 bg-white/10 rounded mb-2" />
+                           <div className="w-48 h-6 bg-indigo-500/20 rounded" />
+                        </div>
+                        <div className="w-16 h-16 rounded-full border-4 border-emerald-500/30 border-t-emerald-500 animate-spin-slow" />
+                     </div>
+                     <div className="grid grid-cols-3 gap-4 mb-8">
+                        <div className="h-20 bg-white/5 rounded-xl border border-white/5" />
+                        <div className="h-20 bg-white/5 rounded-xl border border-white/5" />
+                        <div className="h-20 bg-white/5 rounded-xl border border-white/5" />
+                     </div>
+                     <div className="h-40 bg-indigo-500/5 rounded-xl border border-indigo-500/10 relative overflow-hidden">
+                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-indigo-500/10 to-transparent" />
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+            {/* Floating Elements */}
+            <motion.div 
+              animate={{ y: [0, -15, 0] }} 
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-10 -right-10 glass-card p-4 rounded-2xl border-indigo-500/30 shadow-2xl"
+            >
+              <div className="flex items-center gap-3">
+                 <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <CheckCircle size={18} />
+                 </div>
+                 <div>
+                    <div className="text-[10px] text-white/40 uppercase font-bold tracking-widest">Compliance</div>
+                    <div className="text-xs font-bold text-white">98% FAIRNESS</div>
+                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
-          <p className="text-xl max-w-3xl mx-auto mb-12 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-            FairnessAudit detects discriminatory patterns in your AI models,
-            explains the root causes using SHAP, and applies automated mitigation—all 
-            in one seamless, enterprise-ready workflow.
-          </p>
-
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link href="/audit">
-              <button className="btn-primary text-lg px-8 py-5 shadow-xl shadow-indigo-500/30">
-                Start Full Audit <ArrowRight size={20} />
-              </button>
-            </Link>
-            <Link href="/audit?demo=true">
-              <button className="btn-secondary text-lg px-8 py-5 group">
-                <Sparkles size={20} className="group-hover:rotate-12 transition-transform" /> Try One-Click Demo
-              </button>
-            </Link>
-          </div>
-        </motion.div>
+      {/* Stats / Numbers */}
+      <section className="py-20 border-y border-white/5 bg-white/[0.01]">
+         <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-12">
+            {[
+               { label: 'Latency', val: '<200ms' },
+               { label: 'Uptime', val: '99.9%' },
+               { label: 'Security', val: 'AES-256' },
+               { label: 'Datasets', val: '∞' },
+            ].map(s => (
+               <div key={s.label} className="text-center">
+                  <div className="text-3xl font-black text-white mb-1">{s.val}</div>
+                  <div className="text-xs font-bold text-white/30 uppercase tracking-widest">{s.label}</div>
+               </div>
+            ))}
+         </div>
       </section>
 
       {/* Quick Visual Steps */}
-      <section className="py-20 px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section id="workflow" className="py-32 px-8 max-w-7xl mx-auto relative">
+        <div className="text-center mb-20">
+           <h2 className="text-4xl font-black mb-4 text-white">The Audit Workflow</h2>
+           <p className="text-white/40">From raw data to certified fairness in minutes.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent -z-10 hidden md:block" />
           {mainSteps.map((s, i) => (
             <motion.div
               key={s.title}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="glass-card p-8 text-center flex flex-col items-center group hover:border-indigo-500/30 transition-all"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2 }}
+              className="glass-card p-10 text-center flex flex-col items-center group relative bg-white/[0.02] hover:bg-white/[0.04] transition-all"
             >
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform"
-                style={{ background: `${s.color}15`, border: `1px solid ${s.color}30`, color: s.color }}>
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-8 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500"
+                style={{ background: `linear-gradient(135deg, ${s.color}20, ${s.color}40)`, border: `1px solid ${s.color}40`, color: s.color }}>
                 {s.icon}
               </div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>{s.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{s.desc}</p>
+              <h3 className="text-2xl font-black mb-4 text-white">{s.title}</h3>
+              <p className="text-sm leading-relaxed text-white/50">{s.desc}</p>
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: s.color }} />
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 px-8 max-w-6xl mx-auto relative">
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/10 blur-[100px] rounded-full -z-10" />
+      <section id="features" className="py-32 px-8 max-w-7xl mx-auto relative">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500/10 blur-[150px] rounded-full -z-10" />
         
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
-            Industry-Grade <span className="gradient-text">Fairness Kit</span>
+        <div className="text-center mb-20">
+          <h2 className="text-5xl font-black mb-6 tracking-tight text-white">
+            Enterprise <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Toolkit</span>
           </h2>
-          <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-            A comprehensive suite of tools to ensure your machine learning models are ethical and compliant.
+          <p className="text-lg text-white/40 max-w-2xl mx-auto">
+            Everything you need to ensure your machine learning lifecycle is ethical, 
+            transparent, and legally compliant.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((f, i) => (
             <motion.div
               key={f.title}
               initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="glass-card p-8 group hover:bg-white/[0.04]"
+              className="glass-card p-10 group relative overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all group-hover:bg-opacity-30"
-                style={{ background: `${f.color}20`, border: `1px solid ${f.color}40` }}>
-                <f.icon size={24} style={{ color: f.color }} />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.02] rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 transition-all group-hover:scale-110"
+                style={{ background: `${f.color}15`, border: `1px solid ${f.color}30` }}>
+                <f.icon size={28} style={{ color: f.color }} />
               </div>
-              <h3 className="font-bold text-lg mb-3" style={{ color: 'var(--text-primary)' }}>{f.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{f.description}</p>
+              <h3 className="font-black text-xl mb-4 text-white">{f.title}</h3>
+              <p className="text-sm leading-relaxed text-white/50">{f.description}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* Comparison/CTA Section */}
-      <section className="py-24 px-8 max-w-5xl mx-auto">
-        <div className="glass-card overflow-hidden p-1 bg-gradient-to-br from-indigo-500/20 via-transparent to-emerald-500/20">
-          <div className="bg-[var(--bg-secondary)] p-12 text-center rounded-[inherit]">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-indigo-500/10 mb-8 border border-indigo-500/20 shadow-xl">
-               <ShieldCheck className="text-indigo-400" size={40} />
-            </div>
-            <h2 className="text-4xl font-extrabold mb-6 tracking-tight">
-              Ready to verify your AI?
-            </h2>
-            <p className="text-lg mb-10 max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-              Join forward-thinking organizations using FairnessAudit to build trust, reduce risk, and 
-              ensure their automated decisions are truly fair for everyone.
-            </p>
-            <div className="flex items-center justify-center gap-6 flex-wrap">
-              <Link href="/audit">
-                <button className="btn-primary text-xl px-12 py-5 shadow-2xl shadow-indigo-500/40">
-                  Launch Audit Now
-                </button>
-              </Link>
-              <div className="flex flex-col items-center gap-1">
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Free to use</span>
-                <span className="text-[10px] text-white/40">GSC 2026 PROTOTYPE</span>
+      <section id="compliance" className="py-32 px-8 max-w-6xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="rounded-[40px] overflow-hidden p-px bg-gradient-to-br from-indigo-500/40 via-purple-500/20 to-emerald-500/40"
+        >
+          <div className="bg-[#0a0b0f] p-20 text-center rounded-[inherit] relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/5 via-transparent to-transparent" />
+            
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center w-24 h-24 rounded-[30%] bg-indigo-500/10 mb-10 border border-indigo-500/20 shadow-2xl transform rotate-12">
+                 <ShieldCheck className="text-indigo-400" size={48} />
+              </div>
+              <h2 className="text-5xl md:text-6xl font-black mb-8 tracking-tighter text-white">
+                Verify Your AI Integrity.
+              </h2>
+              <p className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed text-white/60">
+                Join forward-thinking organizations using FairnessAudit to build trust, reduce risk, and 
+                ensure their automated decisions are truly fair for everyone.
+              </p>
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                <Link href="/audit">
+                  <button className="btn-primary text-xl px-12 py-6 shadow-2xl shadow-indigo-500/40 rounded-3xl hover:scale-105 transition-transform">
+                    Launch Console Now
+                  </button>
+                </Link>
+                <div className="flex flex-col items-start gap-1">
+                  <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                    <CheckCircle size={16} /> NO CREDIT CARD REQUIRED
+                  </div>
+                  <span className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">Open Source Core · GSC 2026</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-8 text-center border-t border-white/5" style={{ color: 'var(--text-muted)' }}>
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Shield size={20} className="text-indigo-500" />
-          <span className="font-bold text-lg text-white/90">FairnessAudit</span>
-        </div>
-        <p className="text-sm mb-6">Built for Google Solution Challenge 2026 · Ensuring Fairness in Automated Decisions</p>
-        <div className="flex items-center justify-center gap-6 text-xs font-medium">
-          <a href="#" className="hover:text-white transition-colors">Documentation</a>
-          <a href="#" className="hover:text-white transition-colors">GitHub</a>
-          <a href="#" className="hover:text-white transition-colors">Privacy</a>
+      <footer className="py-20 px-8 text-center border-t border-white/5 bg-black/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-10 mb-16">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+                 <Shield size={20} className="text-indigo-500" />
+              </div>
+              <span className="font-black text-2xl text-white">FairnessAudit</span>
+            </div>
+            <div className="flex items-center gap-12 text-sm font-bold text-white/40 uppercase tracking-widest">
+               <a href="#" className="hover:text-white transition-colors">Safety</a>
+               <a href="#" className="hover:text-white transition-colors">Privacy</a>
+               <a href="#" className="hover:text-white transition-colors">Terms</a>
+               <a href="#" className="hover:text-white transition-colors">Contact</a>
+            </div>
+          </div>
+          <p className="text-sm text-white/20 mb-2">Built with passion for the Google Solution Challenge 2026</p>
+          <p className="text-[10px] text-white/10 uppercase tracking-[0.5em] font-black">Empowering Responsible AI Worldwide</p>
         </div>
       </footer>
     </div>
   );
 }
+

@@ -153,6 +153,70 @@ def _build_explanation(sensitive_col: str, dpd: Optional[float], dpr: Optional[f
     return " ".join(lines)
 
 
+def simulate_impact(df_size: int, metrics: List[FairnessMetrics]) -> Dict[str, Any]:
+    """
+    Estimates the real-world impact of detected bias.
+    """
+    max_dpd = max([m.demographic_parity_difference for m in metrics if m.demographic_parity_difference is not None] or [0])
+    affected_users = int(df_size * max_dpd)
+    
+    return {
+        "estimated_affected_users": affected_users,
+        "impact_description": f"Approximately {affected_users:,} users may be unfairly affected due to model bias based on current selection disparities."
+    }
+
+
+def compute_intersectional_metrics(
+    df: pd.DataFrame,
+    sensitive_cols: List[str],
+    y_true: pd.Series,
+    y_pred: pd.Series
+) -> Optional[FairnessMetrics]:
+    """
+    Computes fairness metrics for the intersection of all sensitive columns.
+    Example: gender + race.
+    """
+    if len(sensitive_cols) < 2:
+        return None
+        
+    inter_col = "_intersectional_"
+    df_temp = df.copy()
+    df_temp[inter_col] = df_temp[sensitive_cols].astype(str).agg(' + '.join, axis=1)
+    
+    try:
+        group_metrics = _build_group_metrics(df_temp, inter_col, y_true, y_pred)
+        if not group_metrics:
+            return None
+            
+        sel_rates = [g.selection_rate for g in group_metrics]
+        dpd = round(max(sel_rates) - min(sel_rates), 4) if len(sel_rates) >= 2 else 0
+        
+        # Sort to find worst/best subgroup
+        sorted_groups = sorted(group_metrics, key=lambda g: g.selection_rate)
+        worst = sorted_groups[0]
+        best = sorted_groups[-1]
+        
+        explanation = (
+            f"Intersectional analysis across {', '.join(sensitive_cols)} shows a selection rate gap of {dpd:.3f}. "
+            f"The '{best.group_value}' group has the highest favorability, while '{worst.group_value}' has the lowest."
+        )
+        
+        score = _fairness_score_from_metrics(dpd, None, None)
+        severity = _get_severity(dpd)
+        
+        return FairnessMetrics(
+            sensitive_column="Intersectional (" + " + ".join(sensitive_cols) + ")",
+            demographic_parity_difference=dpd,
+            group_metrics=group_metrics,
+            bias_severity=severity,
+            fairness_score=score,
+            explanation=explanation,
+        )
+    except Exception as e:
+        logger.error(f"Intersectional analysis failed: {e}")
+        return None
+
+
 def compute_fairness_metrics(
     df: pd.DataFrame,
     target_col: str,
@@ -160,10 +224,10 @@ def compute_fairness_metrics(
     prediction_col: Optional[str] = None,
     feature_cols: Optional[List[str]] = None,
     positive_label=None,
-) -> Tuple[List[FairnessMetrics], Optional[float]]:
+) -> Tuple[List[FairnessMetrics], Optional[float], Dict[str, Any]]:
     """
-    Compute fairness metrics for each sensitive column.
-    Returns (list of FairnessMetrics, overall_accuracy).
+    Compute fairness metrics for each sensitive column + intersectional.
+    Returns (list of FairnessMetrics, overall_accuracy, impact_simulation).
     """
     warnings = []
 
@@ -277,7 +341,14 @@ def compute_fairness_metrics(
             warnings=col_warnings,
         ))
 
-    return results, overall_accuracy
+    # Intersectional analysis
+    inter_result = compute_intersectional_metrics(df, sensitive_cols, y_true, y_pred)
+    if inter_result:
+        results.append(inter_result)
+
+    impact = simulate_impact(len(df), results)
+
+    return results, overall_accuracy, impact
 
 
 def build_policy_compliance(metrics: List[FairnessMetrics]) -> Dict[str, Any]:

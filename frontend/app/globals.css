@@ -79,12 +79,15 @@ body {
   box-shadow: none;
 }
 
-/* Gradient text removed for professional look */
+/* Gradient text */
 .gradient-text {
-  color: var(--text-primary);
+  background: linear-gradient(135deg, #58a6ff 0%, #a371f7 50%, #3fb950 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Animated gradient background removed */
+/* Animated gradient background */
 .animated-bg {
   background: var(--bg-primary);
 }
@@ -294,6 +297,30 @@ body {
 
 .fade-in {
   animation: fadeIn 0.4s ease forwards;
+}
+
+/* Slow spin for 3D elements */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Skeleton loading */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.06; }
+  50% { opacity: 0.12; }
+}
+.skeleton {
+  background: rgba(255, 255, 255, 0.08);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* 3D perspective utility */
+.perspective-2000 {
+  perspective: 2000px;
 }
 
 /* Pulse animation */

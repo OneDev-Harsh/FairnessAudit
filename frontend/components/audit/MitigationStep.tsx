@@ -12,6 +12,7 @@ import {
 import { MitigationResponse, MitigationResult, FairnessMetrics } from '@/lib/api';
 import { getScoreColor, formatNumber, formatPercent } from '@/lib/utils';
 import { AiSummaryBox } from './AiSummaryBox';
+import { Skeleton } from '../ui/Skeleton';
 
 interface MitigationStepProps {
   response?: MitigationResponse;
@@ -151,13 +152,25 @@ function MitigationCard({ result, isBest }: { result: MitigationResult; isBest: 
 export function MitigationStep({ response, loading, onRunMitigation, onContinue }: MitigationStepProps) {
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 gap-6">
-        <div className="w-16 h-16 border-2 border-green-400 border-t-transparent rounded-full spinner" />
-        <div className="text-center">
-          <p className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>Running Bias Mitigation</p>
-          <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
-            Training fair models with Reweighing and ExponentiatedGradient...
-          </p>
+      <div className="space-y-6">
+        <div className="glass-card p-5 space-y-3">
+          <div className="flex gap-3">
+            <Skeleton width="20px" height="20px" className="rounded-full" />
+            <Skeleton width="150px" height="1.2rem" />
+          </div>
+          <Skeleton width="100%" height="2.5rem" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="glass-card p-6 space-y-4 h-[400px]">
+            <Skeleton width="60%" height="2rem" />
+            <Skeleton width="100%" height="5rem" className="rounded-xl" />
+            <Skeleton width="100%" height="150px" />
+          </div>
+          <div className="glass-card p-6 space-y-4 h-[400px]">
+            <Skeleton width="60%" height="2rem" />
+            <Skeleton width="100%" height="5rem" className="rounded-xl" />
+            <Skeleton width="100%" height="150px" />
+          </div>
         </div>
       </div>
     );
@@ -237,15 +250,25 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex items-center gap-4 justify-end">
-        <button className="btn-ghost" onClick={onRunMitigation} disabled={loading}>
-          <RefreshCw size={16} /> Re-run Mitigation
-        </button>
-        <button className="btn-primary px-8" onClick={onContinue}>
-          <FileText size={18} /> Generate Audit Report <ArrowRight size={18} />
-        </button>
+      {/* Sticky Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+            <Zap size={14} className="text-emerald-400" />
+            <span>Review the fairness-accuracy trade-off for each method.</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="btn-ghost" onClick={onRunMitigation} disabled={loading}>
+              <RefreshCw size={16} /> Re-run Mitigation
+            </button>
+            <button className="btn-primary px-8" onClick={onContinue} disabled={loading}>
+              <FileText size={18} /> Finalize Audit & Continue <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
       </div>
+      {/* Spacer for sticky bar */}
+      <div className="h-24" />
     </div>
   );
 }

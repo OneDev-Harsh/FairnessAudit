@@ -301,26 +301,38 @@ export function ColumnMappingStep({
             </div>
           )}
 
-          {/* Run button */}
-          <button
-            className="btn-primary w-full py-4 text-base justify-center"
-            onClick={handleRun}
-            disabled={!canProceed || loading}
-          >
-            {loading ? (
-              <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full spinner" /> Running Analysis...</>
-            ) : (
-              <>Analyze Fairness & Continue <ArrowRight size={18} /></>
-            )}
-          </button>
+      </div>
 
-          {!canProceed && (
-            <p className="text-xs text-center" style={{ color: 'var(--text-muted)' }}>
-              Select a target column and at least one sensitive attribute to continue.
-            </p>
-          )}
+      {/* Sticky Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]">
+              <Settings size={14} className="text-indigo-400" />
+              <span>Configuration: {target || 'No target'} • {sensitives.length} Sensitive Attributes</span>
+            </div>
+            {!canProceed && (
+              <p className="text-[10px] mt-1 text-red-400/80">Select target and at least one sensitive attribute.</p>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              className="btn-primary px-8 py-3 text-base flex items-center gap-2 shadow-lg shadow-indigo-500/20"
+              onClick={handleRun}
+              disabled={!canProceed || loading}
+            >
+              {loading ? (
+                <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full spinner" /> Analyzing...</>
+              ) : (
+                <>Analyze Fairness & Continue <ArrowRight size={18} /></>
+              )}
+            </button>
+          </div>
         </div>
       </div>
+      {/* Spacer for sticky bar */}
+      <div className="h-24" />
+    </div>
     </div>
   );
 }

@@ -1,14 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   FileText, Download, CheckCircle, Shield, BarChart2,
-  Brain, Zap, Share2, Clock, AlertCircle
+  Brain, Zap, Share2, Clock, AlertCircle, MessageSquare, Activity,
+  RefreshCw
 } from 'lucide-react';
 import { AuditState } from '@/app/audit/page';
 import { generateReport } from '@/lib/api';
 import { downloadJSON, downloadBlob, getScoreColor, getScoreLabel } from '@/lib/utils';
+import { ChatWithReport } from '@/components/ai/ChatWithReport';
+import { ComplianceDashboard } from '@/components/compliance/ComplianceDashboard';
+import { MonitoringDashboard } from '@/components/monitoring/MonitoringDashboard';
 
 interface ReportStepProps {
   auditState: AuditState;
@@ -18,6 +22,8 @@ export function ReportStep({ auditState }: ReportStepProps) {
   const [exporting, setExporting] = useState<'json' | 'pdf' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<'json' | 'pdf' | null>(null);
+  const [complianceData, setComplianceData] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<'report' | 'ai' | 'compliance' | 'monitoring'>('report');
 
   const hasAnalysis = !!auditState.analysisResponse;
   const hasExplain = !!auditState.explainResponse;
@@ -27,6 +33,27 @@ export function ReportStep({ auditState }: ReportStepProps) {
   const score = analysis?.overall_fairness_score ?? 0;
   const severity = analysis?.overall_bias_severity ?? 'N/A';
   const bestMethod = auditState.mitigationResponse?.best_method ?? 'N/A';
+
+  useEffect(() => {
+    if (analysis) {
+      const fetchCompliance = async () => {
+        try {
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+          const res = await fetch(`${baseUrl}/compliance`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ analysis_data: { metrics: analysis.metrics } })
+          });
+          if (res.ok) {
+            setComplianceData(await res.json());
+          }
+        } catch (e) {
+          console.error('Failed to fetch compliance data', e);
+        }
+      };
+      fetchCompliance();
+    }
+  }, [analysis]);
 
   async function handleExport(format: 'json' | 'pdf') {
     setExporting(format);
@@ -91,12 +118,52 @@ export function ReportStep({ auditState }: ReportStepProps) {
     <div className="max-w-4xl mx-auto space-y-6 fade-in">
       <div className="text-center">
         <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-          Audit Report
+          Audit Report & Dashboards
         </h2>
         <p style={{ color: 'var(--text-secondary)' }}>
-          Download a comprehensive fairness audit report for stakeholders and compliance teams.
+          Review findings, chat with AI, check compliance, and monitor live metrics.
         </p>
       </div>
+
+      <div className="flex justify-center gap-2 mb-6">
+        <button onClick={() => setActiveTab('report')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'report' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+          <FileText size={16} className="inline mr-2" /> Report
+        </button>
+        <button onClick={() => setActiveTab('ai')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'ai' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+          <MessageSquare size={16} className="inline mr-2" /> AI Assistant
+        </button>
+        <button onClick={() => setActiveTab('compliance')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'compliance' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+          <Shield size={16} className="inline mr-2" /> Compliance
+        </button>
+        <button onClick={() => setActiveTab('monitoring')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'monitoring' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+          <Activity size={16} className="inline mr-2" /> Monitoring
+        </button>
+      </div>
+
+      {activeTab === 'ai' && (
+        <div className="fade-in">
+          <ChatWithReport reportContext={auditState} />
+        </div>
+      )}
+
+      {activeTab === 'compliance' && (
+        <div className="fade-in">
+          {complianceData ? (
+            <ComplianceDashboard complianceData={complianceData} />
+          ) : (
+            <div className="text-center text-[var(--text-secondary)] py-10">Running compliance checks...</div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'monitoring' && (
+        <div className="fade-in">
+          <MonitoringDashboard />
+        </div>
+      )}
+
+      {activeTab === 'report' && (
+        <div className="space-y-6 fade-in">
 
       {/* Executive summary card */}
       <div className="glass-card p-6" style={{ border: '1px solid rgba(99,102,241,0.25)' }}>
@@ -263,22 +330,56 @@ export function ReportStep({ auditState }: ReportStepProps) {
           Complete the Fairness Analysis step to enable report export.
         </p>
       )}
+      </div>
+      )}
 
-      {/* Metadata footer */}
-      <div className="flex items-center justify-center gap-6 text-xs py-4" style={{ color: 'var(--text-muted)' }}>
+      {/* Metadata footer moved inside scrollable area */}
+      <div className="flex items-center justify-center gap-6 text-xs py-8 opacity-40" style={{ color: 'var(--text-muted)' }}>
         <div className="flex items-center gap-1">
           <Clock size={12} />
-          Generated: {new Date().toLocaleString()}
+          {new Date().toLocaleString()}
         </div>
         <div className="flex items-center gap-1">
           <Shield size={12} />
-          FairnessAudit v1.0
+          v1.0.0
         </div>
         <div className="flex items-center gap-1">
           <Share2 size={12} />
-          Google Solution Challenge 2026
+          Google Solution Challenge
         </div>
       </div>
+
+      {/* Sticky Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+            <CheckCircle size={14} className="text-emerald-500" />
+            <span>Audit completed successfully. All data is ready for export.</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button 
+              className="btn-ghost" 
+              onClick={() => window.location.reload()}
+            >
+              <RefreshCw size={16} /> Start New Audit
+            </button>
+            <button 
+              className="btn-primary px-8 flex items-center gap-2 shadow-lg shadow-emerald-500/20"
+              onClick={() => handleExport('pdf')}
+              disabled={!!exporting || !hasAnalysis}
+              style={{ background: 'var(--gradient-success)', borderColor: 'rgba(16,185,129,0.3)' }}
+            >
+              {exporting === 'pdf' ? (
+                <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full spinner" /> Exporting...</>
+              ) : (
+                <><FileText size={18} /> Download Official Report</>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Spacer for sticky bar */}
+      <div className="h-24" />
     </div>
   );
 }

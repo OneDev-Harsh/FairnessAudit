@@ -100,6 +100,7 @@ class AnalysisResponse(BaseModel):
     bias_explanation: str
     policy_compliance: Dict[str, Any]
     recommendations: List[str]
+    impact_simulation: Optional[Dict[str, Any]] = None
     warnings: List[str] = []
 
 
@@ -175,3 +176,45 @@ class HealthResponse(BaseModel):
     status: str
     version: str
     services: Dict[str, str]
+
+
+class AiInsightsRequest(BaseModel):
+    analysis_data: Dict[str, Any]
+
+
+class AiInsightsResponse(BaseModel):
+    explanation: str
+    business_insights: str
+    suggested_fixes: List[str]
+
+
+class ChatRequest(BaseModel):
+    query: str
+    report_context: Dict[str, Any]
+    step: str = "report"
+
+
+class ComplianceResponse(BaseModel):
+    compliance_status: str
+    risk_level: str
+    frameworks: List[Dict[str, Any]]
+    violations: List[str]
+    recommendations: List[str]
+
+
+class ScenarioRequest(BaseModel):
+    session_id: Optional[str] = None
+    sample_dataset_id: Optional[str] = None
+    target_column: str
+    probability_column: str = "prediction_probability"
+    sensitive_columns: List[str]
+    threshold: float = 0.5
+    positive_label: Optional[Union[str, int, float]] = None
+
+
+class ScenarioResponse(BaseModel):
+    threshold: float
+    fairness_score: float
+    accuracy: float
+    demographic_parity_difference: float
+    group_selection_rates: Dict[str, float]

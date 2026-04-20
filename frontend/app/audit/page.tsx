@@ -12,6 +12,7 @@ import { ExplainStep } from '@/components/audit/ExplainStep';
 import { MitigationStep } from '@/components/audit/MitigationStep';
 import { ReportStep } from '@/components/audit/ReportStep';
 import { AuditStepper } from '@/components/audit/AuditStepper';
+import { FloatingChatbot } from '@/components/ai/FloatingChatbot';
 
 import {
   UploadResponse, SampleDataset, AnalysisResponse,
@@ -65,11 +66,32 @@ function AuditPageInner() {
     getSampleDatasets().then(setSampleDatasets).catch(() => {});
   }, []);
 
+  // Auto-scroll to top on step change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [state.step]);
+
   // Auto-load demo
   useEffect(() => {
     if (isDemo && sampleDatasets.length > 0) {
       const adult = sampleDatasets.find((d) => d.id === 'adult_income') || sampleDatasets[0];
-      handleSampleSelect(adult, true);
+      
+      // True One-Click Demo Mode: Set state and jump straight to Analysis (Step 3)
+      setState((prev) => ({
+        ...prev,
+        step: 3,
+        sampleDatasetId: adult.id,
+        selectedSample: adult,
+        datasetName: adult.name,
+        targetColumn: adult.target_column,
+        predictionColumn: adult.prediction_column,
+        featureColumns: adult.feature_columns,
+        sensitiveColumns: adult.sensitive_columns,
+        isDemo: true,
+        analysisResponse: undefined,
+        explainResponse: undefined,
+        mitigationResponse: undefined
+      }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDemo, sampleDatasets.length]);
@@ -286,6 +308,7 @@ function AuditPageInner() {
               onRunAnalysis={handleRunAnalysis}
               onContinue={() => goToStep(4)}
               onRunExplain={handleRunExplain}
+              auditState={state}
             />
           )}
 
@@ -313,6 +336,12 @@ function AuditPageInner() {
           )}
         </div>
       </div>
+
+      {/* Floating AI Chatbot */}
+      <FloatingChatbot 
+        step={STEPS.find(s => s.id === state.step)?.label.toLowerCase() || 'report'} 
+        context={state} 
+      />
     </div>
   );
 }

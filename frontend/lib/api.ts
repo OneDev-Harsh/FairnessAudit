@@ -90,6 +90,10 @@ export interface AnalysisResponse {
   bias_explanation: string;
   policy_compliance: Record<string, unknown>;
   recommendations: string[];
+  impact_simulation?: {
+    estimated_affected_users: number;
+    impact_description: string;
+  };
   warnings: string[];
 }
 
@@ -158,6 +162,16 @@ export async function uploadCSV(file: File): Promise<UploadResponse> {
   return data;
 }
 
+export async function importCloudDataset(req: {
+  source: 'gcs' | 'bigquery';
+  bucket_name?: string;
+  file_name?: string;
+  query?: string;
+}): Promise<UploadResponse> {
+  const { data } = await api.post('/cloud/import', req);
+  return data;
+}
+
 export async function getSampleDatasets(): Promise<SampleDataset[]> {
   const { data } = await api.get('/sample-datasets');
   return data.datasets;
@@ -221,5 +235,28 @@ export async function downloadMitigatedDataset(req: {
   positive_label?: string | number;
 }): Promise<Blob> {
   const response = await api.post('/dataset/mitigated/download', req, { responseType: 'blob' });
+  return response.data;
+}
+
+export async function simulateScenario(req: {
+  session_id?: string;
+  sample_dataset_id?: string;
+  target_column: string;
+  sensitive_columns: string[];
+  threshold: number;
+  positive_label?: string;
+}): Promise<{
+  threshold: number;
+  fairness_score: number;
+  accuracy: number;
+  demographic_parity_difference: number;
+  group_selection_rates: Record<string, number>;
+}> {
+  const { data } = await api.post('/simulate-scenario', req);
+  return data;
+}
+
+export async function downloadComplianceCertificate(complianceData: any): Promise<Blob> {
+  const response = await api.post('/compliance/certificate', { compliance_data: complianceData }, { responseType: 'blob' });
   return response.data;
 }

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import {
   BarChart2, ArrowRight, AlertTriangle, CheckCircle, XCircle,
-  TrendingDown, TrendingUp, Brain, RefreshCw, Info
+  TrendingDown, TrendingUp, Brain, RefreshCw, Info, Users
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -12,6 +12,8 @@ import {
 import { AnalysisResponse, FairnessMetrics, GroupMetric } from '@/lib/api';
 import { formatNumber, formatPercent, getBiasColor, getScoreColor, getScoreLabel, CHART_COLORS } from '@/lib/utils';
 import { AiSummaryBox } from './AiSummaryBox';
+import { ScenarioSimulator } from './ScenarioSimulator';
+import { MetricSkeleton, Skeleton } from '../ui/Skeleton';
 
 interface AnalysisStepProps {
   response?: AnalysisResponse;
@@ -19,6 +21,7 @@ interface AnalysisStepProps {
   onRunAnalysis: () => void;
   onContinue: () => void;
   onRunExplain: () => void;
+  auditState?: any;
 }
 
 function ScoreGauge({ score }: { score: number }) {
@@ -117,6 +120,39 @@ function GroupChart({ metrics, sensCol }: { metrics: GroupMetric[]; sensCol: str
   );
 }
 
+function IntersectionalTable({ metrics }: { metrics: GroupMetric[] }) {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-white/5" style={{ background: 'rgba(255,255,255,0.02)' }}>
+      <table className="w-full text-sm text-left">
+        <thead className="bg-white/5 text-xs uppercase" style={{ color: 'var(--text-muted)' }}>
+          <tr>
+            <th className="px-4 py-3">Subgroup</th>
+            <th className="px-4 py-3 text-right">Count</th>
+            <th className="px-4 py-3 text-right">Selection Rate</th>
+            {metrics[0]?.accuracy !== null && metrics[0]?.accuracy !== undefined && <th className="px-4 py-3 text-right">Accuracy</th>}
+            {metrics[0]?.true_positive_rate !== null && metrics[0]?.true_positive_rate !== undefined && <th className="px-4 py-3 text-right">TPR</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {metrics.map((g, i) => (
+            <tr key={i} className="border-t border-white/5 hover:bg-white/5 transition-colors">
+              <td className="px-4 py-3 font-medium" style={{ color: 'var(--text-primary)' }}>{g.group_value}</td>
+              <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--text-secondary)' }}>{g.count.toLocaleString()}</td>
+              <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--accent-primary)' }}>{(g.selection_rate * 100).toFixed(1)}%</td>
+              {g.accuracy !== null && g.accuracy !== undefined && (
+                <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--accent-success)' }}>{(g.accuracy * 100).toFixed(1)}%</td>
+              )}
+              {g.true_positive_rate !== null && g.true_positive_rate !== undefined && (
+                <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--accent-warning)' }}>{(g.true_positive_rate * 100).toFixed(1)}%</td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function PolicyCard({ compliance }: { compliance: Record<string, unknown> }) {
   const overall = compliance.overall_pass as boolean;
   const checks = compliance.checks as Record<string, Record<string, { passed: boolean; value: number; threshold: number }>>;
@@ -153,14 +189,28 @@ function PolicyCard({ compliance }: { compliance: Record<string, unknown> }) {
   );
 }
 
-export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onRunExplain }: AnalysisStepProps) {
+export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onRunExplain, auditState }: AnalysisStepProps) {
   if (loading && !response) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 gap-6">
-        <div className="w-16 h-16 border-2 border-indigo-400 border-t-transparent rounded-full spinner" />
-        <div className="text-center">
-          <p className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>Running Fairness Analysis</p>
-          <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>Computing metrics for all sensitive attributes...</p>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <MetricSkeleton />
+          <div className="md:col-span-2 glass-card p-6 space-y-4">
+            <Skeleton width="150px" height="1.5rem" />
+            <Skeleton width="100%" height="4rem" />
+            <div className="flex gap-2">
+              <Skeleton width="80px" height="2rem" className="rounded-full" />
+              <Skeleton width="80px" height="2rem" className="rounded-full" />
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="chart-container h-[300px]">
+            <Skeleton width="100%" height="100%" />
+          </div>
+          <div className="chart-container h-[300px]">
+            <Skeleton width="100%" height="100%" />
+          </div>
         </div>
       </div>
     );
@@ -205,13 +255,37 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
             {response.bias_explanation}
           </p>
 
-          {response.warnings.length > 0 && (
-            <div className="p-3 rounded-lg text-xs"
+          {response.warnings.filter(w => !w.startsWith("Proxy Alert:")).length > 0 && (
+            <div className="p-3 rounded-lg text-xs mb-2"
               style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)', color: '#fbbf24' }}>
-              ⚠️ {response.warnings[0]}
+              ⚠️ {response.warnings.filter(w => !w.startsWith("Proxy Alert:"))[0]}
             </div>
           )}
+          
+          {response.warnings.filter(w => w.startsWith("Proxy Alert:")).map((w, idx) => (
+            <div key={idx} className="p-3 rounded-lg text-xs mt-2"
+              style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: '#f87171' }}>
+              🚨 {w}
+            </div>
+          ))}
         </div>
+        
+        {/* Impact Simulator */}
+        {response.impact_simulation && (
+          <div className="glass-card p-6 md:col-span-3" style={{ background: 'linear-gradient(135deg, var(--bg-secondary) 0%, rgba(239,68,68,0.05) 100%)', borderColor: 'rgba(239,68,68,0.2)' }}>
+            <h3 className="font-semibold mb-2 flex items-center gap-2" style={{ color: '#f87171' }}>
+              <Users size={18} /> Real-World Impact Estimation
+            </h3>
+            <div className="flex items-center gap-4">
+              <div className="text-3xl font-bold" style={{ color: '#f87171' }}>
+                {response.impact_simulation.estimated_affected_users.toLocaleString()}
+              </div>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                {response.impact_simulation.impact_description}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Per-sensitive metrics */}
@@ -275,9 +349,16 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
             </div>
           </div>
 
-          {m.group_metrics.length > 0 && (
+          {m.group_metrics.length > 0 && m.sensitive_column.startsWith('Intersectional') ? (
+            <div className="mt-6">
+              <h4 className="font-medium mb-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                Subgroup Bias Table | {m.sensitive_column}
+              </h4>
+              <IntersectionalTable metrics={m.group_metrics} />
+            </div>
+          ) : m.group_metrics.length > 0 ? (
             <GroupChart metrics={m.group_metrics} sensCol={m.sensitive_column} />
-          )}
+          ) : null}
         </motion.div>
       ))}
 
@@ -298,15 +379,39 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex items-center gap-4 justify-end">
-        <button className="btn-ghost" onClick={onRunAnalysis} disabled={loading}>
-          <RefreshCw size={16} /> Re-run Analysis
-        </button>
-        <button className="btn-primary px-8" onClick={onRunExplain} disabled={loading}>
-          <Brain size={18} /> Run Explainability & Continue <ArrowRight size={18} />
-        </button>
+      {/* Scenario Simulator */}
+      {auditState && (
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <ScenarioSimulator
+            sessionId={auditState.sessionId}
+            sampleDatasetId={auditState.sampleDatasetId}
+            targetColumn={auditState.targetColumn || ''}
+            sensitiveColumns={auditState.sensitiveColumns || []}
+            positiveLabel={auditState.positiveLabel}
+            hasProbabilityColumn={true} // Sample datasets and explicit prob columns will work
+          />
+        </motion.div>
+      )}
+
+      {/* Sticky Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+            <Info size={14} />
+            <span>Analysis results are calculated based on your current mapping.</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="btn-ghost" onClick={onRunAnalysis} disabled={loading}>
+              <RefreshCw size={16} /> Re-run Analysis
+            </button>
+            <button className="btn-primary px-8" onClick={onRunExplain} disabled={loading}>
+              <Brain size={18} /> Explain Bias & Continue <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
       </div>
+      {/* Spacer for sticky bar */}
+      <div className="h-24" />
     </div>
   );
 }

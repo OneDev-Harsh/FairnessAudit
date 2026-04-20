@@ -6,7 +6,8 @@ import logging
 from typing import Optional
 
 from fastapi import APIRouter, File, Form, UploadFile, HTTPException
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse, Response, StreamingResponse
+import io
 
 from app.core.config import settings
 from app.core.errors import AppError
@@ -16,6 +17,9 @@ from app.models.schemas import (
     ExplainRequest, ExplainResponse,
     MitigationRequest, MitigationResponse,
     ReportRequest, BiasSeverity,
+    AiInsightsRequest, AiInsightsResponse,
+    ChatRequest, ComplianceResponse,
+    ScenarioRequest, ScenarioResponse,
 )
 from app.services.data_service import (
     process_upload, get_sample_datasets_meta, load_sample_dataset,
@@ -28,7 +32,13 @@ from app.services.fairness_service import (
 from app.services.explainability_service import compute_explanations
 from app.services.mitigation_service import run_mitigation
 from app.services.report_service import generate_json_report, generate_pdf_report
-
+from app.services.proxy_service import detect_proxy_features
+from app.services.gemini_service import generate_ai_insights, chat_with_report
+from app.services.compliance_service import check_compliance
+from app.services.monitoring_service import track_monitoring_metrics, get_drift_data
+from app.services.certificate_service import generate_compliance_certificate
+from app.services.gcp_service import import_from_gcs, import_from_bigquery
+from pydantic import BaseModel
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
@@ -101,7 +111,7 @@ async def analyze(req: AnalysisRequest):
     store_session(df, session_id)
 
     try:
-        metrics, overall_accuracy = compute_fairness_metrics(
+        metrics, overall_accuracy, impact = compute_fairness_metrics(
             df=df,
             target_col=req.target_column,
             sensitive_cols=req.sensitive_columns,
@@ -145,6 +155,12 @@ async def analyze(req: AnalysisRequest):
     }
 
     warnings = []
+    
+    if req.feature_columns:
+        proxy_warnings = detect_proxy_features(df, req.sensitive_columns, req.feature_columns)
+        for pw in proxy_warnings:
+            warnings.append(f"Proxy Alert: '{pw['feature']}' correlates strongly with '{pw['sensitive_column']}' ({pw['association_type']}: {pw['association_score']})")
+
     for m in metrics:
         warnings.extend(m.warnings)
 
@@ -157,6 +173,7 @@ async def analyze(req: AnalysisRequest):
         bias_explanation=bias_exp,
         policy_compliance=policy,
         recommendations=recs,
+        impact_simulation=impact,
         warnings=list(set(warnings)),
     )
 
@@ -282,3 +299,191 @@ async def generate_report(req: ReportRequest):
         )
 
     return JSONResponse(content=report)
+
+
+# ── AI Insights & Chat ───────────────────────────────────────────────────────
+
+@router.post("/ai-insights", response_model=AiInsightsResponse)
+async def get_ai_insights(req: AiInsightsRequest):
+    try:
+        insights = await generate_ai_insights(req.analysis_data)
+        return AiInsightsResponse(**insights)
+    except Exception as e:
+        logger.error(f"AI Insights failed: {e}")
+        raise AppError("Failed to generate AI insights.", status_code=500)
+
+
+@router.post("/chat")
+async def chat_report(req: ChatRequest):
+    try:
+        reply = await chat_with_report(req.query, req.report_context, step=req.step)
+        return {"reply": reply}
+    except Exception as e:
+        logger.error(f"Chat failed: {e}")
+        raise AppError("Chat failed.", status_code=500)
+
+
+@router.get("/chat/suggestions/{step}")
+async def get_chat_suggestions(step: str):
+    from app.services.gemini_service import STEP_SUGGESTIONS
+    suggestions = STEP_SUGGESTIONS.get(step, STEP_SUGGESTIONS["report"])
+    return {"suggestions": suggestions}
+
+
+# ── Compliance ───────────────────────────────────────────────────────────────
+
+@router.post("/compliance", response_model=ComplianceResponse)
+async def run_compliance(req: AiInsightsRequest):  # Reusing request format
+    try:
+        # req.analysis_data["metrics"] contains the dictified metrics
+        metrics = req.analysis_data.get("metrics", [])
+        result = check_compliance(metrics)
+        return ComplianceResponse(**result)
+    except Exception as e:
+        logger.error(f"Compliance check failed: {e}")
+        raise AppError("Compliance check failed.", status_code=500)
+
+
+# ── Monitoring ───────────────────────────────────────────────────────────────
+
+class MonitorRequest(BaseModel):
+    session_id: str
+    metrics: list
+
+@router.post("/monitor")
+async def log_monitor(req: MonitorRequest):
+    try:
+        track_monitoring_metrics(req.session_id, req.metrics)
+        return {"status": "success", "message": "Metrics logged"}
+    except Exception as e:
+        logger.error(f"Monitoring log failed: {e}")
+        raise AppError("Monitoring log failed.", status_code=500)
+
+
+@router.get("/monitoring/history")
+async def get_monitor_history():
+    try:
+        data = get_drift_data()
+        return {"history": data}
+    except Exception as e:
+        logger.error(f"Get monitoring history failed: {e}")
+        raise AppError("Failed to fetch monitoring history.", status_code=500)
+
+
+# ── Scenario Simulator ───────────────────────────────────────────────────────
+
+@router.post("/simulate-scenario", response_model=ScenarioResponse)
+async def simulate_scenario(req: ScenarioRequest):
+    """Recalculate fairness metrics at a different decision threshold."""
+    try:
+        df = get_or_load_df(req.session_id, req.sample_dataset_id)
+    except ValueError as e:
+        raise AppError(str(e), status_code=404)
+
+    if req.probability_column not in df.columns:
+        raise AppError(
+            f"Probability column '{req.probability_column}' not found. "
+            "The Scenario Simulator requires a continuous probability column.",
+            status_code=400,
+        )
+    if req.target_column not in df.columns:
+        raise AppError(f"Target column '{req.target_column}' not found.", status_code=400)
+
+    import numpy as np
+    from app.services.fairness_service import _encode_binary, _fairness_score_from_metrics
+
+    probs = df[req.probability_column].astype(float)
+    y_pred_new = (probs >= req.threshold).astype(int)
+    y_true, _ = _encode_binary(df[req.target_column], req.positive_label)
+
+    accuracy = float((y_true == y_pred_new).mean())
+
+    # Compute group selection rates for all sensitive cols combined
+    group_rates: dict = {}
+    all_dpds = []
+    for sens_col in req.sensitive_columns:
+        if sens_col not in df.columns:
+            continue
+        for grp_val in sorted(df[sens_col].dropna().unique()):
+            mask = df[sens_col] == grp_val
+            rate = float(y_pred_new[mask].mean())
+            group_rates[f"{sens_col}:{grp_val}"] = round(rate, 4)
+        rates = [group_rates[k] for k in group_rates if k.startswith(f"{sens_col}:")]
+        if len(rates) >= 2:
+            all_dpds.append(max(rates) - min(rates))
+
+    dpd = max(all_dpds) if all_dpds else 0.0
+    score = _fairness_score_from_metrics(dpd, None, None)
+
+    return ScenarioResponse(
+        threshold=req.threshold,
+        fairness_score=round(score, 1),
+        accuracy=round(accuracy, 4),
+        demographic_parity_difference=round(dpd, 4),
+        group_selection_rates=group_rates,
+    )
+
+
+# ── Google Cloud Integration ─────────────────────────────────────────────────
+
+class GCPImportRequest(BaseModel):
+    source: str  # "gcs" or "bigquery"
+    bucket_name: Optional[str] = None
+    file_name: Optional[str] = None
+    query: Optional[str] = None
+
+@router.post("/cloud/import", response_model=UploadResponse)
+async def gcp_import(req: GCPImportRequest):
+    try:
+        if req.source == "gcs":
+            if not req.bucket_name or not req.file_name:
+                raise AppError("Bucket name and file name required for GCS.", status_code=400)
+            df = import_from_gcs(req.bucket_name, req.file_name)
+            name = f"gcs_{req.file_name}"
+        elif req.source == "bigquery":
+            if not req.query:
+                raise AppError("Query required for BigQuery.", status_code=400)
+            df = import_from_bigquery(req.query)
+            name = "bigquery_result"
+        else:
+            raise AppError("Invalid source.", status_code=400)
+            
+        import io
+        stream = io.StringIO()
+        df.to_csv(stream, index=False)
+        content = stream.getvalue().encode('utf-8')
+        
+        result = await process_upload(content, name)
+        return result
+    except ValueError as e:
+        raise AppError(str(e), status_code=400)
+    except Exception as e:
+        logger.error(f"GCP import failed: {e}", exc_info=True)
+        raise AppError("Failed to import from Google Cloud.", status_code=500)
+
+
+# ── Compliance Certificate ───────────────────────────────────────────────────
+
+@router.post("/compliance/certificate")
+async def download_compliance_certificate(request: dict):
+    """
+    Generate an official compliance certificate PDF based on the compliance data.
+    Expected request body: {"compliance_data": {...}}
+    """
+    compliance_data = request.get("compliance_data")
+    if not compliance_data:
+        raise HTTPException(status_code=400, detail="compliance_data is required")
+        
+    try:
+        pdf_bytes = generate_compliance_certificate(compliance_data)
+        
+        return StreamingResponse(
+            io.BytesIO(pdf_bytes),
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": "attachment; filename=fairness_compliance_certificate.pdf"
+            }
+        )
+    except Exception as e:
+        logger.error(f"Error generating certificate: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

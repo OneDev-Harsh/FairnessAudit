@@ -2,8 +2,8 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, Database, Sparkles, FileText, AlertCircle, CheckCircle, X } from 'lucide-react';
-import { SampleDataset, UploadResponse, uploadCSV } from '@/lib/api';
+import { Upload, Database, Sparkles, FileText, AlertCircle, CheckCircle, X, Cloud } from 'lucide-react';
+import { SampleDataset, UploadResponse, uploadCSV, importCloudDataset } from '@/lib/api';
 
 interface DatasetStepProps {
   sampleDatasets: SampleDataset[];
@@ -17,6 +17,12 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const [showCloudModal, setShowCloudModal] = useState(false);
+  const [cloudSource, setCloudSource] = useState<'gcs' | 'bigquery'>('gcs');
+  const [bucketName, setBucketName] = useState('');
+  const [fileName, setFileName] = useState('');
+  const [bqQuery, setBqQuery] = useState('');
 
   const handleFile = useCallback(async (file: File) => {
     if (!file.name.endsWith('.csv')) {
@@ -41,6 +47,25 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
     const file = e.dataTransfer.files[0];
     if (file) handleFile(file);
   }, [handleFile]);
+
+  const handleCloudImport = async () => {
+    setUploading(true);
+    setError(null);
+    setShowCloudModal(false);
+    try {
+      const res = await importCloudDataset({
+        source: cloudSource,
+        bucket_name: bucketName,
+        file_name: fileName,
+        query: bqQuery
+      });
+      onUpload(res);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Cloud import failed. Ensure GCP is configured.');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const biasColors: Record<string, string> = {
     'Gender bias': '#8b5cf6',
@@ -108,6 +133,10 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
               )}
             </div>
           </div>
+          
+          <button onClick={() => setShowCloudModal(true)} disabled={uploading} className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 bg-[var(--bg-tertiary)] hover:bg-white/5 border border-[var(--border-color)] text-[var(--text-primary)] rounded-xl transition-colors text-sm font-medium disabled:opacity-50">
+            <Cloud size={16} className="text-blue-400" /> Import from Google Cloud
+          </button>
 
           {error && (
             <div className="mt-3 p-3 rounded-lg flex items-center gap-2 text-sm"
@@ -216,6 +245,45 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
           Load Demo
         </button>
       </div>
+
+      {showCloudModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+            <div className="p-4 border-b border-[var(--border-color)] flex justify-between items-center bg-[var(--bg-primary)]">
+              <h3 className="font-bold text-[var(--text-primary)] flex items-center gap-2"><Cloud className="text-blue-400"/> Google Cloud Import</h3>
+              <button onClick={() => setShowCloudModal(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"><X size={20}/></button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="flex gap-2">
+                 <button onClick={() => setCloudSource('gcs')} className={`flex-1 py-2 text-sm font-medium rounded-lg ${cloudSource === 'gcs' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] border border-[var(--border-color)]'}`}>Cloud Storage</button>
+                 <button onClick={() => setCloudSource('bigquery')} className={`flex-1 py-2 text-sm font-medium rounded-lg ${cloudSource === 'bigquery' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] border border-[var(--border-color)]'}`}>BigQuery</button>
+              </div>
+              
+              {cloudSource === 'gcs' ? (
+                <div className="space-y-4">
+                   <div>
+                     <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">Bucket Name</label>
+                     <input type="text" value={bucketName} onChange={e => setBucketName(e.target.value)} className="w-full bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]" placeholder="my-gcs-bucket" />
+                   </div>
+                   <div>
+                     <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">File Name (CSV)</label>
+                     <input type="text" value={fileName} onChange={e => setFileName(e.target.value)} className="w-full bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]" placeholder="data/dataset.csv" />
+                   </div>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5">SQL Query</label>
+                  <textarea value={bqQuery} onChange={e => setBqQuery(e.target.value)} className="w-full h-32 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)] font-mono text-xs leading-relaxed" placeholder="SELECT * FROM `my_project.my_dataset.my_table` LIMIT 1000" />
+                </div>
+              )}
+            </div>
+            <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-primary)] flex justify-end gap-3">
+              <button onClick={() => setShowCloudModal(false)} className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]">Cancel</button>
+              <button onClick={handleCloudImport} disabled={uploading || (cloudSource === 'gcs' ? (!bucketName || !fileName) : !bqQuery)} className="px-5 py-2 text-sm font-medium bg-[var(--accent-primary)] text-white rounded-lg disabled:opacity-50 hover:bg-indigo-600 transition-colors">Import Data</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
