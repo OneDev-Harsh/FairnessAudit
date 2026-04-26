@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import {
-  Brain, ArrowRight, AlertTriangle, RefreshCw, Zap
+  Brain, ArrowRight, AlertTriangle, RefreshCw, Wrench
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -28,7 +28,7 @@ function ImportanceBar({ feat, maxVal }: { feat: FeatureImportance; maxVal: numb
   return (
     <div className="flex items-center gap-3 py-2">
       <div className="w-36 text-sm truncate flex-shrink-0 flex items-center gap-1 text-text-secondary">
-        {feat.is_proxy_warning && <AlertTriangle size={12} className="text-red" />}
+        {feat.is_proxy_warning && <AlertTriangle size={12} className="text-red"  strokeWidth={1.5}/>}
         {feat.feature}
       </div>
       <div className="flex-1 h-7 rounded-lg overflow-hidden relative" style={{ background: 'rgba(255,255,255,0.05)' }}>
@@ -79,13 +79,13 @@ export function ExplainStep({ response, loading, onRunExplain, onContinue, onRun
   if (!response) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
-        <Brain size={48} className="mx-auto mb-4 text-maroon" />
+        <Brain size={48} className="mx-auto mb-4 text-maroon"  strokeWidth={1.5}/>
         <h2 className="text-2xl font-bold mb-3 text-text-primary">SHAP Explainability</h2>
         <p className="mb-6 text-text-secondary">
           Understand which features drive biased predictions using SHAP values.
         </p>
         <button className="btn-primary text-base px-8" onClick={onRunExplain}>
-          <Brain size={18} /> Compute SHAP Explanations
+          <Brain size={18}  strokeWidth={1.5}/> Compute SHAP Explanations
         </button>
       </div>
     );
@@ -106,7 +106,7 @@ export function ExplainStep({ response, loading, onRunExplain, onContinue, onRun
         <div className="glass-card p-6 md:col-span-2">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-maroon/15">
-              <Brain size={20} className="text-maroon" />
+              <Brain size={20} className="text-maroon"  strokeWidth={1.5}/>
             </div>
             <div>
               <h3 className="font-semibold text-text-primary">SHAP Explanation</h3>
@@ -130,7 +130,7 @@ export function ExplainStep({ response, loading, onRunExplain, onContinue, onRun
             <div className="space-y-2">
               {response.proxy_features.map((pf) => (
                 <div key={pf} className="flex items-center gap-2 p-2 rounded-lg bg-red/10 border border-red/20">
-                  <AlertTriangle size={14} className="text-red" />
+                  <AlertTriangle size={14} className="text-red"  strokeWidth={1.5}/>
                   <span className="text-sm font-medium text-red-light">{pf}</span>
                 </div>
               ))}
@@ -185,7 +185,7 @@ export function ExplainStep({ response, loading, onRunExplain, onContinue, onRun
           ))}
         </div>
         <div className="mt-4 flex items-center gap-2 text-xs p-3 rounded-lg bg-maroon/5 border border-maroon/15 text-text-muted">
-          <Brain size={14} className="text-red" />
+          <Brain size={14} className="text-red"  strokeWidth={1.5}/>
           SHAP values measure the average marginal contribution of each feature to the model output.
           Higher = more influential in driving predictions.
         </div>
@@ -195,15 +195,15 @@ export function ExplainStep({ response, loading, onRunExplain, onContinue, onRun
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-text-muted">
-            <Brain size={14} className="text-red" />
+            <Brain size={14} className="text-red"  strokeWidth={1.5}/>
             <span>SHAP values provide an unified measure of feature importance.</span>
           </div>
           <div className="flex items-center gap-3">
             <button className="btn-ghost" onClick={onRunExplain} disabled={loading}>
-              <RefreshCw size={16} /> Re-compute
+              <RefreshCw size={16}  strokeWidth={1.5}/> Re-compute
             </button>
             <button className="btn-primary px-8" onClick={onRunMitigation} disabled={loading}>
-              <Zap size={18} /> Mitigation Strategy <ArrowRight size={18} />
+              <Wrench size={18}  strokeWidth={1.5}/> Mitigation Strategy <ArrowRight size={18}  strokeWidth={1.5}/>
             </button>
           </div>
         </div>

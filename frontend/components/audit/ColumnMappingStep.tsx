@@ -38,7 +38,7 @@ function ColSelect({
         <label className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>{label}</label>
         {info && (
           <div className="tooltip">
-            <Info size={13} style={{ color: 'var(--text-muted)', cursor: 'help' }} />
+            <Info size={13} style={{ color: 'var(--text-muted)', cursor: 'help' }}  strokeWidth={1.5}/>
             <div className="tooltip-text">{info}</div>
           </div>
         )}
@@ -136,7 +136,7 @@ export function ColumnMappingStep({
         <div className="space-y-4">
           <div className="glass-card p-5 space-y-4">
             <h3 className="font-semibold flex items-center gap-2 text-text-primary">
-              <Settings size={18} className="text-red" />
+              <Settings size={18} className="text-red"  strokeWidth={1.5}/>
               Column Assignment
             </h3>
 
@@ -164,7 +164,7 @@ export function ColumnMappingStep({
                   Positive Label
                 </label>
                 <div className="tooltip">
-                  <Info size={13} style={{ color: 'var(--text-muted)', cursor: 'help' }} />
+                  <Info size={13} style={{ color: 'var(--text-muted)', cursor: 'help' }}  strokeWidth={1.5}/>
                   <div className="tooltip-text">The label considered "positive" (e.g., &gt;50K, 1). Auto-detected if left blank.</div>
                 </div>
               </div>
@@ -193,7 +193,7 @@ export function ColumnMappingStep({
               {sensitives.map((s) => (
                 <span key={s} className="flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-maroon/15 text-red border border-maroon/30">
                   {s}
-                  <button onClick={() => removeSensitive(s)}><X size={12} /></button>
+                  <button onClick={() => removeSensitive(s)}><X size={12}  strokeWidth={1.5}/></button>
                 </span>
               ))}
             </div>
@@ -214,7 +214,7 @@ export function ColumnMappingStep({
                 onClick={() => addSensitive(newSensitive)}
                 disabled={!newSensitive}
               >
-                <Plus size={16} />
+                <Plus size={16}  strokeWidth={1.5}/>
               </button>
             </div>
           </div>
@@ -307,7 +307,7 @@ export function ColumnMappingStep({
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex flex-col">
             <div className="flex items-center gap-2 text-xs font-medium text-text-secondary">
-              <Settings size={14} className="text-red" />
+              <Settings size={14} className="text-red"  strokeWidth={1.5}/>
               <span>Configuration: {target || 'No target'} • {sensitives.length} Sensitive Attributes</span>
             </div>
             {!canProceed && (
@@ -323,7 +323,7 @@ export function ColumnMappingStep({
               {loading ? (
                 <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full spinner" /> Analyzing...</>
               ) : (
-                <>Analyze Fairness & Continue <ArrowRight size={18} /></>
+                <>Analyze Fairness & Continue <ArrowRight size={18}  strokeWidth={1.5}/></>
               )}
             </button>
           </div>

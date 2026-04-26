@@ -103,7 +103,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
             <div className="p-4 bg-background-primary border-b border-border-default flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-maroon/20 flex items-center justify-center text-red border border-maroon/30">
-                  <Bot size={22} />
+                  <Bot size={22}  strokeWidth={1.5}/>
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-sm">AI Consultant</h3>
@@ -117,7 +117,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
                 onClick={() => setIsOpen(false)}
                 className="p-2 hover:bg-white/5 rounded-lg text-white/40 hover:text-white transition-colors"
               >
-                <X size={20} />
+                <X size={20}  strokeWidth={1.5}/>
               </button>
             </div>
 
@@ -134,7 +134,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
                   className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
                 >
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-maroon/20 text-red border border-maroon/30' : 'bg-white/5 text-white/40 border border-white/5'}`}>
-                    {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
+                    {msg.role === 'user' ? <User size={16}  strokeWidth={1.5}/> : <Bot size={16}  strokeWidth={1.5}/>}
                   </div>
                   <div className={`p-3 rounded-2xl max-w-[85%] text-sm leading-relaxed ${msg.role === 'user' ? 'bg-maroon text-white shadow-sm' : 'bg-background-primary border border-border-default text-white/80'}`}>
                     {msg.content}
@@ -144,10 +144,10 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
               {loading && (
                 <div className="flex gap-3">
                   <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/5 text-white/40">
-                    <Bot size={16} />
+                    <Bot size={16}  strokeWidth={1.5}/>
                   </div>
                   <div className="p-3 rounded-2xl bg-background-primary border border-border-default text-white/40 flex items-center gap-2">
-                    <Loader2 size={14} className="animate-spin" />
+                    <Loader2 size={14} className="animate-spin"  strokeWidth={1.5}/>
                     <span className="text-xs font-medium">Analyzing...</span>
                   </div>
                 </div>
@@ -163,7 +163,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
                     onClick={() => handleSend(s)}
                     className="text-[10px] bg-white/5 border border-white/10 hover:border-red/50 hover:bg-maroon/10 text-white/60 hover:text-white px-2.5 py-1.5 rounded-full transition-all flex items-center gap-1"
                   >
-                    <Sparkles size={10} className="text-red" />
+                    <Sparkles size={10} className="text-red"  strokeWidth={1.5}/>
                     {s}
                   </button>
                 ))}
@@ -187,7 +187,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
                   disabled={loading || !input.trim()}
                   className="w-10 h-10 bg-maroon text-white rounded-xl flex items-center justify-center hover:bg-red transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-maroon-glow"
                 >
-                  <Send size={18} />
+                  <Send size={18}  strokeWidth={1.5}/>
                 </button>
               </div>
             </div>
@@ -202,7 +202,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
         onClick={() => setIsOpen(!isOpen)}
         className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-300 ${isOpen ? 'bg-white text-maroon rotate-90 shadow-white-glow' : 'bg-maroon text-white shadow-maroon-glow'}`}
       >
-        {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
+        {isOpen ? <X size={24}  strokeWidth={1.5}/> : <MessageSquare size={24}  strokeWidth={1.5}/>}
         {!isOpen && (
           <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent-success rounded-full border-2 border-background-primary" />
         )}

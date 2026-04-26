@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BookOpen, FileText, Settings, Database, Activity, GitBranch, ArrowLeft, Shield } from 'lucide-react';
+import { LogoIcon } from '@/components/ui/Icons';
 
 const sidebarLinks = [
   { href: '/docs', label: 'Overview', icon: BookOpen },
@@ -26,8 +27,8 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
       {/* Sidebar */}
       <aside className="w-full md:w-72 border-r border-white/5 bg-background-surface/80 backdrop-blur-2xl md:min-h-screen flex flex-col">
         <div className="p-6 border-b border-white/5 flex items-center gap-3">
-          <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-maroon to-red shadow-xl shadow-maroon/20 group hover:scale-105 transition-transform">
-             <Shield size={20} color="white" />
+          <Link href="/" className="flex items-center justify-center group hover:scale-105 transition-transform">
+             <LogoIcon size={32} className="text-white group-hover:drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
           </Link>
           <div>
             <h2 className="font-black text-lg tracking-tight">FairnessAudit</h2>
@@ -48,7 +49,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                     : 'text-text-secondary hover:text-text-primary hover:bg-white/5 border border-transparent'
                 }`}
               >
-                <link.icon size={18} className={isActive ? 'text-red' : 'opacity-60'} />
+                <link.icon size={18} className={isActive ? 'text-red' : 'opacity-60'}  strokeWidth={1.5}/>
                 {link.label}
               </Link>
             );
@@ -57,7 +58,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
         <div className="p-6 border-t border-white/5">
            <Link href="/" className="flex items-center gap-2 text-sm text-text-muted hover:text-text-primary transition-colors font-bold uppercase tracking-widest text-[10px]">
-             <ArrowLeft size={14} /> Back to Home
+             <ArrowLeft size={14}  strokeWidth={1.5}/> Back to Home
            </Link>
         </div>
       </aside>

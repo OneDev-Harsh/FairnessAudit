@@ -179,6 +179,10 @@ body {
   transform: none;
 }
 
+.btn-primary:active, .btn-secondary:active, .btn-ghost:active {
+  transform: scale(0.98);
+}
+
 .btn-secondary {
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
@@ -394,6 +398,12 @@ body {
   font-size: 0.8rem;
 }
 
-.recharts-tooltip-wrapper {
-  outline: none;
+
+/* Global Interaction Polish */
+a, button, .glass-card, svg {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+button:active:not(:disabled), a:active {
+  transform: scale(0.98);
+}
+

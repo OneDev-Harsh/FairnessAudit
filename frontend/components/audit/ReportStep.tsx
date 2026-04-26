@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  FileText, Download, CheckCircle, Shield, BarChart2,
-  Brain, Zap, Share2, Clock, AlertCircle, MessageSquare, Activity,
+  FileText, Download, ShieldCheck, Shield, BarChart2,
+  Brain, Wrench, Share2, Clock, AlertCircle, MessageSquare, Activity,
   RefreshCw
 } from 'lucide-react';
 import { AuditState } from '@/app/audit/page';
@@ -104,7 +104,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
       color: '#EF4444', // Red
     },
     {
-      icon: Zap,
+      icon: Wrench,
       label: 'Bias Mitigation',
       status: hasMitigation,
       detail: hasMitigation
@@ -127,16 +127,16 @@ export function ReportStep({ auditState }: ReportStepProps) {
 
       <div className="flex justify-center gap-2 mb-6">
         <button onClick={() => setActiveTab('report')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'report' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
-          <FileText size={16} className="inline mr-2" /> Report
+          <FileText size={16} className="inline mr-2"  strokeWidth={1.5}/> Report
         </button>
         <button onClick={() => setActiveTab('ai')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'ai' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
-          <MessageSquare size={16} className="inline mr-2" /> AI Assistant
+          <MessageSquare size={16} className="inline mr-2"  strokeWidth={1.5}/> AI Assistant
         </button>
         <button onClick={() => setActiveTab('compliance')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'compliance' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
-          <Shield size={16} className="inline mr-2" /> Compliance
+          <Shield size={16} className="inline mr-2"  strokeWidth={1.5}/> Compliance
         </button>
         <button onClick={() => setActiveTab('monitoring')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'monitoring' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
-          <Activity size={16} className="inline mr-2" /> Monitoring
+          <Activity size={16} className="inline mr-2"  strokeWidth={1.5}/> Monitoring
         </button>
       </div>
 
@@ -168,7 +168,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
       {/* Executive summary card */}
       <div className="glass-card p-6 border-maroon/25">
         <div className="flex items-center gap-3 mb-6">
-          <Shield size={24} className="text-maroon" />
+          <Shield size={24} className="text-maroon"  strokeWidth={1.5}/>
           <h3 className="text-xl font-bold text-text-primary">Executive Summary</h3>
         </div>
 
@@ -210,7 +210,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
             <div className="space-y-2">
               {analysis.recommendations.slice(0, 3).map((rec, i) => (
                 <div key={i} className="flex items-start gap-3 text-sm text-text-secondary">
-                  <CheckCircle size={14} className="text-accent-success mt-1 flex-shrink-0" />
+                  <ShieldCheck size={14} className="text-accent-success mt-1 flex-shrink-0"  strokeWidth={1.5}/>
                   {rec}
                 </div>
               ))}
@@ -227,7 +227,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
             <div key={s.label} className="flex items-center gap-4 py-3 border-b border-white/5">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                 style={{ background: s.status ? `${s.color}20` : 'rgba(255,255,255,0.05)' }}>
-                <s.icon size={16} style={{ color: s.status ? s.color : 'var(--text-muted)' }} />
+                <s.icon size={16} style={{ color: s.status ? s.color : 'var(--text-muted)' }}  strokeWidth={1.5}/>
               </div>
               <div className="flex-1">
                 <div className="text-sm font-medium" style={{ color: s.status ? 'var(--text-primary)' : 'var(--text-muted)' }}>
@@ -236,15 +236,15 @@ export function ReportStep({ auditState }: ReportStepProps) {
                 <div className="text-xs mt-0.5 text-text-muted">{s.detail}</div>
               </div>
               {s.status
-                ? <CheckCircle size={16} className="text-accent-success" />
-                : <AlertCircle size={16} className="text-text-muted" />}
+                ? <ShieldCheck size={16} className="text-accent-success"  strokeWidth={1.5}/>
+                : <AlertCircle size={16} className="text-text-muted"  strokeWidth={1.5}/>}
             </div>
           ))}
 
           {/* Always included */}
           <div className="flex items-center gap-4 py-3">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-accent-success/15">
-              <FileText size={16} className="text-accent-success" />
+              <FileText size={16} className="text-accent-success"  strokeWidth={1.5}/>
             </div>
             <div className="flex-1">
               <div className="text-sm font-medium text-text-primary">Report Metadata</div>
@@ -252,7 +252,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
                 Dataset: {auditState.datasetName} · Generated: {new Date().toLocaleDateString()}
               </div>
             </div>
-            <CheckCircle size={16} className="text-accent-success" />
+            <ShieldCheck size={16} className="text-accent-success"  strokeWidth={1.5}/>
           </div>
         </div>
       </div>
@@ -278,8 +278,8 @@ export function ReportStep({ auditState }: ReportStepProps) {
               {exporting === 'json'
                 ? <div className="w-5 h-5 border-2 border-red border-t-transparent rounded-full spinner" />
                 : done === 'json'
-                ? <CheckCircle size={20} className="text-accent-success" />
-                : <Download size={20} className="text-red" />}
+                ? <ShieldCheck size={20} className="text-accent-success"  strokeWidth={1.5}/>
+                : <Download size={20} className="text-red"  strokeWidth={1.5}/>}
             </div>
             <div>
               <h4 className="font-semibold text-text-primary">
@@ -305,8 +305,8 @@ export function ReportStep({ auditState }: ReportStepProps) {
               {exporting === 'pdf'
                 ? <div className="w-5 h-5 border-2 border-accent-success border-t-transparent rounded-full spinner" />
                 : done === 'pdf'
-                ? <CheckCircle size={20} className="text-accent-success" />
-                : <FileText size={20} className="text-accent-success" />}
+                ? <ShieldCheck size={20} className="text-accent-success"  strokeWidth={1.5}/>
+                : <FileText size={20} className="text-accent-success"  strokeWidth={1.5}/>}
             </div>
             <div>
               <h4 className="font-semibold text-text-primary">
@@ -332,15 +332,15 @@ export function ReportStep({ auditState }: ReportStepProps) {
       {/* Metadata footer moved inside scrollable area */}
       <div className="flex items-center justify-center gap-6 text-xs py-8 opacity-40" style={{ color: 'var(--text-muted)' }}>
         <div className="flex items-center gap-1">
-          <Clock size={12} />
+          <Clock size={12}  strokeWidth={1.5}/>
           {new Date().toLocaleString()}
         </div>
         <div className="flex items-center gap-1">
-          <Shield size={12} />
+          <Shield size={12}  strokeWidth={1.5}/>
           v1.0.0
         </div>
         <div className="flex items-center gap-1">
-          <Share2 size={12} />
+          <Share2 size={12}  strokeWidth={1.5}/>
           Google Solution Challenge
         </div>
       </div>
@@ -349,7 +349,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-text-muted">
-            <CheckCircle size={14} className="text-accent-success" />
+            <ShieldCheck size={14} className="text-accent-success"  strokeWidth={1.5}/>
             <span>Audit completed successfully. All data is ready for export.</span>
           </div>
           <div className="flex items-center gap-3">
@@ -357,7 +357,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
               className="btn-ghost" 
               onClick={() => window.location.reload()}
             >
-              <RefreshCw size={16} /> Start New Audit
+              <RefreshCw size={16}  strokeWidth={1.5}/> Start New Audit
             </button>
             <button 
               className="btn-primary px-8 flex items-center gap-2 shadow-lg shadow-maroon-glow bg-maroon border-maroon/30"
@@ -367,7 +367,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
               {exporting === 'pdf' ? (
                 <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full spinner" /> Exporting...</>
               ) : (
-                <><FileText size={18} /> Download Official Report</>
+                <><FileText size={18}  strokeWidth={1.5}/> Download Official Report</>
               )}
             </button>
           </div>

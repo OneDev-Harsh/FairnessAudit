@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, Database, Sparkles, FileText, AlertCircle, CheckCircle, X, Cloud } from 'lucide-react';
+import { FilePlus, Database, Sparkles, FileText, AlertCircle, ShieldCheck, X, Cloud } from 'lucide-react';
 import { SampleDataset, UploadResponse, uploadCSV, importCloudDataset } from '@/lib/api';
 
 interface DatasetStepProps {
@@ -35,7 +35,7 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
       const res = await uploadCSV(file);
       onUpload(res);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Upload failed');
+      setError(e instanceof Error ? e.message : 'FilePlus failed');
     } finally {
       setUploading(false);
     }
@@ -80,15 +80,15 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
           Choose Your Dataset
         </h2>
         <p className="text-text-secondary">
-          Upload a CSV file or select a built-in sample dataset to get started immediately.
+          FilePlus a CSV file or select a built-in sample dataset to get started immediately.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Upload zone */}
+        {/* FilePlus zone */}
         <div>
           <h3 className="font-semibold text-sm mb-3 uppercase tracking-wider text-text-muted">
-            Upload Your Dataset
+            FilePlus Your Dataset
           </h3>
           <div
             className={`upload-zone ${dragOver ? 'drag-over' : ''} ${uploading ? 'opacity-60' : ''}`}
@@ -115,7 +115,7 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
               ) : (
                 <>
                   <div className="w-16 h-16 rounded-full flex items-center justify-center bg-maroon/10">
-                    <Upload size={28} className="text-red" />
+                    <FilePlus size={28} className="text-red"  strokeWidth={1.5}/>
                   </div>
                   <div>
                     <p className="font-semibold text-text-primary">
@@ -126,7 +126,7 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
                     </p>
                   </div>
                   <div className="flex items-center gap-4 text-xs text-text-muted">
-                    <span className="flex items-center gap-1"><FileText size={12} /> CSV format</span>
+                    <span className="flex items-center gap-1"><FileText size={12}  strokeWidth={1.5}/> CSV format</span>
                     <span>Max 50 MB</span>
                   </div>
                 </>
@@ -135,15 +135,15 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
           </div>
           
           <button onClick={() => setShowCloudModal(true)} disabled={uploading} className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 bg-background-elevated hover:bg-white/5 border border-border-default text-text-primary rounded-xl transition-colors text-sm font-medium disabled:opacity-50">
-            <Cloud size={16} className="text-red" /> Import from Cloud Data
+            <Cloud size={16} className="text-red"  strokeWidth={1.5}/> Import from Cloud Data
           </button>
 
           {error && (
             <div className="mt-3 p-3 rounded-lg flex items-center gap-2 text-sm"
               style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171' }}>
-              <AlertCircle size={16} />
+              <AlertCircle size={16}  strokeWidth={1.5}/>
               {error}
-              <button onClick={() => setError(null)} className="ml-auto"><X size={14} /></button>
+              <button onClick={() => setError(null)} className="ml-auto"><X size={14}  strokeWidth={1.5}/></button>
             </div>
           )}
 
@@ -178,7 +178,7 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-maroon/10">
-                      <Database size={18} className="text-red" />
+                      <Database size={18} className="text-red"  strokeWidth={1.5}/>
                     </div>
                     <div>
                       <h4 className="font-semibold text-text-primary">{ds.name}</h4>
@@ -225,7 +225,7 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
 
       {/* Demo hint */}
       <div className="glass-card p-4 flex items-center gap-4 border-accent-success/20">
-        <Sparkles size={20} className="text-accent-success" />
+        <Sparkles size={20} className="text-accent-success"  strokeWidth={1.5}/>
         <div className="flex-1">
           <p className="text-sm font-medium text-text-primary">
             Want a quick demo?
@@ -246,8 +246,8 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
             <div className="p-4 border-b border-border-default flex justify-between items-center bg-background-primary">
-              <h3 className="font-bold text-text-primary flex items-center gap-2"><Cloud className="text-red"/> Import Cloud Data</h3>
-              <button onClick={() => setShowCloudModal(false)} className="text-text-muted hover:text-text-primary"><X size={20}/></button>
+              <h3 className="font-bold text-text-primary flex items-center gap-2"><Cloud className="text-red" strokeWidth={1.5}/> Import Cloud Data</h3>
+              <button onClick={() => setShowCloudModal(false)} className="text-text-muted hover:text-text-primary"><X size={20} strokeWidth={1.5}/></button>
             </div>
             <div className="p-6 space-y-4">
               <div className="flex gap-2">

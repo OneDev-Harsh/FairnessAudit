@@ -4,7 +4,7 @@ export default function ProxyLogicPage() {
   return (
     <div className="fade-in">
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-maroon/10 border border-maroon/20 mb-8">
-        <GitBranch size={14} className="text-red" />
+        <GitBranch size={14} className="text-red"  strokeWidth={1.5}/>
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red">Core Protocol</span>
       </div>
 
@@ -28,7 +28,7 @@ export default function ProxyLogicPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
-            <EyeOff className="text-white/40 mb-4" size={28} />
+            <EyeOff className="text-white/40 mb-4" size={28}  strokeWidth={1.5}/>
             <h3 className="text-xl font-black mb-2">Automated Detection</h3>
             <p className="text-white/60 text-sm">
                FairnessAudit automatically computes mutual information and Pearson correlation coefficients between 
@@ -37,7 +37,7 @@ export default function ProxyLogicPage() {
          </div>
          
          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
-            <ShieldAlert className="text-white/40 mb-4" size={28} />
+            <ShieldAlert className="text-white/40 mb-4" size={28}  strokeWidth={1.5}/>
             <h3 className="text-xl font-black mb-2">Warning Thresholds</h3>
             <p className="text-white/60 text-sm">
                Features that show a correlation higher than 0.7 with the sensitive attribute are immediately flagged 

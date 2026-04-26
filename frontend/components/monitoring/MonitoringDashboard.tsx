@@ -41,7 +41,7 @@ export function MonitoringDashboard() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="p-3 rounded-xl bg-maroon/10 text-red shadow-sm shadow-maroon-glow/20">
-            <Activity size={24} />
+            <Activity size={24}  strokeWidth={1.5}/>
           </div>
           <div>
             <h3 className="text-lg font-bold text-text-primary">Live Bias Monitoring</h3>
@@ -53,14 +53,14 @@ export function MonitoringDashboard() {
           disabled={loading}
           className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-text-primary border border-white/5 rounded-lg transition-all text-sm disabled:opacity-50"
         >
-          <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+          <RefreshCw size={14} className={loading ? 'animate-spin' : ''}  strokeWidth={1.5}/>
           Refresh
         </button>
       </div>
 
       {isAlert && (
         <div className="mb-6 p-4 rounded-xl flex items-center gap-3 bg-red/10 border border-red/30 text-red">
-          <AlertCircle size={20} className="flex-shrink-0" />
+          <AlertCircle size={20} className="flex-shrink-0"  strokeWidth={1.5}/>
           <div>
             <p className="font-semibold text-sm">Alert Triggered</p>
             <p className="text-xs opacity-90">Fairness score has dropped below the 80 threshold. Check your model inputs.</p>

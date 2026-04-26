@@ -1,10 +1,10 @@
-import { Activity, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Activity, ShieldCheck, AlertTriangle } from 'lucide-react';
 
 export default function EvaluationPage() {
   return (
     <div className="fade-in">
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-maroon/10 border border-maroon/20 mb-8">
-        <Activity size={14} className="text-red" />
+        <Activity size={14} className="text-red"  strokeWidth={1.5}/>
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red">Core Protocol</span>
       </div>
 
@@ -28,7 +28,7 @@ export default function EvaluationPage() {
              P(Ŷ = 1 | A = 0) = P(Ŷ = 1 | A = 1)
           </div>
           <div className="mt-6 flex items-start gap-4 p-4 rounded-xl bg-accent-success/5 border border-accent-success/10">
-             <CheckCircle className="text-accent-success shrink-0 mt-0.5" size={20} />
+             <ShieldCheck className="text-accent-success shrink-0 mt-0.5" size={20}  strokeWidth={1.5}/>
              <p className="text-sm text-accent-success/80">
                <strong>When to use:</strong> Best for situations where historical bias in the training data is assumed, and you want to ensure equal representation of outcomes (e.g., hiring rates).
              </p>
@@ -48,7 +48,7 @@ export default function EvaluationPage() {
              P(Ŷ = 1 | Y = y, A = 0) = P(Ŷ = 1 | Y = y, A = 1), y ∈ {'{0, 1}'}
           </div>
           <div className="mt-6 flex items-start gap-4 p-4 rounded-xl bg-accent-warning/5 border border-accent-warning/10">
-             <AlertTriangle className="text-accent-warning shrink-0 mt-0.5" size={20} />
+             <AlertTriangle className="text-accent-warning shrink-0 mt-0.5" size={20}  strokeWidth={1.5}/>
              <p className="text-sm text-accent-warning/80">
                <strong>Note:</strong> Equalized Odds is harder to satisfy than Demographic Parity but often preferred when predicting an outcome tied to a ground truth (e.g., criminal recidivism).
              </p>

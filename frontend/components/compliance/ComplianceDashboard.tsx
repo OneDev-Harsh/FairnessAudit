@@ -35,7 +35,7 @@ export function ComplianceDashboard({ complianceData }: ComplianceDashboardProps
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className={`p-3 rounded-xl ${isPass ? 'bg-accent-success/10 text-accent-success' : 'bg-red/10 text-red'}`}>
-            {isPass ? <CheckCircle2 size={24} /> : <AlertTriangle size={24} />}
+            {isPass ? <CheckCircle2 size={24}  strokeWidth={1.5}/> : <AlertTriangle size={24}  strokeWidth={1.5}/>}
           </div>
           <div>
             <h3 className="text-lg font-bold text-text-primary">Regulatory Compliance</h3>
@@ -47,7 +47,7 @@ export function ComplianceDashboard({ complianceData }: ComplianceDashboardProps
           disabled={isDownloading}
           className="flex items-center gap-2 px-4 py-2 bg-maroon hover:bg-red text-white rounded-lg transition-all text-sm font-medium disabled:opacity-50 shadow-md shadow-maroon-glow"
         >
-          {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+          {isDownloading ? <Loader2 size={16} className="animate-spin"  strokeWidth={1.5}/> : <Download size={16}  strokeWidth={1.5}/>}
           Official Certificate
         </button>
       </div>
@@ -56,7 +56,7 @@ export function ComplianceDashboard({ complianceData }: ComplianceDashboardProps
         {complianceData.frameworks.map((fw: any, idx: number) => (
           <div key={idx} className="p-4 bg-background-primary border border-border-default rounded-lg flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Shield size={16} className="text-text-secondary" />
+              <Shield size={16} className="text-text-secondary"  strokeWidth={1.5}/>
               <span className="font-medium text-text-primary">{fw.name}</span>
             </div>
             <span className={`text-xs px-2 py-1 rounded-full font-bold ${fw.status === 'PASS' ? 'bg-accent-success/10 text-accent-success' : 'bg-red/10 text-red'}`}>

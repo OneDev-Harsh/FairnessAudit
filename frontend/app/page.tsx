@@ -4,13 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
-  Shield, ArrowRight, BarChart3, Brain, Zap,
+  Shield, ArrowRight, AlertTriangle, Brain, Wrench,
   Scale, Eye, FileText, ChevronRight,
   Database, GitCommit, Settings,
   Globe, Server, Sparkles, LayoutDashboard
 } from 'lucide-react';
 
 import { MetricsMarquee } from '@/components/landing/MetricsMarquee';
+import { AuditPipelineIcon, LogoIcon } from '@/components/ui/Icons';
 
 /* ─── Animation Presets ─── */
 const fadeUp = {
@@ -36,7 +37,7 @@ const staggerItem = {
 /* ─── Data ─── */
 const capabilities = [
   {
-    icon: BarChart3,
+    icon: AlertTriangle,
     title: 'Demographic Parity',
     description: 'Measures outcome distribution across protected groups to quantify selection rate disparities.',
     className: 'md:col-span-2 lg:col-span-2'
@@ -60,7 +61,7 @@ const capabilities = [
     className: 'md:col-span-1 lg:col-span-1'
   },
   {
-    icon: Zap,
+    icon: Wrench,
     title: 'Bias Mitigation',
     description: 'Applies pre-processing and in-processing techniques to reduce disparities.',
     className: 'md:col-span-1 lg:col-span-1'
@@ -87,7 +88,7 @@ const workflowSteps = [
     title: 'Bias Evaluation',
     desc: 'Quantify disparities across protected groups using industry-standard metrics like Demographic Parity and Equalized Odds.',
     image: '/3.1.jpg',
-    icon: BarChart3
+    icon: AlertTriangle
   },
   {
     badge: 'Phase 04',
@@ -108,7 +109,7 @@ const workflowSteps = [
     title: 'Algorithmic Mitigation',
     desc: 'Apply advanced pre-processing and in-processing techniques from Fairlearn to mathematically reduce bias while preserving accuracy.',
     image: '/5.jpg',
-    icon: Zap
+    icon: Wrench
   },
   {
     badge: 'Phase 07',
@@ -162,10 +163,8 @@ export default function LandingPage() {
         ══════════════════════════════════════════════ */}
         <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-12 h-20 border-b border-white/5 bg-black/50 backdrop-blur-xl">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-maroon to-red flex items-center justify-center group-hover:shadow-red-glow transition-all duration-300">
-              <Shield size={20} className="text-white" />
-            </div>
-            <span className="font-bold text-lg text-white tracking-tight">FairnessAudit</span>
+            <LogoIcon size={32} className="text-white group-hover:drop-shadow-[0_0_10px_rgba(239,68,68,0.8)] transition-all duration-300" />
+            <span className="font-bold text-xl text-white tracking-tight">FairnessAudit</span>
           </Link>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-text-secondary">
@@ -181,7 +180,7 @@ export default function LandingPage() {
             </a>
             <Link href="/audit">
               <button className="h-10 px-5 rounded-full bg-white text-black font-semibold text-sm hover:scale-105 transition-transform flex items-center gap-2">
-                Run Audit <ArrowRight size={14} />
+                Run Audit <ArrowRight size={14}  strokeWidth={1.5}/>
               </button>
             </Link>
           </div>
@@ -196,7 +195,7 @@ export default function LandingPage() {
             {/* Left Column - Text Content */}
             <div className="flex-1 text-center lg:text-left z-10">
               <motion.div initial={{opacity: 0, scale: 0.95}} animate={{opacity: 1, scale: 1}} transition={{duration: 0.8, ease: "easeOut"}} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 shadow-lg shadow-black/50">
-                <Sparkles size={14} className="text-red" />
+                <Sparkles size={14} className="text-red"  strokeWidth={1.5}/>
                 <span className="text-xs font-semibold tracking-wide text-text-secondary uppercase">Google Solution Challenge 2026</span>
               </motion.div>
               
@@ -215,7 +214,7 @@ export default function LandingPage() {
               <motion.div {...fadeUp} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Link href="/audit">
                   <button className="h-14 px-8 rounded-full bg-white text-black font-bold text-[15px] hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-red-glow w-full sm:w-auto">
-                    Start Auditing <ArrowRight size={18} />
+                    Start Auditing <ArrowRight size={18}  strokeWidth={1.5}/>
                   </button>
                 </Link>
                 <Link href="/audit?demo=true">
@@ -238,7 +237,7 @@ export default function LandingPage() {
                   transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }} 
                   className="absolute -top-8 -left-4 lg:-top-12 lg:-left-12 w-20 h-20 lg:w-24 lg:h-24 bg-black/40 border border-white/10 rounded-2xl backdrop-blur-2xl flex items-center justify-center z-20 shadow-red-glow"
                 >
-                  <BarChart3 size={36} className="text-red drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
+                  <AlertTriangle size={36} className="text-red drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]"  strokeWidth={1.5}/>
                 </motion.div>
                 
                 <motion.div 
@@ -246,7 +245,7 @@ export default function LandingPage() {
                   transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }} 
                   className="absolute -bottom-6 -right-2 lg:-bottom-10 lg:-right-10 w-24 h-24 lg:w-28 lg:h-28 bg-black/40 border border-white/10 rounded-full backdrop-blur-2xl flex items-center justify-center z-20 shadow-maroon-glow"
                 >
-                  <Scale size={42} className="text-maroon-light drop-shadow-[0_0_10px_rgba(139,0,0,0.8)]" />
+                  <Scale size={42} className="text-maroon-light drop-shadow-[0_0_10px_rgba(139,0,0,0.8)]"  strokeWidth={1.5}/>
                 </motion.div>
 
                 {/* Main 3D Mockup Container */}
@@ -321,11 +320,11 @@ export default function LandingPage() {
             {capabilities.map((c, i) => (
               <motion.div key={i} variants={staggerItem} className={`group relative p-8 rounded-3xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden hover:border-maroon/30 ${c.className || ''}`}>
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity duration-500 group-hover:scale-110">
-                   <c.icon size={120} className="text-maroon-light" />
+                   <c.icon size={120} className="text-maroon-light"  strokeWidth={1.5}/>
                 </div>
                 <div className="relative z-10 h-full flex flex-col justify-between">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-maroon/20 to-red/20 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
-                    <c.icon size={28} className="text-maroon-light" />
+                    <c.icon size={28} className="text-maroon-light"  strokeWidth={1.5}/>
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-text-primary mb-3 tracking-tight">{c.title}</h3>
@@ -340,7 +339,7 @@ export default function LandingPage() {
                <div className="absolute inset-0 bg-gradient-to-br from-maroon/10 to-transparent opacity-50" />
                <div className="relative z-10 h-full flex flex-col justify-between">
                   <div className="w-14 h-14 rounded-2xl bg-maroon flex items-center justify-center mb-8">
-                    <FileText size={28} className="text-white" />
+                    <FileText size={28} className="text-white"  strokeWidth={1.5}/>
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-text-primary mb-3 tracking-tight">Compliance Reports</h3>
@@ -359,7 +358,9 @@ export default function LandingPage() {
           <div className="absolute left-[50%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-maroon/20 to-transparent hidden lg:block" />
 
           <motion.div {...fadeUp} className="text-center mb-32 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary tracking-tight mb-6">The Audit Pipeline</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-text-primary tracking-tight mb-6 flex items-center justify-center gap-3">
+              <AuditPipelineIcon size={40} className="text-red" /> The Audit Pipeline
+            </h2>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">A rigorous, end-to-end workflow that transforms raw data into a mitigated, compliance-ready model.</p>
           </motion.div>
 
@@ -379,7 +380,7 @@ export default function LandingPage() {
                     <h3 className="text-3xl md:text-4xl font-bold text-text-primary">{step.title}</h3>
                     <p className="text-lg text-text-secondary leading-relaxed max-w-md">{step.desc}</p>
                     <div className="flex items-center gap-3 text-red text-sm font-semibold pt-2">
-                      <step.icon size={18} />
+                      <step.icon size={18}  strokeWidth={1.5}/>
                       <span>{step.title.split(' ')[0]} Module</span>
                     </div>
                   </motion.div>
@@ -423,7 +424,7 @@ export default function LandingPage() {
                 <p className="text-text-secondary leading-relaxed mb-6">{m.desc}</p>
                 {m.link && (
                   <a href={m.link} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-white hover:text-red inline-flex items-center gap-2 transition-colors">
-                    Read Documentation <ArrowRight size={14} />
+                    Read Documentation <ArrowRight size={14}  strokeWidth={1.5}/>
                   </a>
                 )}
               </motion.div>
@@ -447,7 +448,7 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/audit">
                 <button className="h-14 px-8 rounded-full bg-maroon hover:bg-maroon-light text-white font-bold text-[15px] transition-all hover:scale-105 hover:shadow-red-glow flex items-center gap-2">
-                  Run an Audit <ArrowRight size={18} />
+                  Run an Audit <ArrowRight size={18}  strokeWidth={1.5}/>
                 </button>
               </Link>
               <Link href="/docs">
@@ -467,9 +468,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
               <div className="md:col-span-2">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-8 h-8 rounded-lg bg-maroon flex items-center justify-center">
-                    <Shield size={16} className="text-white" />
-                  </div>
+                  <LogoIcon size={24} className="text-white" />
                   <span className="font-bold text-text-primary text-lg tracking-tight">FairnessAudit</span>
                 </div>
                 <p className="text-sm text-text-secondary max-w-sm leading-relaxed">
@@ -505,10 +504,10 @@ export default function LandingPage() {
               </div>
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2 text-xs font-medium text-text-muted">
-                  <Globe size={14} /> v2.0
+                  <Globe size={14}  strokeWidth={1.5}/> v2.0
                 </div>
                 <div className="flex items-center gap-2 text-xs font-medium text-emerald-400">
-                  <Server size={14} /> All systems operational
+                  <Server size={14}  strokeWidth={1.5}/> All systems operational
                 </div>
               </div>
             </div>

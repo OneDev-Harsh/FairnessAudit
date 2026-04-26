@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, Circle, Lock } from 'lucide-react';
+import { ShieldCheck, Circle, Lock } from 'lucide-react';
 import { AuditState } from '@/app/audit/page';
 import { motion } from 'framer-motion';
 
@@ -68,9 +68,9 @@ export function AuditStepper({ steps, currentStep, onStepClick, auditState }: Au
                 style={{ cursor: accessible ? 'pointer' : 'not-allowed' }}
               >
                 {isCompleted ? (
-                  <CheckCircle size={18} strokeWidth={2.5} />
+                  <ShieldCheck size={18} strokeWidth={2.5} />
                 ) : !accessible ? (
-                  <Lock size={14} />
+                  <Lock size={14}  strokeWidth={1.5}/>
                 ) : (
                   step.id
                 )}

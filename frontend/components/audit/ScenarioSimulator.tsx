@@ -105,7 +105,7 @@ export function ScenarioSimulator({
     return (
       <div className="glass-card p-5">
         <div className="flex items-center gap-3 mb-2">
-          <SlidersHorizontal size={18} className="text-text-muted" />
+          <SlidersHorizontal size={18} className="text-text-muted"  strokeWidth={1.5}/>
           <h3 className="font-semibold text-text-muted">Scenario Simulator</h3>
         </div>
         <p className="text-sm text-text-muted">
@@ -126,7 +126,7 @@ export function ScenarioSimulator({
     <div className="glass-card p-6 border-maroon/20">
       <div className="flex items-center gap-3 mb-5">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-maroon/15">
-          <SlidersHorizontal size={18} className="text-red" />
+          <SlidersHorizontal size={18} className="text-red"  strokeWidth={1.5}/>
         </div>
         <div>
           <h3 className="font-semibold text-text-primary">Scenario Simulator</h3>
@@ -141,7 +141,7 @@ export function ScenarioSimulator({
         </div>
       ) : error ? (
         <div className="p-3 rounded-lg text-sm flex items-center gap-2 bg-red/10 border border-red/30 text-red-light">
-          <AlertTriangle size={16} /> {error}
+          <AlertTriangle size={16}  strokeWidth={1.5}/> {error}
         </div>
       ) : (
         <>

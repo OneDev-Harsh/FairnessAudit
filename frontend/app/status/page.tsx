@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, Server, Activity, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Server, Activity, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -10,7 +10,7 @@ export default function StatusPage() {
       <header className="px-10 py-6 border-b border-white/5 flex items-center justify-between backdrop-blur-2xl bg-background-primary/80 sticky top-0 z-50">
          <div className="flex items-center gap-4">
             <Link href="/" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
-               <ArrowLeft size={18} />
+               <ArrowLeft size={18}  strokeWidth={1.5}/>
             </Link>
             <div>
                <h1 className="font-black text-xl tracking-tight">System Status</h1>
@@ -25,7 +25,7 @@ export default function StatusPage() {
          <div className="glass-card p-12 rounded-[40px] border border-accent-success/20 bg-accent-success/5 mb-16 flex flex-col md:flex-row items-center gap-10">
             <div className="w-32 h-32 rounded-full bg-accent-success/10 flex items-center justify-center relative">
                <div className="absolute inset-0 rounded-full border-2 border-accent-success/30 border-dashed animate-[spin_10s_linear_infinite]" />
-               <CheckCircle size={48} className="text-accent-success" />
+               <ShieldCheck size={48} className="text-accent-success"  strokeWidth={1.5}/>
             </div>
             <div>
                <h2 className="text-4xl font-black mb-4">API Network Status</h2>

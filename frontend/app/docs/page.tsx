@@ -1,4 +1,4 @@
-import { ShieldCheck, Zap, Server, Activity } from 'lucide-react';
+import { ShieldCheck, Wrench, Server, Activity } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DocsPage() {
@@ -16,14 +16,14 @@ export default function DocsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
         <Link href="/docs/evaluation" className="glass-card p-6 rounded-2xl border border-white/5 hover:border-maroon/30 transition-all group">
           <div className="w-12 h-12 rounded-xl bg-maroon/10 flex items-center justify-center text-red mb-6 group-hover:scale-110 transition-transform">
-            <Activity size={24} />
+            <Activity size={24}  strokeWidth={1.5}/>
           </div>
           <h3 className="text-xl font-black mb-2">Evaluation Metrics</h3>
           <p className="text-text-muted text-sm">Understand Demographic Parity, Equalized Odds, and other mathematical definitions of fairness.</p>
         </Link>
         <Link href="/docs/mitigation" className="glass-card p-6 rounded-2xl border border-white/5 hover:border-accent-success/30 transition-all group">
           <div className="w-12 h-12 rounded-xl bg-accent-success/10 flex items-center justify-center text-accent-success mb-6 group-hover:scale-110 transition-transform">
-            <Zap size={24} />
+            <Wrench size={24}  strokeWidth={1.5}/>
           </div>
           <h3 className="text-xl font-black mb-2">Bias Mitigation</h3>
           <p className="text-text-muted text-sm">Learn about our state-of-the-art algorithms like Correlation Remover and Threshold Optimizer.</p>
@@ -38,7 +38,7 @@ export default function DocsPage() {
         </p>
         
         <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl mt-8 mb-8">
-           <h3 className="text-lg font-black mb-4 flex items-center gap-2"><Server size={20} className="text-red"/> Core Infrastructure</h3>
+           <h3 className="text-lg font-black mb-4 flex items-center gap-2"><Server size={20} className="text-red" strokeWidth={1.5}/> Core Infrastructure</h3>
            <ul className="space-y-3 text-text-secondary">
               <li className="flex gap-2">
                  <span className="text-maroon font-black">1.</span> 
@@ -61,13 +61,13 @@ export default function DocsPage() {
         </p>
         <div className="flex flex-wrap gap-4 mt-6">
            <div className="px-4 py-2 rounded-full bg-maroon/10 border border-maroon/20 text-red text-xs font-black uppercase tracking-widest flex items-center gap-2">
-              <ShieldCheck size={14} /> EU AI ACT
+              <ShieldCheck size={14}  strokeWidth={1.5}/> EU AI ACT
            </div>
            <div className="px-4 py-2 rounded-full bg-accent-success/10 border border-accent-success/20 text-accent-success text-xs font-black uppercase tracking-widest flex items-center gap-2">
-              <ShieldCheck size={14} /> NIST AI RMF
+              <ShieldCheck size={14}  strokeWidth={1.5}/> NIST AI RMF
            </div>
            <div className="px-4 py-2 rounded-full bg-red/10 border border-red/20 text-red text-xs font-black uppercase tracking-widest flex items-center gap-2">
-              <ShieldCheck size={14} /> IEEE 7003
+              <ShieldCheck size={14}  strokeWidth={1.5}/> IEEE 7003
            </div>
         </div>
       </div>

@@ -53,7 +53,7 @@ export function ChatWithReport({ reportContext }: ChatWithReportProps) {
   return (
     <div className="flex flex-col h-[500px] border border-border-default rounded-xl bg-background-elevated overflow-hidden">
       <div className="p-4 border-b border-border-default bg-background-primary flex items-center gap-2">
-        <Bot className="text-maroon" size={20} />
+        <Bot className="text-maroon" size={20}  strokeWidth={1.5}/>
         <h3 className="font-semibold text-text-primary">Chat with AI Consultant</h3>
       </div>
       
@@ -61,7 +61,7 @@ export function ChatWithReport({ reportContext }: ChatWithReportProps) {
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-white/10' : 'bg-maroon/10 text-maroon'}`}>
-              {msg.role === 'user' ? <User size={16} className="text-text-secondary" /> : <Bot size={16} />}
+              {msg.role === 'user' ? <User size={16} className="text-text-secondary"  strokeWidth={1.5}/> : <Bot size={16}  strokeWidth={1.5}/>}
             </div>
             <div className={`p-3 rounded-xl max-w-[80%] text-sm ${msg.role === 'user' ? 'bg-white/5 text-text-primary border border-white/5 shadow-sm' : 'bg-background-primary border border-border-default text-text-secondary'}`}>
               {msg.content}
@@ -71,10 +71,10 @@ export function ChatWithReport({ reportContext }: ChatWithReportProps) {
         {loading && (
           <div className="flex gap-3 flex-row">
              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-maroon/10 text-maroon">
-              <Bot size={16} />
+              <Bot size={16}  strokeWidth={1.5}/>
             </div>
             <div className="p-3 rounded-xl bg-background-primary border border-border-default text-text-secondary flex items-center gap-2">
-              <Loader2 className="animate-spin" size={16} />
+              <Loader2 className="animate-spin" size={16}  strokeWidth={1.5}/>
               <span className="text-sm">Thinking...</span>
             </div>
           </div>
@@ -97,7 +97,7 @@ export function ChatWithReport({ reportContext }: ChatWithReportProps) {
             disabled={loading || !input.trim()}
             className="p-2 bg-maroon text-white rounded-lg hover:bg-red transition-all disabled:opacity-50 shadow-lg shadow-maroon-glow"
           >
-            <Send size={18} />
+            <Send size={18}  strokeWidth={1.5}/>
           </button>
         </div>
       </div>

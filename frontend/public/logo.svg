@@ -1,0 +1,15 @@
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask id="core-cutout">
+      <rect width="24" height="24" fill="white" />
+      <path d="M12 10 L15.4 12 L12 14 L8.6 12 Z" fill="black" />
+    </mask>
+  </defs>
+  <g mask="url(#core-cutout)">
+    <path d="M11 3 L3.2 7.5 L11 12 Z" fill="white" />
+    <path d="M3.2 7.5 L11 12 L11 21 L3.2 16.5 Z" fill="white" fill-opacity="0.4" />
+    <path d="M13 3 L20.8 7.5 L13 12 Z" fill="white" />
+    <path d="M13 12 L20.8 7.5 L20.8 16.5 L13 21 Z" fill="white" fill-opacity="0.4" />
+  </g>
+  <path d="M12 10.5 L14.6 12 L12 13.5 L9.4 12 Z" fill="#EF4444" />
+</svg>

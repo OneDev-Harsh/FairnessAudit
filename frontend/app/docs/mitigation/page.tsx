@@ -1,10 +1,10 @@
-import { Zap, GitCompare, GitMerge } from 'lucide-react';
+import { Wrench, GitCompare, GitMerge } from 'lucide-react';
 
 export default function MitigationPage() {
   return (
     <div className="fade-in">
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-success/10 border border-accent-success/20 mb-8">
-        <Zap size={14} className="text-accent-success" />
+        <Wrench size={14} className="text-accent-success"  strokeWidth={1.5}/>
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-success">Core Protocol</span>
       </div>
 
@@ -17,7 +17,7 @@ export default function MitigationPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
          <div className="glass-card p-8 rounded-3xl border border-white/5 relative overflow-hidden group hover:border-accent-success/30 transition-colors">
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent-success/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
-            <GitCompare size={32} className="text-accent-success mb-6" />
+            <GitCompare size={32} className="text-accent-success mb-6"  strokeWidth={1.5}/>
             <h3 className="text-2xl font-black mb-4">Correlation Remover</h3>
             <p className="text-text-secondary text-sm leading-relaxed mb-6">
                A pre-processing technique that projects features into a subspace orthogonal to the sensitive attributes.
@@ -28,7 +28,7 @@ export default function MitigationPage() {
 
          <div className="glass-card p-8 rounded-3xl border border-white/5 relative overflow-hidden group hover:border-maroon/30 transition-colors">
             <div className="absolute top-0 right-0 w-32 h-32 bg-maroon/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
-            <GitMerge size={32} className="text-red mb-6" />
+            <GitMerge size={32} className="text-red mb-6"  strokeWidth={1.5}/>
             <h3 className="text-2xl font-black mb-4">Threshold Optimizer</h3>
             <p className="text-text-secondary text-sm leading-relaxed mb-6">
                A post-processing technique that adjusts the decision boundaries (thresholds) for different sensitive groups 

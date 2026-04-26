@@ -13,6 +13,7 @@ import { MitigationStep } from '@/components/audit/MitigationStep';
 import { ReportStep } from '@/components/audit/ReportStep';
 import { AuditStepper } from '@/components/audit/AuditStepper';
 import { FloatingChatbot } from '@/components/ai/FloatingChatbot';
+import { LogoIcon } from '@/components/ui/Icons';
 
 import {
   UploadResponse, SampleDataset, AnalysisResponse,
@@ -236,13 +237,11 @@ function AuditPageInner() {
       {/* Header */}
       <header className="sticky top-0 z-40 px-6 py-4 flex items-center gap-4 bg-background-elevated border-b border-border-default">
         <Link href="/" className="flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary">
-          <ArrowLeft size={16} />
+          <ArrowLeft size={16}  strokeWidth={1.5}/>
           <span>Back</span>
         </Link>
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-maroon shadow-sm shadow-maroon-glow">
-            <Shield size={15} className="text-white" />
-          </div>
+          <LogoIcon size={20} className="text-white" />
           <span className="font-bold text-text-primary">FairnessAudit</span>
           {state.isDemo && (
             <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-accent-success/15 text-accent-success border border-accent-success/30">

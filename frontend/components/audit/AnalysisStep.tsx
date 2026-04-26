@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import {
-  BarChart2, ArrowRight, AlertTriangle, CheckCircle, XCircle,
+  BarChart2, ArrowRight, AlertTriangle, ShieldCheck, XCircle,
   TrendingDown, TrendingUp, Brain, RefreshCw, Info, Users
 } from 'lucide-react';
 import {
@@ -14,6 +14,7 @@ import { formatNumber, formatPercent, getBiasColor, getScoreColor, getScoreLabel
 import { AiSummaryBox } from './AiSummaryBox';
 import { ScenarioSimulator } from './ScenarioSimulator';
 import { MetricSkeleton, Skeleton } from '../ui/Skeleton';
+import { FairnessScoreIcon, BiasMetricsIcon } from '../ui/Icons';
 
 interface AnalysisStepProps {
   response?: AnalysisResponse;
@@ -58,7 +59,7 @@ function SeverityBadge({ severity }: { severity: string }) {
   const cls = severity === 'High' ? 'badge-high' : severity === 'Medium' ? 'badge-medium' : 'badge-low';
   return (
     <span className={`${cls} px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1`}>
-      {severity === 'High' ? <AlertTriangle size={12} /> : severity === 'Medium' ? <TrendingDown size={12} /> : <CheckCircle size={12} />}
+      {severity === 'High' ? <AlertTriangle size={12}  strokeWidth={1.5}/> : severity === 'Medium' ? <TrendingDown size={12}  strokeWidth={1.5}/> : <ShieldCheck size={12}  strokeWidth={1.5}/>}
       {severity} Bias
     </span>
   );
@@ -73,7 +74,7 @@ function MetricRow({ label, value, info }: { label: string; value?: number | nul
       <div className="flex items-center gap-2">
         <span className="text-sm text-text-secondary">{label}</span>
         <div className="tooltip">
-          <Info size={12} className="text-text-muted cursor-help" />
+          <Info size={12} className="text-text-muted cursor-help"  strokeWidth={1.5}/>
           <div className="tooltip-text">{info}</div>
         </div>
       </div>
@@ -162,7 +163,7 @@ function PolicyCard({ compliance }: { compliance: Record<string, unknown> }) {
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-text-primary">Policy Compliance</h3>
         <span className={`flex items-center gap-1 text-sm font-medium px-3 py-1 rounded-full ${overall ? 'badge-low' : 'badge-high'}`}>
-          {overall ? <CheckCircle size={14} /> : <XCircle size={14} />}
+          {overall ? <ShieldCheck size={14}  strokeWidth={1.5}/> : <XCircle size={14}  strokeWidth={1.5}/>}
           {overall ? 'Pass' : 'Fail'}
         </span>
       </div>
@@ -173,8 +174,8 @@ function PolicyCard({ compliance }: { compliance: Record<string, unknown> }) {
             {Object.entries(colChecks).map(([metric, check]) => (
               <div key={metric} className="flex items-center gap-3 py-1.5 border-b border-white/5 text-sm">
                 {check.passed
-                  ? <CheckCircle size={14} className="text-accent-success" />
-                  : <XCircle size={14} className="text-red" />}
+                  ? <ShieldCheck size={14} className="text-accent-success"  strokeWidth={1.5}/>
+                  : <XCircle size={14} className="text-red"  strokeWidth={1.5}/>}
                 <span className="flex-1 text-text-secondary">{metric.replace(/_/g, ' ')}</span>
                 <span className={`font-mono text-xs ${check.passed ? 'text-accent-success' : 'text-red'}`}>
                   {formatNumber(check.value, 4)} / ≤{check.threshold}
@@ -219,13 +220,13 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
   if (!response) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
-        <BarChart2 size={48} className="mx-auto mb-4 text-maroon" />
+        <BarChart2 size={48} className="mx-auto mb-4 text-maroon"  strokeWidth={1.5}/>
         <h2 className="text-2xl font-bold mb-3 text-text-primary">Ready to Analyze</h2>
         <p className="mb-6 text-text-secondary">
           Click the button below to compute fairness metrics for your dataset.
         </p>
         <button className="btn-primary text-base px-8" onClick={onRunAnalysis}>
-          Run Fairness Analysis <ArrowRight size={18} />
+          Run Fairness Analysis <ArrowRight size={18}  strokeWidth={1.5}/>
         </button>
       </div>
     );
@@ -239,8 +240,8 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Fairness Score */}
         <div className="glass-card p-6 flex flex-col items-center justify-center">
-          <p className="text-xs font-medium mb-4 uppercase tracking-wider text-text-muted">
-            Overall Fairness Score
+          <p className="flex items-center gap-2 text-xs font-medium mb-4 uppercase tracking-wider text-text-muted">
+            <FairnessScoreIcon size={16} /> Overall Fairness Score
           </p>
           <ScoreGauge score={response.overall_fairness_score} />
         </div>
@@ -248,7 +249,9 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
         {/* Severity + Explanation */}
         <div className="glass-card p-6 md:col-span-2">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-text-primary">Bias Summary</h3>
+            <h3 className="font-semibold text-text-primary flex items-center gap-2">
+              <BiasMetricsIcon size={18} /> Bias Summary
+            </h3>
             <SeverityBadge severity={response.overall_bias_severity} />
           </div>
           <p className="text-sm leading-relaxed mb-4 text-text-secondary">
@@ -256,14 +259,16 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
           </p>
 
           {response.warnings.filter(w => !w.startsWith("Proxy Alert:")).length > 0 && (
-            <div className="p-3 rounded-lg text-xs mb-2 bg-amber-500/10 border border-amber-500/20 text-amber-400">
-              ⚠️ {response.warnings.filter(w => !w.startsWith("Proxy Alert:"))[0]}
+            <div className="p-3 rounded-lg text-xs mb-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-start gap-2">
+              <AlertTriangle size={14} className="mt-0.5 flex-shrink-0" strokeWidth={1.5}/>
+              <span>{response.warnings.filter(w => !w.startsWith("Proxy Alert:"))[0]}</span>
             </div>
           )}
           
           {response.warnings.filter(w => w.startsWith("Proxy Alert:")).map((w, idx) => (
-            <div key={idx} className="p-3 rounded-lg text-xs mt-2 bg-red/10 border border-red/20 text-red">
-              🚨 {w}
+            <div key={idx} className="p-3 rounded-lg text-xs mt-2 bg-red/10 border border-red/20 text-red flex items-start gap-2">
+              <AlertTriangle size={14} className="mt-0.5 flex-shrink-0" strokeWidth={1.5}/>
+              <span>{w}</span>
             </div>
           ))}
         </div>
@@ -272,7 +277,7 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
         {response.impact_simulation && (
           <div className="glass-card p-6 md:col-span-3 border-red/20 bg-gradient-to-br from-background-surface to-red/5">
             <h3 className="font-semibold mb-2 flex items-center gap-2 text-red">
-              <Users size={18} /> Real-World Impact Estimation
+              <Users size={18}  strokeWidth={1.5}/> Real-World Impact Estimation
             </h3>
             <div className="flex items-center gap-4">
               <div className="text-3xl font-bold text-red">
@@ -395,15 +400,15 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-text-muted">
-            <Info size={14} />
+            <Info size={14}  strokeWidth={1.5}/>
             <span>Analysis results are calculated based on your current mapping.</span>
           </div>
           <div className="flex items-center gap-3">
             <button className="btn-ghost" onClick={onRunAnalysis} disabled={loading}>
-              <RefreshCw size={16} /> Re-run Analysis
+              <RefreshCw size={16}  strokeWidth={1.5}/> Re-run Analysis
             </button>
             <button className="btn-primary px-8" onClick={onRunExplain} disabled={loading}>
-              <Brain size={18} /> Explain Bias & Continue <ArrowRight size={18} />
+              <Brain size={18}  strokeWidth={1.5}/> Explain Bias & Continue <ArrowRight size={18}  strokeWidth={1.5}/>
             </button>
           </div>
         </div>

@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import {
-  Zap, ArrowRight, TrendingUp, TrendingDown, Minus,
-  RefreshCw, CheckCircle, FileText, Info
+  Wrench, ArrowRight, TrendingUp, TrendingDown, Minus,
+  RefreshCw, ShieldCheck, FileText, Info
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -30,7 +30,7 @@ function ScoreDelta({ before, after }: { before: number; after: number }) {
   return (
     <div className="flex items-center gap-2">
       <span className="text-3xl font-extrabold" style={{ color: getScoreColor(before) }}>{before.toFixed(1)}</span>
-      <Icon size={20} style={{ color }} />
+      <Icon size={20} style={{ color }}  strokeWidth={1.5}/>
       <span className="text-3xl font-extrabold" style={{ color: getScoreColor(after) }}>{after.toFixed(1)}</span>
       <span className={`text-sm font-semibold ml-1`} style={{ color }}>
         ({delta > 0 ? '+' : ''}{delta.toFixed(1)})
@@ -108,7 +108,7 @@ function MitigationCard({ result, isBest }: { result: MitigationResult; isBest: 
           </p>
         </div>
         <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold ${improved ? 'bg-accent-success/15 text-accent-success border border-accent-success/30' : 'bg-red/10 text-red border border-red/25'}`}>
-          {improved ? <TrendingUp size={14} /> : <Minus size={14} />}
+          {improved ? <TrendingUp size={14}  strokeWidth={1.5}/> : <Minus size={14}  strokeWidth={1.5}/>}
           {result.fairness_improvement > 0 ? '+' : ''}{result.fairness_improvement.toFixed(1)} pts
         </div>
       </div>
@@ -172,13 +172,13 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
   if (!response) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
-        <Zap size={48} className="mx-auto mb-4 text-accent-success" />
+        <Wrench size={48} className="mx-auto mb-4 text-accent-success"  strokeWidth={1.5}/>
         <h2 className="text-2xl font-bold mb-3 text-text-primary">Bias Mitigation</h2>
         <p className="mb-6 text-text-secondary">
           Apply state-of-the-art mitigation techniques and see how fairness improves.
         </p>
         <button className="btn-primary text-base px-8" onClick={onRunMitigation}>
-          <Zap size={18} /> Run Mitigation
+          <Wrench size={18}  strokeWidth={1.5}/> Run Mitigation
         </button>
       </div>
     );
@@ -192,7 +192,7 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
       {/* Overall recommendation */}
       <div className="glass-card p-5 border-accent-success/20">
         <div className="flex items-start gap-3">
-          <CheckCircle size={20} className="text-accent-success flex-shrink-0" />
+          <ShieldCheck size={20} className="text-accent-success flex-shrink-0"  strokeWidth={1.5}/>
           <div>
             <h3 className="font-semibold mb-1 text-text-primary">
               Mitigation Complete
@@ -224,7 +224,7 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
       {/* Interpretation guide */}
       <div className="glass-card p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Info size={16} className="text-red" />
+          <Info size={16} className="text-red"  strokeWidth={1.5}/>
           <h3 className="font-semibold text-text-primary">How to Interpret These Results</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -247,15 +247,15 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-text-muted">
-            <Zap size={14} className="text-accent-success" />
+            <Wrench size={14} className="text-accent-success"  strokeWidth={1.5}/>
             <span>Review the fairness-accuracy trade-off for each method.</span>
           </div>
           <div className="flex items-center gap-3">
             <button className="btn-ghost" onClick={onRunMitigation} disabled={loading}>
-              <RefreshCw size={16} /> Re-run Mitigation
+              <RefreshCw size={16}  strokeWidth={1.5}/> Re-run Mitigation
             </button>
             <button className="btn-primary px-8" onClick={onContinue} disabled={loading}>
-              <FileText size={18} /> Finalize Audit & Continue <ArrowRight size={18} />
+              <FileText size={18}  strokeWidth={1.5}/> Finalize Audit & Continue <ArrowRight size={18}  strokeWidth={1.5}/>
             </button>
           </div>
         </div>
