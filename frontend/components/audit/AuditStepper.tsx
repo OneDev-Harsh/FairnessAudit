@@ -39,7 +39,7 @@ export function AuditStepper({ steps, currentStep, onStepClick, auditState }: Au
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${progressPercent}%` }}
-          className="absolute top-1/2 left-0 h-0.5 bg-indigo-500 origin-left -translate-y-1/2"
+          className="absolute top-1/2 left-0 h-0.5 bg-red origin-left -translate-y-1/2"
           style={{ zIndex: 0 }}
         />
 
@@ -58,12 +58,12 @@ export function AuditStepper({ steps, currentStep, onStepClick, auditState }: Au
                 className={`
                   w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 border-2
                   ${isActive 
-                    ? 'bg-indigo-600 border-indigo-400 text-white shadow-lg shadow-indigo-500/40' 
+                    ? 'bg-maroon border-red text-white shadow-red-glow' 
                     : isCompleted 
-                    ? 'bg-emerald-600/20 border-emerald-500/50 text-emerald-500' 
+                    ? 'bg-accent-success/20 border-accent-success/50 text-accent-success' 
                     : accessible 
-                    ? 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)] hover:border-indigo-500/50' 
-                    : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-muted)] opacity-50'}
+                    ? 'bg-background-surface border-border-default text-text-secondary hover:border-maroon/50' 
+                    : 'bg-background-surface border-border-default text-text-muted opacity-50'}
                 `}
                 style={{ cursor: accessible ? 'pointer' : 'not-allowed' }}
               >
@@ -79,7 +79,7 @@ export function AuditStepper({ steps, currentStep, onStepClick, auditState }: Au
               <div className="absolute -bottom-7 whitespace-nowrap text-center">
                 <span
                   className={`text-[10px] uppercase tracking-widest font-bold transition-colors duration-300 ${
-                    isActive ? 'text-indigo-400' : isCompleted ? 'text-emerald-500/70' : 'text-[var(--text-muted)]'
+                    isActive ? 'text-red' : isCompleted ? 'text-accent-success/70' : 'text-text-muted'
                   }`}
                 >
                   {step.label}

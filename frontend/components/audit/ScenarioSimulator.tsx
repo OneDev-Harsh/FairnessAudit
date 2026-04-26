@@ -105,11 +105,11 @@ export function ScenarioSimulator({
     return (
       <div className="glass-card p-5">
         <div className="flex items-center gap-3 mb-2">
-          <SlidersHorizontal size={18} style={{ color: 'var(--text-muted)' }} />
-          <h3 className="font-semibold" style={{ color: 'var(--text-muted)' }}>Scenario Simulator</h3>
+          <SlidersHorizontal size={18} className="text-text-muted" />
+          <h3 className="font-semibold text-text-muted">Scenario Simulator</h3>
         </div>
-        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-          Requires a <code className="font-mono text-xs px-1 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.06)' }}>prediction_probability</code> column in your dataset.
+        <p className="text-sm text-text-muted">
+          Requires a <code className="font-mono text-xs px-1 py-0.5 rounded bg-white/5">prediction_probability</code> column in your dataset.
           Use a sample dataset or include model probabilities to enable this feature.
         </p>
       </div>
@@ -123,25 +123,24 @@ export function ScenarioSimulator({
   }));
 
   return (
-    <div className="glass-card p-6" style={{ border: '1px solid rgba(139,92,246,0.2)' }}>
+    <div className="glass-card p-6 border-maroon/20">
       <div className="flex items-center gap-3 mb-5">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.12)' }}>
-          <SlidersHorizontal size={18} style={{ color: '#a78bfa' }} />
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-maroon/15">
+          <SlidersHorizontal size={18} className="text-red" />
         </div>
         <div>
-          <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>Scenario Simulator</h3>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Adjust the decision threshold to explore fairness vs accuracy tradeoffs</p>
+          <h3 className="font-semibold text-text-primary">Scenario Simulator</h3>
+          <p className="text-xs text-text-muted">Adjust the decision threshold to explore fairness vs accuracy tradeoffs</p>
         </div>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12 gap-3">
-          <div className="w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full spinner" />
-          <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Computing scenario curve...</span>
+          <div className="w-6 h-6 border-2 border-red border-t-transparent rounded-full spinner" />
+          <span className="text-sm text-text-secondary">Computing scenario curve...</span>
         </div>
       ) : error ? (
-        <div className="p-3 rounded-lg text-sm flex items-center gap-2"
-          style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171' }}>
+        <div className="p-3 rounded-lg text-sm flex items-center gap-2 bg-red/10 border border-red/30 text-red-light">
           <AlertTriangle size={16} /> {error}
         </div>
       ) : (
@@ -149,10 +148,10 @@ export function ScenarioSimulator({
           {/* Slider */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+              <label className="text-sm font-medium text-text-secondary">
                 Decision Threshold
               </label>
-              <span className="font-mono text-lg font-bold" style={{ color: '#a78bfa' }}>
+              <span className="font-mono text-lg font-bold text-red">
                 {threshold.toFixed(2)}
               </span>
             </div>
@@ -165,10 +164,10 @@ export function ScenarioSimulator({
               onChange={handleSliderChange}
               className="w-full h-2 rounded-full appearance-none cursor-pointer"
               style={{
-                background: `linear-gradient(to right, #a78bfa ${((threshold - 0.1) / 0.8) * 100}%, rgba(255,255,255,0.1) ${((threshold - 0.1) / 0.8) * 100}%)`,
+                background: `linear-gradient(to right, #8B0000 ${((threshold - 0.1) / 0.8) * 100}%, rgba(255,255,255,0.1) ${((threshold - 0.1) / 0.8) * 100}%)`,
               }}
             />
-            <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+            <div className="flex justify-between text-xs mt-1 text-text-muted">
               <span>More inclusive (0.1)</span>
               <span>More selective (0.9)</span>
             </div>
@@ -177,23 +176,23 @@ export function ScenarioSimulator({
           {/* Live metrics */}
           {currentPoint && (
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <div className="p-3 rounded-xl text-center bg-white/5">
                 <div className="text-2xl font-extrabold" style={{ color: getScoreColor(currentPoint.fairness_score) }}>
                   {currentPoint.fairness_score}
                 </div>
-                <div className="text-xs" style={{ color: 'var(--text-muted)' }}>Fairness Score</div>
+                <div className="text-xs text-text-muted">Fairness Score</div>
               </div>
-              <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <div className="text-2xl font-extrabold" style={{ color: '#58a6ff' }}>
+              <div className="p-3 rounded-xl text-center bg-white/5">
+                <div className="text-2xl font-extrabold text-red">
                   {(currentPoint.accuracy * 100).toFixed(1)}%
                 </div>
-                <div className="text-xs" style={{ color: 'var(--text-muted)' }}>Accuracy</div>
+                <div className="text-xs text-text-muted">Accuracy</div>
               </div>
-              <div className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <div className="text-2xl font-extrabold" style={{ color: currentPoint.demographic_parity_difference > 0.1 ? '#f85149' : '#3fb950' }}>
+              <div className="p-3 rounded-xl text-center bg-white/5">
+                <div className="text-2xl font-extrabold" style={{ color: currentPoint.demographic_parity_difference > 0.1 ? '#EF4444' : '#22C55E' }}>
                   {currentPoint.demographic_parity_difference.toFixed(3)}
                 </div>
-                <div className="text-xs" style={{ color: 'var(--text-muted)' }}>DP Difference</div>
+                <div className="text-xs text-text-muted">DP Difference</div>
               </div>
             </div>
           )}
@@ -209,15 +208,15 @@ export function ScenarioSimulator({
                     type="number" 
                     domain={[0.1, 0.9]} 
                     tickCount={9}
-                    tick={{ fill: '#94a3b8', fontSize: 11 }} 
-                    label={{ value: 'Decision Threshold', position: 'insideBottom', offset: -5, fill: '#94a3b8', fontSize: 11 }} 
+                    tick={{ fill: '#A3A3A3', fontSize: 11 }} 
+                    label={{ value: 'Decision Threshold', position: 'insideBottom', offset: -5, fill: '#A3A3A3', fontSize: 11 }} 
                   />
-                  <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} domain={[0, 100]} />
+                  <YAxis tick={{ fill: '#A3A3A3', fontSize: 11 }} domain={[0, 100]} />
                   <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 6, color: 'var(--text-primary)' }} />
-                  <Legend wrapperStyle={{ color: 'var(--text-secondary)', fontSize: 12 }} />
-                  <ReferenceLine x={threshold} stroke="#a78bfa" strokeDasharray="3 3" strokeWidth={2} />
-                  <Line type="monotone" dataKey="Fairness Score" stroke="#3fb950" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
-                  <Line type="monotone" dataKey="Accuracy (%)" stroke="#58a6ff" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
+                  <Legend wrapperStyle={{ color: '#A3A3A3', fontSize: 12 }} />
+                  <ReferenceLine x={threshold} stroke="#8B0000" strokeDasharray="3 3" strokeWidth={2} />
+                  <Line type="monotone" dataKey="Fairness Score" stroke="#22C55E" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
+                  <Line type="monotone" dataKey="Accuracy (%)" stroke="#EF4444" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -226,14 +225,14 @@ export function ScenarioSimulator({
           {/* Group selection rates */}
           {currentPoint && Object.keys(currentPoint.group_selection_rates).length > 0 && (
             <div className="mt-4">
-              <h4 className="text-xs font-medium uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
+              <h4 className="text-xs font-medium uppercase tracking-wider mb-2 text-text-muted">
                 Group Selection Rates at threshold {threshold.toFixed(2)}
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {Object.entries(currentPoint.group_selection_rates).map(([key, rate]) => (
-                  <div key={key} className="p-2 rounded-lg text-sm" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                    <span style={{ color: 'var(--text-muted)' }}>{key.split(':')[1] || key}: </span>
-                    <span className="font-mono font-semibold" style={{ color: 'var(--accent-primary)' }}>
+                  <div key={key} className="p-2 rounded-lg text-sm bg-white/5">
+                    <span className="text-text-muted">{key.split(':')[1] || key}: </span>
+                    <span className="font-mono font-semibold text-maroon">
                       {(rate * 100).toFixed(1)}%
                     </span>
                   </div>

@@ -92,7 +92,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
       detail: hasAnalysis
         ? `Score: ${score}/100 · Severity: ${severity}`
         : 'Not completed',
-      color: '#58a6ff',
+      color: '#8B0000', // Maroon
     },
     {
       icon: Brain,
@@ -101,7 +101,7 @@ export function ReportStep({ auditState }: ReportStepProps) {
       detail: hasExplain
         ? `${auditState.explainResponse!.top_features.length} features · ${auditState.explainResponse!.proxy_features.length} proxy warnings`
         : 'Not completed',
-      color: '#a371f7',
+      color: '#EF4444', // Red
     },
     {
       icon: Zap,
@@ -110,32 +110,32 @@ export function ReportStep({ auditState }: ReportStepProps) {
       detail: hasMitigation
         ? `Best method: ${bestMethod.replace('_', ' ')}`
         : 'Not completed',
-      color: '#3fb950',
+      color: '#22C55E', // Green
     },
   ];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 fade-in">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+        <h2 className="text-2xl font-bold mb-2 text-text-primary">
           Audit Report & Dashboards
         </h2>
-        <p style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-text-secondary">
           Review findings, chat with AI, check compliance, and monitor live metrics.
         </p>
       </div>
 
       <div className="flex justify-center gap-2 mb-6">
-        <button onClick={() => setActiveTab('report')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'report' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+        <button onClick={() => setActiveTab('report')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'report' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
           <FileText size={16} className="inline mr-2" /> Report
         </button>
-        <button onClick={() => setActiveTab('ai')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'ai' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+        <button onClick={() => setActiveTab('ai')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'ai' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
           <MessageSquare size={16} className="inline mr-2" /> AI Assistant
         </button>
-        <button onClick={() => setActiveTab('compliance')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'compliance' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+        <button onClick={() => setActiveTab('compliance')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'compliance' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
           <Shield size={16} className="inline mr-2" /> Compliance
         </button>
-        <button onClick={() => setActiveTab('monitoring')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'monitoring' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]'}`}>
+        <button onClick={() => setActiveTab('monitoring')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'monitoring' ? 'bg-maroon text-white shadow-lg shadow-maroon-glow' : 'bg-background-elevated text-text-secondary hover:bg-white/5 border border-border-default'}`}>
           <Activity size={16} className="inline mr-2" /> Monitoring
         </button>
       </div>
@@ -166,51 +166,51 @@ export function ReportStep({ auditState }: ReportStepProps) {
         <div className="space-y-6 fade-in">
 
       {/* Executive summary card */}
-      <div className="glass-card p-6" style={{ border: '1px solid rgba(99,102,241,0.25)' }}>
+      <div className="glass-card p-6 border-maroon/25">
         <div className="flex items-center gap-3 mb-6">
-          <Shield size={24} style={{ color: 'var(--accent-primary)' }} />
-          <h3 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Executive Summary</h3>
+          <Shield size={24} className="text-maroon" />
+          <h3 className="text-xl font-bold text-text-primary">Executive Summary</h3>
         </div>
 
         <div className="grid grid-cols-3 gap-6 mb-6">
           {/* Fairness score */}
-          <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
+          <div className="text-center p-4 rounded-xl bg-white/5">
             <div className="text-4xl font-extrabold mb-1" style={{ color: getScoreColor(score) }}>
               {score}
             </div>
-            <div className="text-sm" style={{ color: 'var(--text-muted)' }}>Fairness Score</div>
+            <div className="text-sm text-text-muted">Fairness Score</div>
             <div className="text-xs mt-1" style={{ color: getScoreColor(score) }}>
               {getScoreLabel(score)}
             </div>
           </div>
 
           {/* Bias severity */}
-          <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <div className={`text-4xl font-extrabold mb-1 ${severity === 'High' ? 'text-red-400' : severity === 'Medium' ? 'text-yellow-400' : 'text-emerald-400'}`}>
+          <div className="text-center p-4 rounded-xl bg-white/5">
+            <div className={`text-4xl font-extrabold mb-1 ${severity === 'High' ? 'text-red' : severity === 'Medium' ? 'text-amber-500' : 'text-accent-success'}`}>
               {severity}
             </div>
-            <div className="text-sm" style={{ color: 'var(--text-muted)' }}>Bias Severity</div>
-            <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Overall assessment</div>
+            <div className="text-sm text-text-muted">Bias Severity</div>
+            <div className="text-xs mt-1 text-text-muted">Overall assessment</div>
           </div>
 
           {/* Mitigation */}
-          <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <div className="text-xl font-bold mb-1 capitalize" style={{ color: 'var(--accent-primary)' }}>
+          <div className="text-center p-4 rounded-xl bg-white/5">
+            <div className="text-xl font-bold mb-1 capitalize text-maroon">
               {hasMitigation ? bestMethod.replace('_', ' ') : 'N/A'}
             </div>
-            <div className="text-sm" style={{ color: 'var(--text-muted)' }}>Best Mitigation</div>
-            <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Recommended method</div>
+            <div className="text-sm text-text-muted">Best Mitigation</div>
+            <div className="text-xs mt-1 text-text-muted">Recommended method</div>
           </div>
         </div>
 
         {/* Top recommendations */}
         {analysis?.recommendations && (
           <div>
-            <h4 className="text-sm font-medium mb-3" style={{ color: 'var(--text-muted)' }}>Top Recommendations</h4>
+            <h4 className="text-sm font-medium mb-3 text-text-muted">Top Recommendations</h4>
             <div className="space-y-2">
               {analysis.recommendations.slice(0, 3).map((rec, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm" style={{ color: 'var(--text-secondary)' }}>
-                  <CheckCircle size={14} style={{ color: '#10b981', marginTop: 3, flexShrink: 0 }} />
+                <div key={i} className="flex items-start gap-3 text-sm text-text-secondary">
+                  <CheckCircle size={14} className="text-accent-success mt-1 flex-shrink-0" />
                   {rec}
                 </div>
               ))}
@@ -221,10 +221,10 @@ export function ReportStep({ auditState }: ReportStepProps) {
 
       {/* Sections included */}
       <div className="glass-card p-5">
-        <h3 className="font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Report Contents</h3>
+        <h3 className="font-semibold mb-4 text-text-primary">Report Contents</h3>
         <div className="space-y-3">
           {sections.map((s) => (
-            <div key={s.label} className="flex items-center gap-4 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+            <div key={s.label} className="flex items-center gap-4 py-3 border-b border-white/5">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                 style={{ background: s.status ? `${s.color}20` : 'rgba(255,255,255,0.05)' }}>
                 <s.icon size={16} style={{ color: s.status ? s.color : 'var(--text-muted)' }} />
@@ -233,26 +233,26 @@ export function ReportStep({ auditState }: ReportStepProps) {
                 <div className="text-sm font-medium" style={{ color: s.status ? 'var(--text-primary)' : 'var(--text-muted)' }}>
                   {s.label}
                 </div>
-                <div className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{s.detail}</div>
+                <div className="text-xs mt-0.5 text-text-muted">{s.detail}</div>
               </div>
               {s.status
-                ? <CheckCircle size={16} style={{ color: '#10b981' }} />
-                : <AlertCircle size={16} style={{ color: 'var(--text-muted)' }} />}
+                ? <CheckCircle size={16} className="text-accent-success" />
+                : <AlertCircle size={16} className="text-text-muted" />}
             </div>
           ))}
 
           {/* Always included */}
           <div className="flex items-center gap-4 py-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.15)' }}>
-              <FileText size={16} style={{ color: '#10b981' }} />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-accent-success/15">
+              <FileText size={16} className="text-accent-success" />
             </div>
             <div className="flex-1">
-              <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Report Metadata</div>
-              <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
+              <div className="text-sm font-medium text-text-primary">Report Metadata</div>
+              <div className="text-xs text-text-muted">
                 Dataset: {auditState.datasetName} · Generated: {new Date().toLocaleDateString()}
               </div>
             </div>
-            <CheckCircle size={16} style={{ color: '#10b981' }} />
+            <CheckCircle size={16} className="text-accent-success" />
           </div>
         </div>
       </div>
@@ -269,25 +269,23 @@ export function ReportStep({ auditState }: ReportStepProps) {
         <motion.button
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
-          className="glass-card p-6 text-left cursor-pointer transition-all group"
-          style={{ border: '1px solid rgba(99,102,241,0.25)' }}
+          className="glass-card p-6 text-left cursor-pointer transition-all group border-maroon/25"
           onClick={() => handleExport('json')}
           disabled={!!exporting || !hasAnalysis}
         >
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: 'rgba(99,102,241,0.15)' }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-maroon/15">
               {exporting === 'json'
-                ? <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full spinner" />
+                ? <div className="w-5 h-5 border-2 border-red border-t-transparent rounded-full spinner" />
                 : done === 'json'
-                ? <CheckCircle size={20} style={{ color: '#10b981' }} />
-                : <Download size={20} style={{ color: '#6366f1' }} />}
+                ? <CheckCircle size={20} className="text-accent-success" />
+                : <Download size={20} className="text-red" />}
             </div>
             <div>
-              <h4 className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+              <h4 className="font-semibold text-text-primary">
                 {done === 'json' ? 'Downloaded!' : 'Download JSON'}
               </h4>
-              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Machine-readable structured report</p>
+              <p className="text-xs text-text-muted">Machine-readable structured report</p>
             </div>
           </div>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
@@ -298,25 +296,23 @@ export function ReportStep({ auditState }: ReportStepProps) {
         <motion.button
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
-          className="glass-card p-6 text-left cursor-pointer transition-all"
-          style={{ border: '1px solid rgba(16,185,129,0.2)' }}
+          className="glass-card p-6 text-left cursor-pointer transition-all border-accent-success/20"
           onClick={() => handleExport('pdf')}
           disabled={!!exporting || !hasAnalysis}
         >
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: 'rgba(16,185,129,0.15)' }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent-success/15">
               {exporting === 'pdf'
-                ? <div className="w-5 h-5 border-2 border-green-400 border-t-transparent rounded-full spinner" />
+                ? <div className="w-5 h-5 border-2 border-accent-success border-t-transparent rounded-full spinner" />
                 : done === 'pdf'
-                ? <CheckCircle size={20} style={{ color: '#10b981' }} />
-                : <FileText size={20} style={{ color: '#10b981' }} />}
+                ? <CheckCircle size={20} className="text-accent-success" />
+                : <FileText size={20} className="text-accent-success" />}
             </div>
             <div>
-              <h4 className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+              <h4 className="font-semibold text-text-primary">
                 {done === 'pdf' ? 'Downloaded!' : 'Download PDF'}
               </h4>
-              <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Professional formatted report</p>
+              <p className="text-xs text-text-muted">Professional formatted report</p>
             </div>
           </div>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
@@ -350,10 +346,10 @@ export function ReportStep({ auditState }: ReportStepProps) {
       </div>
 
       {/* Sticky Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-            <CheckCircle size={14} className="text-emerald-500" />
+          <div className="flex items-center gap-2 text-xs text-text-muted">
+            <CheckCircle size={14} className="text-accent-success" />
             <span>Audit completed successfully. All data is ready for export.</span>
           </div>
           <div className="flex items-center gap-3">
@@ -364,10 +360,9 @@ export function ReportStep({ auditState }: ReportStepProps) {
               <RefreshCw size={16} /> Start New Audit
             </button>
             <button 
-              className="btn-primary px-8 flex items-center gap-2 shadow-lg shadow-emerald-500/20"
+              className="btn-primary px-8 flex items-center gap-2 shadow-lg shadow-maroon-glow bg-maroon border-maroon/30"
               onClick={() => handleExport('pdf')}
               disabled={!!exporting || !hasAnalysis}
-              style={{ background: 'var(--gradient-success)', borderColor: 'rgba(16,185,129,0.3)' }}
             >
               {exporting === 'pdf' ? (
                 <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full spinner" /> Exporting...</>

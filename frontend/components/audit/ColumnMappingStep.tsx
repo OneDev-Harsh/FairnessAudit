@@ -111,20 +111,20 @@ export function ColumnMappingStep({
   // Column type chip
   const getTypeColor = (col: ColumnInfo) => {
     switch (col.inferred_type) {
-      case 'binary': return '#10b981';
-      case 'numeric': return '#3b82f6';
-      case 'categorical': return '#8b5cf6';
-      default: return '#6366f1';
+      case 'binary': return '#22C55E'; // Green
+      case 'numeric': return '#F59E0B'; // Amber
+      case 'categorical': return '#8B0000'; // Maroon
+      default: return '#737373'; // Grey
     }
   };
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+        <h2 className="text-2xl font-bold mb-2 text-text-primary">
           Map Dataset Columns
         </h2>
-        <p style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-text-secondary">
           Tell FairnessAudit which columns to use for the analysis.
         </p>
       </div>
@@ -135,8 +135,8 @@ export function ColumnMappingStep({
         {/* Left: Column mapping */}
         <div className="space-y-4">
           <div className="glass-card p-5 space-y-4">
-            <h3 className="font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-              <Settings size={18} style={{ color: '#6366f1' }} />
+            <h3 className="font-semibold flex items-center gap-2 text-text-primary">
+              <Settings size={18} className="text-red" />
               Column Assignment
             </h3>
 
@@ -179,9 +179,9 @@ export function ColumnMappingStep({
 
           {/* Sensitive columns */}
           <div className="glass-card p-5 space-y-3">
-            <h3 className="font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="font-semibold flex items-center gap-2 text-text-primary">
               Sensitive Attributes *
-              <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)' }}>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-red/15 text-red border border-red/30">
                 Required
               </span>
             </h3>
@@ -191,8 +191,7 @@ export function ColumnMappingStep({
 
             <div className="flex flex-wrap gap-2">
               {sensitives.map((s) => (
-                <span key={s} className="flex items-center gap-1 px-3 py-1 rounded-full text-sm"
-                  style={{ background: 'rgba(99,102,241,0.15)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.3)' }}>
+                <span key={s} className="flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-maroon/15 text-red border border-maroon/30">
                   {s}
                   <button onClick={() => removeSensitive(s)}><X size={12} /></button>
                 </span>
@@ -225,7 +224,7 @@ export function ColumnMappingStep({
         <div className="space-y-4">
           {/* Feature selection */}
           <div className="glass-card p-5">
-            <h3 className="font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="font-semibold mb-3 text-text-primary">
               Feature Columns ({features.length} selected)
             </h3>
             <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
@@ -243,13 +242,13 @@ export function ColumnMappingStep({
                       onClick={() => toggleFeature(col)}
                       className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-all"
                       style={{
-                        background: isSelected ? 'rgba(99,102,241,0.12)' : 'rgba(255,255,255,0.03)',
-                        border: `1px solid ${isSelected ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.06)'}`,
+                        background: isSelected ? 'rgba(139, 0, 0, 0.12)' : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${isSelected ? 'rgba(139, 0, 0, 0.4)' : 'rgba(255,255,255,0.06)'}`,
                         color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
                       }}
                     >
                       <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all`}
-                        style={{ borderColor: isSelected ? '#6366f1' : 'var(--text-muted)', background: isSelected ? '#6366f1' : 'transparent' }}>
+                        style={{ borderColor: isSelected ? 'var(--maroon)' : 'var(--text-muted)', background: isSelected ? 'var(--maroon)' : 'transparent' }}>
                         {isSelected && <span style={{ color: 'white', fontSize: 10, fontWeight: 700 }}>✓</span>}
                       </div>
                       <span className="text-sm flex-1 truncate">{col}</span>
@@ -268,16 +267,16 @@ export function ColumnMappingStep({
           {/* Dataset summary */}
           {(uploadResponse || selectedSample) && (
             <div className="glass-card p-4 text-sm space-y-2">
-              <h4 className="font-medium" style={{ color: 'var(--text-secondary)' }}>Dataset Summary</h4>
+              <h4 className="font-medium text-text-secondary">Dataset Summary</h4>
               {uploadResponse ? (
                 <>
                   <div className="flex justify-between">
-                    <span style={{ color: 'var(--text-muted)' }}>Rows</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{uploadResponse.num_rows.toLocaleString()}</span>
+                    <span className="text-text-muted">Rows</span>
+                    <span className="text-text-primary">{uploadResponse.num_rows.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span style={{ color: 'var(--text-muted)' }}>Columns</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{uploadResponse.num_cols}</span>
+                    <span className="text-text-muted">Columns</span>
+                    <span className="text-text-primary">{uploadResponse.num_cols}</span>
                   </div>
                   {uploadResponse.warnings.length > 0 && (
                     <div className="mt-2 p-2 rounded-lg text-xs"
@@ -289,12 +288,12 @@ export function ColumnMappingStep({
               ) : selectedSample ? (
                 <>
                   <div className="flex justify-between">
-                    <span style={{ color: 'var(--text-muted)' }}>Rows</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{selectedSample.num_rows.toLocaleString()}</span>
+                    <span className="text-text-muted">Rows</span>
+                    <span className="text-text-primary">{selectedSample.num_rows.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span style={{ color: 'var(--text-muted)' }}>Columns</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{selectedSample.num_cols}</span>
+                    <span className="text-text-muted">Columns</span>
+                    <span className="text-text-primary">{selectedSample.num_cols}</span>
                   </div>
                 </>
               ) : null}
@@ -304,11 +303,11 @@ export function ColumnMappingStep({
       </div>
 
       {/* Sticky Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex flex-col">
-            <div className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]">
-              <Settings size={14} className="text-indigo-400" />
+            <div className="flex items-center gap-2 text-xs font-medium text-text-secondary">
+              <Settings size={14} className="text-red" />
               <span>Configuration: {target || 'No target'} • {sensitives.length} Sensitive Attributes</span>
             </div>
             {!canProceed && (
@@ -317,7 +316,7 @@ export function ColumnMappingStep({
           </div>
           <div className="flex items-center gap-3">
             <button
-              className="btn-primary px-8 py-3 text-base flex items-center gap-2 shadow-lg shadow-indigo-500/20"
+              className="btn-primary px-8 py-3 text-base flex items-center gap-2 shadow-lg shadow-maroon-glow"
               onClick={handleRun}
               disabled={!canProceed || loading}
             >

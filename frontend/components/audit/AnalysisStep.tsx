@@ -34,7 +34,7 @@ function ScoreGauge({ score }: { score: number }) {
     <div className="flex flex-col items-center gap-2">
       <div className="relative w-36 h-36">
         <svg className="w-36 h-36 -rotate-90" viewBox="0 0 120 120">
-          <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="10" />
+          <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="10" />
           <circle
             cx="60" cy="60" r="52" fill="none" stroke={color} strokeWidth="10"
             strokeDasharray={`${dash} ${circumference}`}
@@ -44,7 +44,7 @@ function ScoreGauge({ score }: { score: number }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-3xl font-extrabold" style={{ color }}>{score}</span>
-          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>/100</span>
+          <span className="text-xs text-text-muted">/100</span>
         </div>
       </div>
       <div>
@@ -69,11 +69,11 @@ function MetricRow({ label, value, info }: { label: string; value?: number | nul
   const abs = Math.abs(value);
   const color = abs > 0.2 ? 'var(--accent-danger)' : abs > 0.1 ? 'var(--accent-warning)' : 'var(--accent-success)';
   return (
-    <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+    <div className="flex items-center justify-between py-2 border-b border-border-default">
       <div className="flex items-center gap-2">
-        <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>{label}</span>
+        <span className="text-sm text-text-secondary">{label}</span>
         <div className="tooltip">
-          <Info size={12} style={{ color: 'var(--text-muted)', cursor: 'help' }} />
+          <Info size={12} className="text-text-muted cursor-help" />
           <div className="tooltip-text">{info}</div>
         </div>
       </div>
@@ -97,23 +97,23 @@ function GroupChart({ metrics, sensCol }: { metrics: GroupMetric[]; sensCol: str
 
   return (
     <div className="chart-container">
-      <h4 className="font-medium mb-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+      <h4 className="font-medium mb-4 text-sm text-text-secondary">
         Group Comparison | {sensCol}
       </h4>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-          <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} />
-          <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} unit="%" domain={[0, 100]} />
+          <XAxis dataKey="name" tick={{ fill: '#A3A3A3', fontSize: 12 }} />
+          <YAxis tick={{ fill: '#A3A3A3', fontSize: 11 }} unit="%" domain={[0, 100]} />
           <Tooltip
-            contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 6, color: 'var(--text-primary)' }}
-            labelStyle={{ color: 'var(--accent-primary)' }}
+            contentStyle={{ background: '#1A1A1A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#FFFFFF' }}
+            labelStyle={{ color: '#EF4444' }}
             formatter={(v: number) => [`${v}%`]}
           />
-          <Legend wrapperStyle={{ color: 'var(--text-secondary)', fontSize: 12, marginTop: 10 }} />
-          <Bar name="Selection Rate" dataKey="Selection Rate" fill="var(--accent-primary)" radius={[2, 2, 0, 0]} />
-          {data[0]?.Accuracy !== null && <Bar name="Accuracy" dataKey="Accuracy" fill="var(--accent-success)" radius={[2, 2, 0, 0]} />}
-          {data[0]?.TPR !== null && <Bar name="True Positive Rate" dataKey="TPR" fill="var(--accent-warning)" radius={[2, 2, 0, 0]} />}
+          <Legend wrapperStyle={{ color: '#A3A3A3', fontSize: 12, marginTop: 10 }} />
+          <Bar name="Selection Rate" dataKey="Selection Rate" fill="#8B0000" radius={[4, 4, 0, 0]} />
+          {data[0]?.Accuracy !== null && <Bar name="Accuracy" dataKey="Accuracy" fill="#10B981" radius={[4, 4, 0, 0]} />}
+          {data[0]?.TPR !== null && <Bar name="True Positive Rate" dataKey="TPR" fill="#F59E0B" radius={[4, 4, 0, 0]} />}
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -122,9 +122,9 @@ function GroupChart({ metrics, sensCol }: { metrics: GroupMetric[]; sensCol: str
 
 function IntersectionalTable({ metrics }: { metrics: GroupMetric[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/5" style={{ background: 'rgba(255,255,255,0.02)' }}>
+    <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
       <table className="w-full text-sm text-left">
-        <thead className="bg-white/5 text-xs uppercase" style={{ color: 'var(--text-muted)' }}>
+        <thead className="bg-white/5 text-xs uppercase text-text-muted">
           <tr>
             <th className="px-4 py-3">Subgroup</th>
             <th className="px-4 py-3 text-right">Count</th>
@@ -136,14 +136,14 @@ function IntersectionalTable({ metrics }: { metrics: GroupMetric[] }) {
         <tbody>
           {metrics.map((g, i) => (
             <tr key={i} className="border-t border-white/5 hover:bg-white/5 transition-colors">
-              <td className="px-4 py-3 font-medium" style={{ color: 'var(--text-primary)' }}>{g.group_value}</td>
-              <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--text-secondary)' }}>{g.count.toLocaleString()}</td>
-              <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--accent-primary)' }}>{(g.selection_rate * 100).toFixed(1)}%</td>
+              <td className="px-4 py-3 font-medium text-text-primary">{g.group_value}</td>
+              <td className="px-4 py-3 text-right font-mono text-text-secondary">{g.count.toLocaleString()}</td>
+              <td className="px-4 py-3 text-right font-mono text-red">{(g.selection_rate * 100).toFixed(1)}%</td>
               {g.accuracy !== null && g.accuracy !== undefined && (
-                <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--accent-success)' }}>{(g.accuracy * 100).toFixed(1)}%</td>
+                <td className="px-4 py-3 text-right font-mono text-accent-success">{(g.accuracy * 100).toFixed(1)}%</td>
               )}
               {g.true_positive_rate !== null && g.true_positive_rate !== undefined && (
-                <td className="px-4 py-3 text-right font-mono" style={{ color: 'var(--accent-warning)' }}>{(g.true_positive_rate * 100).toFixed(1)}%</td>
+                <td className="px-4 py-3 text-right font-mono text-accent-warning">{(g.true_positive_rate * 100).toFixed(1)}%</td>
               )}
             </tr>
           ))}
@@ -160,7 +160,7 @@ function PolicyCard({ compliance }: { compliance: Record<string, unknown> }) {
   return (
     <div className="glass-card p-5">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>Policy Compliance</h3>
+        <h3 className="font-semibold text-text-primary">Policy Compliance</h3>
         <span className={`flex items-center gap-1 text-sm font-medium px-3 py-1 rounded-full ${overall ? 'badge-low' : 'badge-high'}`}>
           {overall ? <CheckCircle size={14} /> : <XCircle size={14} />}
           {overall ? 'Pass' : 'Fail'}
@@ -169,14 +169,14 @@ function PolicyCard({ compliance }: { compliance: Record<string, unknown> }) {
       <div className="space-y-3">
         {Object.entries(checks || {}).map(([col, colChecks]) => (
           <div key={col}>
-            <p className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>{col}</p>
+            <p className="text-xs font-medium mb-1 text-text-muted">{col}</p>
             {Object.entries(colChecks).map(([metric, check]) => (
-              <div key={metric} className="flex items-center gap-3 py-1.5 border-b text-sm" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+              <div key={metric} className="flex items-center gap-3 py-1.5 border-b border-white/5 text-sm">
                 {check.passed
-                  ? <CheckCircle size={14} style={{ color: '#10b981' }} />
-                  : <XCircle size={14} style={{ color: '#ef4444' }} />}
-                <span style={{ color: 'var(--text-secondary)' }} className="flex-1">{metric.replace(/_/g, ' ')}</span>
-                <span className="font-mono text-xs" style={{ color: check.passed ? '#34d399' : '#f87171' }}>
+                  ? <CheckCircle size={14} className="text-accent-success" />
+                  : <XCircle size={14} className="text-red" />}
+                <span className="flex-1 text-text-secondary">{metric.replace(/_/g, ' ')}</span>
+                <span className={`font-mono text-xs ${check.passed ? 'text-accent-success' : 'text-red'}`}>
                   {formatNumber(check.value, 4)} / ≤{check.threshold}
                 </span>
               </div>
@@ -184,7 +184,7 @@ function PolicyCard({ compliance }: { compliance: Record<string, unknown> }) {
           </div>
         ))}
       </div>
-      <p className="text-xs mt-3" style={{ color: 'var(--text-muted)' }}>Standard: {compliance.standard as string}</p>
+      <p className="text-xs mt-3 text-text-muted">Standard: {compliance.standard as string}</p>
     </div>
   );
 }
@@ -219,9 +219,9 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
   if (!response) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
-        <BarChart2 size={48} className="mx-auto mb-4" style={{ color: '#6366f1' }} />
-        <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>Ready to Analyze</h2>
-        <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
+        <BarChart2 size={48} className="mx-auto mb-4 text-maroon" />
+        <h2 className="text-2xl font-bold mb-3 text-text-primary">Ready to Analyze</h2>
+        <p className="mb-6 text-text-secondary">
           Click the button below to compute fairness metrics for your dataset.
         </p>
         <button className="btn-primary text-base px-8" onClick={onRunAnalysis}>
@@ -239,7 +239,7 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Fairness Score */}
         <div className="glass-card p-6 flex flex-col items-center justify-center">
-          <p className="text-xs font-medium mb-4 uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-xs font-medium mb-4 uppercase tracking-wider text-text-muted">
             Overall Fairness Score
           </p>
           <ScoreGauge score={response.overall_fairness_score} />
@@ -248,23 +248,21 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
         {/* Severity + Explanation */}
         <div className="glass-card p-6 md:col-span-2">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>Bias Summary</h3>
+            <h3 className="font-semibold text-text-primary">Bias Summary</h3>
             <SeverityBadge severity={response.overall_bias_severity} />
           </div>
-          <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm leading-relaxed mb-4 text-text-secondary">
             {response.bias_explanation}
           </p>
 
           {response.warnings.filter(w => !w.startsWith("Proxy Alert:")).length > 0 && (
-            <div className="p-3 rounded-lg text-xs mb-2"
-              style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)', color: '#fbbf24' }}>
+            <div className="p-3 rounded-lg text-xs mb-2 bg-amber-500/10 border border-amber-500/20 text-amber-400">
               ⚠️ {response.warnings.filter(w => !w.startsWith("Proxy Alert:"))[0]}
             </div>
           )}
           
           {response.warnings.filter(w => w.startsWith("Proxy Alert:")).map((w, idx) => (
-            <div key={idx} className="p-3 rounded-lg text-xs mt-2"
-              style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: '#f87171' }}>
+            <div key={idx} className="p-3 rounded-lg text-xs mt-2 bg-red/10 border border-red/20 text-red">
               🚨 {w}
             </div>
           ))}
@@ -272,15 +270,15 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
         
         {/* Impact Simulator */}
         {response.impact_simulation && (
-          <div className="glass-card p-6 md:col-span-3" style={{ background: 'linear-gradient(135deg, var(--bg-secondary) 0%, rgba(239,68,68,0.05) 100%)', borderColor: 'rgba(239,68,68,0.2)' }}>
-            <h3 className="font-semibold mb-2 flex items-center gap-2" style={{ color: '#f87171' }}>
+          <div className="glass-card p-6 md:col-span-3 border-red/20 bg-gradient-to-br from-background-surface to-red/5">
+            <h3 className="font-semibold mb-2 flex items-center gap-2 text-red">
               <Users size={18} /> Real-World Impact Estimation
             </h3>
             <div className="flex items-center gap-4">
-              <div className="text-3xl font-bold" style={{ color: '#f87171' }}>
+              <div className="text-3xl font-bold text-red">
                 {response.impact_simulation.estimated_affected_users.toLocaleString()}
               </div>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-sm text-text-secondary">
                 {response.impact_simulation.impact_description}
               </p>
             </div>
@@ -293,21 +291,21 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
         <motion.div key={m.sensitive_column} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
           <div className="glass-card p-5">
             <div className="flex items-center gap-3 mb-4">
-              <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
-                Sensitive Attribute: <span style={{ color: 'var(--accent-primary)' }}>{m.sensitive_column}</span>
+              <h3 className="text-lg font-semibold text-text-primary">
+                Sensitive Attribute: <span className="text-maroon">{m.sensitive_column}</span>
               </h3>
               <SeverityBadge severity={m.bias_severity} />
               <div className="ml-auto text-center">
                 <div className="text-2xl font-extrabold" style={{ color: getScoreColor(m.fairness_score) }}>{m.fairness_score}</div>
-                <div className="text-xs" style={{ color: 'var(--text-muted)' }}>score</div>
+                <div className="text-xs text-text-muted">score</div>
               </div>
             </div>
 
-            <p className="text-sm mb-4 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{m.explanation}</p>
+            <p className="text-sm mb-4 leading-relaxed text-text-secondary">{m.explanation}</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h4 className="text-xs font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--text-muted)' }}>
+                <h4 className="text-xs font-medium uppercase tracking-wider mb-3 text-text-muted">
                   Fairness Metrics
                 </h4>
                 <MetricRow label="Demographic Parity Difference" value={m.demographic_parity_difference}
@@ -320,20 +318,20 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
                   info="Difference in true positive rates between groups. 0 = perfectly fair." />
               </div>
               <div>
-                <h4 className="text-xs font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--text-muted)' }}>
+                <h4 className="text-xs font-medium uppercase tracking-wider mb-3 text-text-muted">
                   Group Breakdown
                 </h4>
                 <div className="space-y-2">
                   {m.group_metrics.map((g) => (
-                    <div key={g.group_value} className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div key={g.group_value} className="p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{g.group_value}</span>
-                        <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{g.count.toLocaleString()} rows</span>
+                        <span className="text-sm font-medium text-text-primary">{g.group_value}</span>
+                        <span className="text-xs text-text-muted">{g.count.toLocaleString()} rows</span>
                       </div>
-                      <div className="flex gap-4 text-xs" style={{ color: 'var(--text-secondary)' }}>
-                        <span>Selection: <strong style={{ color: 'var(--accent-primary)' }}>{formatPercent(g.selection_rate)}</strong></span>
+                      <div className="flex gap-4 text-xs text-text-secondary">
+                        <span>Selection: <strong className="text-maroon">{formatPercent(g.selection_rate)}</strong></span>
                         {g.accuracy !== null && g.accuracy !== undefined && (
-                          <span>Accuracy: <strong style={{ color: 'var(--accent-success)' }}>{formatPercent(g.accuracy)}</strong></span>
+                          <span>Accuracy: <strong className="text-accent-success">{formatPercent(g.accuracy)}</strong></span>
                         )}
                         {g.true_positive_rate !== null && g.true_positive_rate !== undefined && (
                           <span>TPR: <strong>{formatPercent(g.true_positive_rate)}</strong></span>
@@ -351,7 +349,7 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
 
           {m.group_metrics.length > 0 && m.sensitive_column.startsWith('Intersectional') ? (
             <div className="mt-6">
-              <h4 className="font-medium mb-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <h4 className="font-medium mb-4 text-sm text-text-secondary">
                 Subgroup Bias Table | {m.sensitive_column}
               </h4>
               <IntersectionalTable metrics={m.group_metrics} />
@@ -367,12 +365,12 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
         <PolicyCard compliance={response.policy_compliance} />
 
         <div className="glass-card p-5">
-          <h3 className="font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Recommendations</h3>
+          <h3 className="font-semibold mb-4 text-text-primary">Recommendations</h3>
           <div className="space-y-2">
             {response.recommendations.map((rec, i) => (
-              <div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(99,102,241,0.05)', border: '1px solid rgba(99,102,241,0.12)' }}>
-                <span className="text-xs font-bold mt-0.5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }}>{String(i + 1).padStart(2, '0')}</span>
-                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{rec}</p>
+              <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-maroon/5 border border-maroon/10">
+                <span className="text-xs font-bold mt-0.5 flex-shrink-0 text-maroon">{String(i + 1).padStart(2, '0')}</span>
+                <p className="text-sm text-text-secondary">{rec}</p>
               </div>
             ))}
           </div>
@@ -394,9 +392,9 @@ export function AnalysisStep({ response, loading, onRunAnalysis, onContinue, onR
       )}
 
       {/* Sticky Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+          <div className="flex items-center gap-2 text-xs text-text-muted">
             <Info size={14} />
             <span>Analysis results are calculated based on your current mapping.</span>
           </div>

@@ -17,17 +17,17 @@ export function formatPercent(n: number | null | undefined): string {
 
 export function getBiasColor(severity: string): string {
   switch (severity) {
-    case 'High': return '#f85149';
-    case 'Medium': return '#d29922';
-    case 'Low': return '#238636';
-    default: return '#1f6feb';
+    case 'High': return '#EF4444'; // Red
+    case 'Medium': return '#F59E0B'; // Amber
+    case 'Low': return '#22C55E'; // Green
+    default: return '#737373'; // Grey
   }
 }
 
 export function getScoreColor(score: number): string {
-  if (score >= 80) return '#238636';
-  if (score >= 60) return '#d29922';
-  return '#f85149';
+  if (score >= 80) return '#22C55E'; // Green
+  if (score >= 60) return '#F59E0B'; // Amber
+  return '#EF4444'; // Red
 }
 
 export function getScoreLabel(score: number): string {
@@ -62,6 +62,14 @@ export function truncate(str: string, max = 30): string {
 }
 
 export const CHART_COLORS = [
-  '#1f6feb', '#238636', '#d29922', '#f85149', '#a371f7',
-  '#58a6ff', '#3fb950', '#db6d28', '#f0883e', '#116329',
+  '#8B0000', // Maroon
+  '#EF4444', // Red
+  '#22C55E', // Green
+  '#F59E0B', // Amber
+  '#737373', // Grey
+  '#A3A3A3', // Light Grey
+  '#450A0A', // Deep Maroon
+  '#991B1B', // Dark Red
+  '#166534', // Dark Green
+  '#92400E', // Dark Amber
 ];

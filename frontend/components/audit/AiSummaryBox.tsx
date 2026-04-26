@@ -17,7 +17,7 @@ export function AiSummaryBox({ stepName, contextData }: AiSummaryBoxProps) {
       case 'mapping':
         return {
           title: "Mapping Your Data",
-          icon: <Bot className="text-indigo-400" size={20} />,
+          icon: <Bot className="text-red" size={20} />,
           summary: "In this step, you're teaching the AI how to interpret your dataset. Correct mapping is crucial for accurate fairness detection.",
           details: [
             "Target Column: This is what you want to predict (e.g., 'Loan Approved').",
@@ -30,7 +30,7 @@ export function AiSummaryBox({ stepName, contextData }: AiSummaryBoxProps) {
         const severity = contextData?.overall_bias_severity || 'Unknown';
         return {
           title: "Bias Analysis Summary",
-          icon: <ShieldCheck className="text-emerald-400" size={20} />,
+          icon: <ShieldCheck className="text-accent-success" size={20} />,
           summary: `Your dataset has a fairness score of ${score}/100 with ${severity} bias detected.`,
           details: [
             "Fairness Score: Higher is better. 100 means no statistical bias was found between groups.",
@@ -42,7 +42,7 @@ export function AiSummaryBox({ stepName, contextData }: AiSummaryBoxProps) {
         const topProxies = contextData?.proxy_features || [];
         return {
           title: "SHAP Explainability Insights",
-          icon: <Brain className="text-purple-400" size={20} />,
+          icon: <Brain className="text-red" size={20} />,
           summary: "We used SHAP values to look 'under the hood' of your model to see what's actually driving predictions.",
           details: [
             "Feature Importance: Shows which data points had the biggest impact on the outcome.",
@@ -56,7 +56,7 @@ export function AiSummaryBox({ stepName, contextData }: AiSummaryBoxProps) {
         const improvement = contextData?.results?.[0]?.fairness_improvement || 0;
         return {
           title: "Mitigation Strategy",
-          icon: <Zap className="text-amber-400" size={20} />,
+          icon: <Zap className="text-accent-warning" size={20} />,
           summary: "We applied state-of-the-art algorithms to 'unlearn' the biased patterns found in your data.",
           details: [
             `Fairness Gain: Your fairness score improved by ${(improvement * 100).toFixed(1)}%.`,
@@ -74,8 +74,8 @@ export function AiSummaryBox({ stepName, contextData }: AiSummaryBoxProps) {
   return (
     <div className="mb-6 overflow-hidden rounded-2xl border transition-all" 
       style={{ 
-        background: 'rgba(99, 102, 241, 0.03)', 
-        borderColor: 'rgba(99, 102, 241, 0.2)',
+        background: 'rgba(139, 0, 0, 0.03)', 
+        borderColor: 'rgba(139, 0, 0, 0.2)',
         boxShadow: '0 4px 20px -5px rgba(0,0,0,0.1)'
       }}>
       <button 
@@ -83,15 +83,15 @@ export function AiSummaryBox({ stepName, contextData }: AiSummaryBoxProps) {
         className="flex w-full items-center justify-between p-4 hover:bg-white/5 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 border border-indigo-500/20 shadow-inner">
-            <Sparkles size={16} className="text-indigo-400" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-maroon/10 border border-maroon/20 shadow-inner">
+            <Sparkles size={16} className="text-red" />
           </div>
           <div className="text-left">
             <h3 className="text-sm font-bold tracking-tight text-white/90">Page Insight</h3>
-            <p className="text-[10px] uppercase tracking-widest text-indigo-400/80 font-bold">Insights Agent v1.0</p>
+            <p className="text-[10px] uppercase tracking-widest text-red/80 font-bold">Insights Agent v1.0</p>
           </div>
         </div>
-        {isOpen ? <ChevronUp size={18} className="text-indigo-400" /> : <ChevronDown size={18} className="text-indigo-400" />}
+        {isOpen ? <ChevronUp size={18} className="text-red" /> : <ChevronDown size={18} className="text-red" />}
       </button>
 
       <AnimatePresence>
@@ -106,15 +106,15 @@ export function AiSummaryBox({ stepName, contextData }: AiSummaryBoxProps) {
               <div className="flex gap-4 items-start">
                 <div className="mt-1 flex-shrink-0">{content.icon}</div>
                 <div className="space-y-3">
-                  <h4 className="font-semibold text-indigo-100">{content.title}</h4>
-                  <p className="text-sm leading-relaxed text-indigo-200/70">
+                  <h4 className="font-semibold text-white">{content.title}</h4>
+                  <p className="text-sm leading-relaxed text-text-secondary">
                     {content.summary}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {content.details.map((detail, idx) => (
                       <div key={idx} className="p-3 rounded-xl bg-white/5 border border-white/5 flex gap-2 items-start">
-                        <Info size={14} className="mt-0.5 text-indigo-400/60 flex-shrink-0" />
-                        <span className="text-[11px] leading-snug text-indigo-100/60">{detail}</span>
+                        <Info size={14} className="mt-0.5 text-red/60 flex-shrink-0" />
+                        <span className="text-[11px] leading-snug text-text-muted">{detail}</span>
                       </div>
                     ))}
                   </div>

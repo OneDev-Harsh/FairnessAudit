@@ -5,32 +5,32 @@ export default function DocsPage() {
   return (
     <div className="fade-in">
       <div className="mb-12">
-        <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-emerald-400">
+        <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-maroon to-red">
           Documentation Hub
         </h1>
-        <p className="text-xl text-white/50 leading-relaxed font-medium">
+        <p className="text-xl text-text-secondary leading-relaxed font-medium">
           Welcome to the official documentation for the FairnessAudit platform. Learn how to ingest datasets, analyze model fairness, and deploy ethical AI systems.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-        <Link href="/docs/evaluation" className="glass-card p-6 rounded-2xl border border-white/5 hover:border-indigo-500/30 transition-all group">
-          <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
+        <Link href="/docs/evaluation" className="glass-card p-6 rounded-2xl border border-white/5 hover:border-maroon/30 transition-all group">
+          <div className="w-12 h-12 rounded-xl bg-maroon/10 flex items-center justify-center text-red mb-6 group-hover:scale-110 transition-transform">
             <Activity size={24} />
           </div>
           <h3 className="text-xl font-black mb-2">Evaluation Metrics</h3>
-          <p className="text-white/40 text-sm">Understand Demographic Parity, Equalized Odds, and other mathematical definitions of fairness.</p>
+          <p className="text-text-muted text-sm">Understand Demographic Parity, Equalized Odds, and other mathematical definitions of fairness.</p>
         </Link>
-        <Link href="/docs/mitigation" className="glass-card p-6 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all group">
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+        <Link href="/docs/mitigation" className="glass-card p-6 rounded-2xl border border-white/5 hover:border-accent-success/30 transition-all group">
+          <div className="w-12 h-12 rounded-xl bg-accent-success/10 flex items-center justify-center text-accent-success mb-6 group-hover:scale-110 transition-transform">
             <Zap size={24} />
           </div>
           <h3 className="text-xl font-black mb-2">Bias Mitigation</h3>
-          <p className="text-white/40 text-sm">Learn about our state-of-the-art algorithms like Correlation Remover and Threshold Optimizer.</p>
+          <p className="text-text-muted text-sm">Learn about our state-of-the-art algorithms like Correlation Remover and Threshold Optimizer.</p>
         </Link>
       </div>
 
-      <div className="prose prose-invert prose-indigo max-w-none">
+      <div className="prose prose-invert prose-red max-w-none">
         <h2 className="text-2xl font-black tracking-tight mt-12 mb-6">Getting Started</h2>
         <p className="text-white/70">
           The FairnessAudit platform provides an enterprise-grade suite of tools for ML engineers and compliance officers. 
@@ -38,18 +38,18 @@ export default function DocsPage() {
         </p>
         
         <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl mt-8 mb-8">
-           <h3 className="text-lg font-black mb-4 flex items-center gap-2"><Server size={20} className="text-purple-400"/> Core Infrastructure</h3>
-           <ul className="space-y-3 text-white/60">
+           <h3 className="text-lg font-black mb-4 flex items-center gap-2"><Server size={20} className="text-red"/> Core Infrastructure</h3>
+           <ul className="space-y-3 text-text-secondary">
               <li className="flex gap-2">
-                 <span className="text-indigo-400 font-black">1.</span> 
+                 <span className="text-maroon font-black">1.</span> 
                  <strong>Data Ingestion Engine:</strong> Safely process datasets with our secure, GDPR-compliant parsing layer.
               </li>
               <li className="flex gap-2">
-                 <span className="text-indigo-400 font-black">2.</span> 
+                 <span className="text-maroon font-black">2.</span> 
                  <strong>Fairness Computation:</strong> Accelerated Python microservices computing Fairlearn metrics in real-time.
               </li>
               <li className="flex gap-2">
-                 <span className="text-indigo-400 font-black">3.</span> 
+                 <span className="text-maroon font-black">3.</span> 
                  <strong>SHAP Tracing:</strong> In-depth feature importance and tree explainer visualizations.
               </li>
            </ul>
@@ -60,13 +60,13 @@ export default function DocsPage() {
           All reports generated by the FairnessAudit platform conform to standard industry regulations including:
         </p>
         <div className="flex flex-wrap gap-4 mt-6">
-           <div className="px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+           <div className="px-4 py-2 rounded-full bg-maroon/10 border border-maroon/20 text-red text-xs font-black uppercase tracking-widest flex items-center gap-2">
               <ShieldCheck size={14} /> EU AI ACT
            </div>
-           <div className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+           <div className="px-4 py-2 rounded-full bg-accent-success/10 border border-accent-success/20 text-accent-success text-xs font-black uppercase tracking-widest flex items-center gap-2">
               <ShieldCheck size={14} /> NIST AI RMF
            </div>
-           <div className="px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+           <div className="px-4 py-2 rounded-full bg-red/10 border border-red/20 text-red text-xs font-black uppercase tracking-widest flex items-center gap-2">
               <ShieldCheck size={14} /> IEEE 7003
            </div>
         </div>

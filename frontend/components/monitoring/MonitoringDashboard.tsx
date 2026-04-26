@@ -37,21 +37,21 @@ export function MonitoringDashboard() {
   const isAlert = latestScore !== null && latestScore < 80;
 
   return (
-    <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-6">
+    <div className="bg-background-elevated border border-border-default rounded-xl p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-xl bg-blue-500/10 text-blue-500">
+          <div className="p-3 rounded-xl bg-maroon/10 text-red shadow-sm shadow-maroon-glow/20">
             <Activity size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-[var(--text-primary)]">Live Bias Monitoring</h3>
-            <p className="text-sm text-[var(--text-secondary)]">Tracking model fairness over time in production.</p>
+            <h3 className="text-lg font-bold text-text-primary">Live Bias Monitoring</h3>
+            <p className="text-sm text-text-secondary">Tracking model fairness over time in production.</p>
           </div>
         </div>
         <button 
           onClick={fetchHistory}
           disabled={loading}
-          className="flex items-center gap-2 px-3 py-1.5 bg-[var(--bg-tertiary)] hover:bg-[var(--border-color)] text-[var(--text-primary)] rounded-lg transition-colors text-sm disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-text-primary border border-white/5 rounded-lg transition-all text-sm disabled:opacity-50"
         >
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
           Refresh
@@ -59,7 +59,7 @@ export function MonitoringDashboard() {
       </div>
 
       {isAlert && (
-        <div className="mb-6 p-4 rounded-xl flex items-center gap-3 bg-red-500/10 border border-red-500/30 text-red-500">
+        <div className="mb-6 p-4 rounded-xl flex items-center gap-3 bg-red/10 border border-red/30 text-red">
           <AlertCircle size={20} className="flex-shrink-0" />
           <div>
             <p className="font-semibold text-sm">Alert Triggered</p>
@@ -80,22 +80,22 @@ export function MonitoringDashboard() {
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={history} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
-              <XAxis dataKey="time" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
-              <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} domain={[0, 100]} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+              <XAxis dataKey="time" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
+              <YAxis stroke="#737373" fontSize={12} tickLine={false} axisLine={false} domain={[0, 100]} />
               <Tooltip 
                 contentStyle={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', borderRadius: '8px' }}
                 itemStyle={{ color: 'var(--text-primary)' }}
               />
-              <ReferenceLine y={80} stroke="#ef4444" strokeDasharray="3 3" label={{ position: 'insideTopLeft', value: 'Alert Threshold', fill: '#ef4444', fontSize: 10 }} />
+              <ReferenceLine y={80} stroke="#EF4444" strokeDasharray="3 3" label={{ position: 'insideTopLeft', value: 'Alert Threshold', fill: '#EF4444', fontSize: 10 }} />
               <Line 
                 type="monotone" 
                 dataKey="score" 
                 name="Fairness Score"
-                stroke="var(--accent-primary)" 
+                stroke="#8B0000" 
                 strokeWidth={3}
-                dot={{ r: 4, fill: 'var(--bg-primary)', strokeWidth: 2 }}
-                activeDot={{ r: 6, fill: 'var(--accent-primary)', stroke: 'var(--bg-primary)' }}
+                dot={{ r: 4, fill: '#111111', strokeWidth: 2 }}
+                activeDot={{ r: 6, fill: '#8B0000', stroke: '#111111' }}
               />
             </LineChart>
           </ResponsiveContainer>

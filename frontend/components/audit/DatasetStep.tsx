@@ -68,18 +68,18 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
   };
 
   const biasColors: Record<string, string> = {
-    'Gender bias': '#8b5cf6',
-    'Racial bias': '#ef4444',
-    'Socioeconomic bias': '#f59e0b',
+    'Gender bias': '#EF4444', // Red
+    'Racial bias': '#8B0000', // Maroon
+    'Socioeconomic bias': '#F59E0B', // Amber
   };
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+        <h2 className="text-2xl font-bold mb-2 text-text-primary">
           Choose Your Dataset
         </h2>
-        <p style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-text-secondary">
           Upload a CSV file or select a built-in sample dataset to get started immediately.
         </p>
       </div>
@@ -87,7 +87,7 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Upload zone */}
         <div>
-          <h3 className="font-semibold text-sm mb-3 uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <h3 className="font-semibold text-sm mb-3 uppercase tracking-wider text-text-muted">
             Upload Your Dataset
           </h3>
           <div
@@ -107,25 +107,25 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
             <div className="flex flex-col items-center gap-4">
               {uploading ? (
                 <>
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(99,102,241,0.1)' }}>
-                    <div className="w-8 h-8 border-2 border-indigo-400 border-t-transparent rounded-full spinner" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center bg-maroon/10">
+                    <div className="w-8 h-8 border-2 border-red border-t-transparent rounded-full spinner" />
                   </div>
-                  <p style={{ color: 'var(--text-secondary)' }}>Processing your CSV...</p>
+                  <p className="text-text-secondary">Processing your CSV...</p>
                 </>
               ) : (
                 <>
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(99,102,241,0.1)' }}>
-                    <Upload size={28} style={{ color: '#6366f1' }} />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center bg-maroon/10">
+                    <Upload size={28} className="text-red" />
                   </div>
                   <div>
-                    <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+                    <p className="font-semibold text-text-primary">
                       Drop your CSV here
                     </p>
-                    <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+                    <p className="text-sm mt-1 text-text-secondary">
                       or click to browse files
                     </p>
                   </div>
-                  <div className="flex items-center gap-4 text-xs" style={{ color: 'var(--text-muted)' }}>
+                  <div className="flex items-center gap-4 text-xs text-text-muted">
                     <span className="flex items-center gap-1"><FileText size={12} /> CSV format</span>
                     <span>Max 50 MB</span>
                   </div>
@@ -134,8 +134,8 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
             </div>
           </div>
           
-          <button onClick={() => setShowCloudModal(true)} disabled={uploading} className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 bg-[var(--bg-tertiary)] hover:bg-white/5 border border-[var(--border-color)] text-[var(--text-primary)] rounded-xl transition-colors text-sm font-medium disabled:opacity-50">
-            <Cloud size={16} className="text-blue-400" /> Import from Google Cloud
+          <button onClick={() => setShowCloudModal(true)} disabled={uploading} className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 bg-background-elevated hover:bg-white/5 border border-border-default text-text-primary rounded-xl transition-colors text-sm font-medium disabled:opacity-50">
+            <Cloud size={16} className="text-red" /> Import from Cloud Data
           </button>
 
           {error && (
@@ -147,11 +147,11 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
             </div>
           )}
 
-          <div className="mt-4 p-4 rounded-xl text-sm" style={{ background: 'rgba(99,102,241,0.05)', border: '1px solid rgba(99,102,241,0.15)' }}>
-            <p className="font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+          <div className="mt-4 p-4 rounded-xl text-sm bg-maroon/5 border border-maroon/10">
+            <p className="font-medium mb-2 text-text-secondary">
               CSV requirements:
             </p>
-            <ul className="space-y-1" style={{ color: 'var(--text-muted)' }}>
+            <ul className="space-y-1 text-text-muted">
               <li>• At least 10 rows and 2 columns</li>
               <li>• Must include a target/outcome column</li>
               <li>• Include one or more sensitive attribute columns</li>
@@ -162,7 +162,7 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
 
         {/* Sample datasets */}
         <div>
-          <h3 className="font-semibold text-sm mb-3 uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <h3 className="font-semibold text-sm mb-3 uppercase tracking-wider text-text-muted">
             Built-in Sample Datasets
           </h3>
           <div className="space-y-4">
@@ -177,34 +177,32 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: 'rgba(99,102,241,0.1)' }}>
-                      <Database size={18} style={{ color: '#6366f1' }} />
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-maroon/10">
+                      <Database size={18} className="text-red" />
                     </div>
                     <div>
-                      <h4 className="font-semibold" style={{ color: 'var(--text-primary)' }}>{ds.name}</h4>
-                      <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                      <h4 className="font-semibold text-text-primary">{ds.name}</h4>
+                      <p className="text-xs text-text-muted">
                         {ds.num_rows.toLocaleString()} rows · {ds.num_cols} columns
                       </p>
                     </div>
                   </div>
                   {ds.id === 'adult_income' && (
-                    <span className="text-xs px-2 py-0.5 rounded-full font-medium"
-                      style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)' }}>
+                    <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-accent-success/15 text-accent-success border border-accent-success/30">
                       Recommended
                     </span>
                   )}
                 </div>
 
-                <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{ds.description}</p>
+                <p className="text-sm mb-3 text-text-secondary">{ds.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-3">
                   {ds.bias_types.map((bt) => (
                     <span key={bt} className="text-xs px-2 py-0.5 rounded-full"
                       style={{
-                        background: `${biasColors[bt] || '#6366f1'}20`,
-                        color: biasColors[bt] || '#818cf8',
-                        border: `1px solid ${biasColors[bt] || '#6366f1'}40`,
+                        background: `${biasColors[bt] || '#8B0000'}20`,
+                        color: biasColors[bt] || '#EF4444',
+                        border: `1px solid ${biasColors[bt] || '#8B0000'}40`,
                       }}>
                       {bt}
                     </span>
@@ -212,11 +210,10 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                    Sensitive: <span style={{ color: 'var(--text-secondary)' }}>{ds.sensitive_columns.join(', ')}</span>
+                  <div className="text-xs text-text-muted">
+                    Sensitive: <span className="text-text-secondary">{ds.sensitive_columns.join(', ')}</span>
                   </div>
-                  <button className="text-xs font-medium group-hover:translate-x-1 transition-transform"
-                    style={{ color: '#6366f1' }}>
+                  <button className="text-xs font-medium text-red group-hover:translate-x-1 transition-transform">
                     Select →
                   </button>
                 </div>
@@ -227,14 +224,13 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
       </div>
 
       {/* Demo hint */}
-      <div className="glass-card p-4 flex items-center gap-4"
-        style={{ border: '1px solid rgba(16,185,129,0.2)' }}>
-        <Sparkles size={20} style={{ color: '#34d399' }} />
+      <div className="glass-card p-4 flex items-center gap-4 border-accent-success/20">
+        <Sparkles size={20} className="text-accent-success" />
         <div className="flex-1">
-          <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+          <p className="text-sm font-medium text-text-primary">
             Want a quick demo?
           </p>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-xs text-text-muted">
             Click &quot;Adult Income (UCI)&quot; above to instantly load a preconfigured dataset with visible gender & racial bias.
           </p>
         </div>
@@ -249,14 +245,14 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
       {showCloudModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-            <div className="p-4 border-b border-[var(--border-color)] flex justify-between items-center bg-[var(--bg-primary)]">
-              <h3 className="font-bold text-[var(--text-primary)] flex items-center gap-2"><Cloud className="text-blue-400"/> Google Cloud Import</h3>
-              <button onClick={() => setShowCloudModal(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"><X size={20}/></button>
+            <div className="p-4 border-b border-border-default flex justify-between items-center bg-background-primary">
+              <h3 className="font-bold text-text-primary flex items-center gap-2"><Cloud className="text-red"/> Import Cloud Data</h3>
+              <button onClick={() => setShowCloudModal(false)} className="text-text-muted hover:text-text-primary"><X size={20}/></button>
             </div>
             <div className="p-6 space-y-4">
               <div className="flex gap-2">
-                 <button onClick={() => setCloudSource('gcs')} className={`flex-1 py-2 text-sm font-medium rounded-lg ${cloudSource === 'gcs' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] border border-[var(--border-color)]'}`}>Cloud Storage</button>
-                 <button onClick={() => setCloudSource('bigquery')} className={`flex-1 py-2 text-sm font-medium rounded-lg ${cloudSource === 'bigquery' ? 'bg-[var(--accent-primary)] text-white' : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] border border-[var(--border-color)]'}`}>BigQuery</button>
+                 <button onClick={() => setCloudSource('gcs')} className={`flex-1 py-2 text-sm font-medium rounded-lg ${cloudSource === 'gcs' ? 'bg-maroon text-white' : 'bg-background-elevated text-text-secondary border border-border-default'}`}>Cloud Storage</button>
+                 <button onClick={() => setCloudSource('bigquery')} className={`flex-1 py-2 text-sm font-medium rounded-lg ${cloudSource === 'bigquery' ? 'bg-maroon text-white' : 'bg-background-elevated text-text-secondary border border-border-default'}`}>BigQuery</button>
               </div>
               
               {cloudSource === 'gcs' ? (
@@ -277,9 +273,9 @@ export function DatasetStep({ sampleDatasets, onSampleSelect, onUpload, isDemo }
                 </div>
               )}
             </div>
-            <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-primary)] flex justify-end gap-3">
-              <button onClick={() => setShowCloudModal(false)} className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]">Cancel</button>
-              <button onClick={handleCloudImport} disabled={uploading || (cloudSource === 'gcs' ? (!bucketName || !fileName) : !bqQuery)} className="px-5 py-2 text-sm font-medium bg-[var(--accent-primary)] text-white rounded-lg disabled:opacity-50 hover:bg-indigo-600 transition-colors">Import Data</button>
+            <div className="p-4 border-t border-border-default bg-background-primary flex justify-end gap-3">
+              <button onClick={() => setShowCloudModal(false)} className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary">Cancel</button>
+              <button onClick={handleCloudImport} disabled={uploading || (cloudSource === 'gcs' ? (!bucketName || !fileName) : !bqQuery)} className="px-5 py-2 text-sm font-medium bg-maroon text-white rounded-lg disabled:opacity-50 hover:bg-maroon-light transition-colors">Import Data</button>
             </div>
           </div>
         </div>

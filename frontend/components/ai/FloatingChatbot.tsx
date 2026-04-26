@@ -97,19 +97,19 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="mb-4 w-[380px] h-[550px] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="mb-4 w-[380px] h-[550px] bg-background-elevated border border-border-default rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="p-4 bg-[var(--bg-primary)] border-b border-[var(--border-color)] flex items-center justify-between">
+            <div className="p-4 bg-background-primary border-b border-border-default flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 border border-indigo-500/30">
+                <div className="w-10 h-10 rounded-xl bg-maroon/20 flex items-center justify-center text-red border border-maroon/30">
                   <Bot size={22} />
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-sm">AI Consultant</h3>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Step: {step}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent-success animate-pulse" />
+                    <span className="text-[10px] text-accent-success font-bold uppercase tracking-wider">Step: {step}</span>
                   </div>
                 </div>
               </div>
@@ -126,17 +126,17 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
             >
-              {messages.map((msg, idx) => (
+               {messages.map((msg, idx) => (
                 <motion.div 
                   initial={{ opacity: 0, x: msg.role === 'user' ? 10 : -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   key={idx} 
                   className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
                 >
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-white/5 text-white/40 border border-white/5'}`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-maroon/20 text-red border border-maroon/30' : 'bg-white/5 text-white/40 border border-white/5'}`}>
                     {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
                   </div>
-                  <div className={`p-3 rounded-2xl max-w-[85%] text-sm leading-relaxed ${msg.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-[var(--bg-primary)] border border-[var(--border-color)] text-white/80'}`}>
+                  <div className={`p-3 rounded-2xl max-w-[85%] text-sm leading-relaxed ${msg.role === 'user' ? 'bg-maroon text-white shadow-sm' : 'bg-background-primary border border-border-default text-white/80'}`}>
                     {msg.content}
                   </div>
                 </motion.div>
@@ -146,7 +146,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
                   <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/5 text-white/40">
                     <Bot size={16} />
                   </div>
-                  <div className="p-3 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-white/40 flex items-center gap-2">
+                  <div className="p-3 rounded-2xl bg-background-primary border border-border-default text-white/40 flex items-center gap-2">
                     <Loader2 size={14} className="animate-spin" />
                     <span className="text-xs font-medium">Analyzing...</span>
                   </div>
@@ -161,9 +161,9 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
                   <button 
                     key={s}
                     onClick={() => handleSend(s)}
-                    className="text-[10px] bg-white/5 border border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/10 text-white/60 hover:text-white px-2.5 py-1.5 rounded-full transition-all flex items-center gap-1"
+                    className="text-[10px] bg-white/5 border border-white/10 hover:border-red/50 hover:bg-maroon/10 text-white/60 hover:text-white px-2.5 py-1.5 rounded-full transition-all flex items-center gap-1"
                   >
-                    <Sparkles size={10} className="text-indigo-400" />
+                    <Sparkles size={10} className="text-red" />
                     {s}
                   </button>
                 ))}
@@ -171,7 +171,7 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
             )}
 
             {/* Input */}
-            <div className="p-4 bg-[var(--bg-primary)] border-t border-[var(--border-color)]">
+            <div className="p-4 bg-background-primary border-t border-border-default">
               <div className="flex gap-2">
                 <input 
                   type="text" 
@@ -179,13 +179,13 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Ask a question..."
-                  className="flex-1 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-colors"
+                  className="flex-1 bg-background-elevated border border-border-default rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-red/50 transition-colors"
                   disabled={loading}
                 />
                 <button 
                   onClick={() => handleSend()}
                   disabled={loading || !input.trim()}
-                  className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center hover:bg-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-10 h-10 bg-maroon text-white rounded-xl flex items-center justify-center hover:bg-red transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-maroon-glow"
                 >
                   <Send size={18} />
                 </button>
@@ -200,11 +200,11 @@ export function FloatingChatbot({ step, context }: FloatingChatbotProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-300 ${isOpen ? 'bg-white text-indigo-600 rotate-90' : 'bg-indigo-600 text-white'}`}
+        className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-300 ${isOpen ? 'bg-white text-maroon rotate-90 shadow-white-glow' : 'bg-maroon text-white shadow-maroon-glow'}`}
       >
         {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
         {!isOpen && (
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[var(--bg-primary)]" />
+          <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent-success rounded-full border-2 border-background-primary" />
         )}
       </motion.button>
     </div>

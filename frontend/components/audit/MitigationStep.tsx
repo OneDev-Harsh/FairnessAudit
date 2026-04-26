@@ -72,15 +72,15 @@ function BeforeAfterChart({ result }: { result: MitigationResult }) {
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={merged} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-          <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} />
-          <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} unit="%" domain={[0, 100]} />
+          <XAxis dataKey="name" tick={{ fill: '#A3A3A3', fontSize: 12 }} />
+          <YAxis tick={{ fill: '#A3A3A3', fontSize: 11 }} unit="%" domain={[0, 100]} />
           <Tooltip
             contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 6, color: 'var(--text-primary)' }}
             formatter={(v: number) => [`${v}%`]}
           />
-          <Legend wrapperStyle={{ color: 'var(--text-secondary)', fontSize: 12 }} />
-          <Bar dataKey="Before" fill="var(--text-muted)" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="After" fill="var(--accent-primary)" radius={[4, 4, 0, 0]} />
+          <Legend wrapperStyle={{ color: '#A3A3A3', fontSize: 12 }} />
+          <Bar dataKey="Before" fill="#737373" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="After" fill="#8B0000" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -91,11 +91,10 @@ function MitigationCard({ result, isBest }: { result: MitigationResult; isBest: 
   const improved = result.fairness_improvement > 0;
 
   return (
-    <div className="glass-card p-6 relative" style={{ border: isBest ? '1px solid rgba(16,185,129,0.4)' : undefined }}>
+    <div className={`glass-card p-6 relative ${isBest ? 'border-accent-success/40' : ''}`}>
       {isBest && (
         <div className="absolute -top-3 left-4">
-          <span className="text-xs font-semibold px-3 py-1 rounded-full"
-            style={{ background: 'rgba(16,185,129,0.9)', color: 'white' }}>
+          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-accent-success text-white shadow-lg">
             ✓ Recommended
           </span>
         </div>
@@ -103,17 +102,12 @@ function MitigationCard({ result, isBest }: { result: MitigationResult; isBest: 
 
       <div className="flex items-start justify-between mb-4 mt-1">
         <div>
-          <h3 className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>{result.method_display_name}</h3>
-          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+          <h3 className="font-semibold text-lg text-text-primary">{result.method_display_name}</h3>
+          <p className="text-xs mt-1 text-text-muted">
             {result.method === 'reweighing' ? 'Pre-processing technique' : 'In-processing technique'}
           </p>
         </div>
-        <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold`}
-          style={{
-            background: improved ? 'rgba(35, 134, 54, 0.15)' : 'rgba(248, 81, 73, 0.1)',
-            color: improved ? 'var(--accent-success)' : 'var(--accent-danger)',
-            border: `1px solid ${improved ? 'rgba(35, 134, 54, 0.3)' : 'rgba(248, 81, 73, 0.25)'}`,
-          }}>
+        <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold ${improved ? 'bg-accent-success/15 text-accent-success border border-accent-success/30' : 'bg-red/10 text-red border border-red/25'}`}>
           {improved ? <TrendingUp size={14} /> : <Minus size={14} />}
           {result.fairness_improvement > 0 ? '+' : ''}{result.fairness_improvement.toFixed(1)} pts
         </div>
@@ -138,11 +132,10 @@ function MitigationCard({ result, isBest }: { result: MitigationResult; isBest: 
         </div>
       )}
 
-      <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{result.explanation}</p>
+      <p className="text-sm mb-3 text-text-secondary">{result.explanation}</p>
 
-      <div className="p-3 rounded-lg text-sm"
-        style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)', color: 'var(--text-secondary)' }}>
-        <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Trade-off: </span>
+      <div className="p-3 rounded-lg text-sm bg-accent-brand/5 border border-accent-brand/15 text-text-secondary">
+        <span className="font-medium text-text-primary">Trade-off: </span>
         {result.tradeoff_summary}
       </div>
     </div>
@@ -179,9 +172,9 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
   if (!response) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
-        <Zap size={48} className="mx-auto mb-4" style={{ color: '#10b981' }} />
-        <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>Bias Mitigation</h2>
-        <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
+        <Zap size={48} className="mx-auto mb-4 text-accent-success" />
+        <h2 className="text-2xl font-bold mb-3 text-text-primary">Bias Mitigation</h2>
+        <p className="mb-6 text-text-secondary">
           Apply state-of-the-art mitigation techniques and see how fairness improves.
         </p>
         <button className="btn-primary text-base px-8" onClick={onRunMitigation}>
@@ -197,14 +190,14 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
     <div className="space-y-6 fade-in">
       <AiSummaryBox stepName="mitigation" contextData={response} />
       {/* Overall recommendation */}
-      <div className="glass-card p-5" style={{ border: '1px solid rgba(16,185,129,0.2)' }}>
+      <div className="glass-card p-5 border-accent-success/20">
         <div className="flex items-start gap-3">
-          <CheckCircle size={20} style={{ color: '#10b981', flexShrink: 0 }} />
+          <CheckCircle size={20} className="text-accent-success flex-shrink-0" />
           <div>
-            <h3 className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="font-semibold mb-1 text-text-primary">
               Mitigation Complete
             </h3>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-sm text-text-secondary">
               {response.overall_recommendation}
             </p>
           </div>
@@ -221,7 +214,7 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
       {/* Before/After chart for best method */}
       {response.results.find((r) => r.method === best) && (
         <div>
-          <h3 className="font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
+          <h3 className="font-semibold mb-3 text-text-primary">
             Best Method: Before vs After Comparison
           </h3>
           <BeforeAfterChart result={response.results.find((r) => r.method === best)!} />
@@ -231,30 +224,30 @@ export function MitigationStep({ response, loading, onRunMitigation, onContinue 
       {/* Interpretation guide */}
       <div className="glass-card p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Info size={16} style={{ color: '#6366f1' }} />
-          <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>How to Interpret These Results</h3>
+          <Info size={16} className="text-red" />
+          <h3 className="font-semibold text-text-primary">How to Interpret These Results</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <p className="font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Fairness Score</p>
-            <p style={{ color: 'var(--text-muted)' }}>Higher is better. A score above 75 is generally acceptable for deployment.</p>
+          <div className="p-3 rounded-lg bg-white/5">
+            <p className="font-medium mb-1 text-text-secondary">Fairness Score</p>
+            <p className="text-text-muted">Higher is better. A score above 75 is generally acceptable for deployment.</p>
           </div>
-          <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <p className="font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Accuracy Trade-off</p>
-            <p style={{ color: 'var(--text-muted)' }}>Some accuracy loss is expected when imposing fairness constraints. This is the fairness-accuracy trade-off.</p>
+          <div className="p-3 rounded-lg bg-white/5">
+            <p className="font-medium mb-1 text-text-secondary">Accuracy Trade-off</p>
+            <p className="text-text-muted">Some accuracy loss is expected when imposing fairness constraints. This is the fairness-accuracy trade-off.</p>
           </div>
-          <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <p className="font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Selection Rate Parity</p>
-            <p style={{ color: 'var(--text-muted)' }}>After mitigation, selection rates across groups should be closer together (more similar bars).</p>
+          <div className="p-3 rounded-lg bg-white/5">
+            <p className="font-medium mb-1 text-text-secondary">Selection Rate Parity</p>
+            <p className="text-text-muted">After mitigation, selection rates across groups should be closer together (more similar bars).</p>
           </div>
         </div>
       </div>
 
       {/* Sticky Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-t border-[var(--border-color)] z-40">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background-primary/80 backdrop-blur-lg border-t border-border-default z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-            <Zap size={14} className="text-emerald-400" />
+          <div className="flex items-center gap-2 text-xs text-text-muted">
+            <Zap size={14} className="text-accent-success" />
             <span>Review the fairness-accuracy trade-off for each method.</span>
           </div>
           <div className="flex items-center gap-3">

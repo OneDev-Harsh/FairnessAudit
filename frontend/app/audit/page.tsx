@@ -232,31 +232,28 @@ function AuditPageInner() {
   }, [state.step, !!state.analysisResponse, !!state.explainResponse, !!state.mitigationResponse, loading]);
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
+    <div className="min-h-screen bg-background-primary">
       {/* Header */}
-      <header className="sticky top-0 z-40 px-6 py-4 flex items-center gap-4"
-        style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)' }}>
-        <Link href="/" className="flex items-center gap-1 text-sm transition-colors"
-          style={{ color: 'var(--text-muted)' }}>
+      <header className="sticky top-0 z-40 px-6 py-4 flex items-center gap-4 bg-background-elevated border-b border-border-default">
+        <Link href="/" className="flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary">
           <ArrowLeft size={16} />
           <span>Back</span>
         </Link>
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent-primary)' }}>
-            <Shield size={15} color="white" />
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-maroon shadow-sm shadow-maroon-glow">
+            <Shield size={15} className="text-white" />
           </div>
-          <span className="font-bold" style={{ color: 'var(--text-primary)' }}>FairnessAudit</span>
+          <span className="font-bold text-text-primary">FairnessAudit</span>
           {state.isDemo && (
-            <span className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)' }}>
+            <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-accent-success/15 text-accent-success border border-accent-success/30">
               Demo Mode
             </span>
           )}
         </div>
         <div className="flex-1" />
         {state.datasetName && (
-          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Dataset: <span style={{ color: 'var(--text-secondary)' }}>{state.datasetName}</span>
+          <span className="text-xs text-text-muted">
+            Dataset: <span className="text-text-secondary">{state.datasetName}</span>
           </span>
         )}
       </header>
@@ -267,8 +264,7 @@ function AuditPageInner() {
 
         {/* Error */}
         {error && (
-          <div className="mb-6 p-4 rounded-xl flex items-center gap-3"
-            style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171' }}>
+          <div className="mb-6 p-4 rounded-xl flex items-center gap-3 bg-red/10 border border-red/30 text-red-light">
             <span className="font-medium">Error:</span> {error}
             <button onClick={() => setError(null)} className="ml-auto text-xs opacity-60 hover:opacity-100">✕</button>
           </div>
@@ -348,7 +344,7 @@ function AuditPageInner() {
 
 export default function AuditPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center" style={{ color: 'var(--text-secondary)' }}>Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-text-secondary">Loading...</div>}>
       <AuditPageInner />
     </Suspense>
   );

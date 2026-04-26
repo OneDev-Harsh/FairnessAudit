@@ -31,21 +31,21 @@ export function ComplianceDashboard({ complianceData }: ComplianceDashboardProps
   };
 
   return (
-    <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-6">
+    <div className="bg-background-elevated border border-border-default rounded-xl p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className={`p-3 rounded-xl ${isPass ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'}`}>
+          <div className={`p-3 rounded-xl ${isPass ? 'bg-accent-success/10 text-accent-success' : 'bg-red/10 text-red'}`}>
             {isPass ? <CheckCircle2 size={24} /> : <AlertTriangle size={24} />}
           </div>
           <div>
-            <h3 className="text-lg font-bold text-[var(--text-primary)]">Regulatory Compliance</h3>
-            <p className="text-sm text-[var(--text-secondary)]">Status: <span className="font-semibold">{complianceData.compliance_status}</span> | Risk Level: <span className="font-semibold">{riskLevel}</span></p>
+            <h3 className="text-lg font-bold text-text-primary">Regulatory Compliance</h3>
+            <p className="text-sm text-text-secondary">Status: <span className="font-semibold">{complianceData.compliance_status}</span> | Risk Level: <span className="font-semibold">{riskLevel}</span></p>
           </div>
         </div>
         <button 
           onClick={handleDownload}
           disabled={isDownloading}
-          className="flex items-center gap-2 px-4 py-2 bg-[var(--accent-primary)] hover:opacity-90 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-maroon hover:bg-red text-white rounded-lg transition-all text-sm font-medium disabled:opacity-50 shadow-md shadow-maroon-glow"
         >
           {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
           Official Certificate
@@ -54,12 +54,12 @@ export function ComplianceDashboard({ complianceData }: ComplianceDashboardProps
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {complianceData.frameworks.map((fw: any, idx: number) => (
-          <div key={idx} className="p-4 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg flex justify-between items-center">
+          <div key={idx} className="p-4 bg-background-primary border border-border-default rounded-lg flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Shield size={16} className="text-[var(--text-secondary)]" />
-              <span className="font-medium text-[var(--text-primary)]">{fw.name}</span>
+              <Shield size={16} className="text-text-secondary" />
+              <span className="font-medium text-text-primary">{fw.name}</span>
             </div>
-            <span className={`text-xs px-2 py-1 rounded-full font-bold ${fw.status === 'PASS' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'}`}>
+            <span className={`text-xs px-2 py-1 rounded-full font-bold ${fw.status === 'PASS' ? 'bg-accent-success/10 text-accent-success' : 'bg-red/10 text-red'}`}>
               {fw.status}
             </span>
           </div>
@@ -68,8 +68,8 @@ export function ComplianceDashboard({ complianceData }: ComplianceDashboardProps
 
       {complianceData.violations && complianceData.violations.length > 0 && (
         <div className="mb-4">
-          <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2">Violations</h4>
-          <ul className="list-disc pl-5 text-sm text-red-400 space-y-1">
+          <h4 className="text-sm font-semibold text-text-primary mb-2">Violations</h4>
+          <ul className="list-disc pl-5 text-sm text-red-light space-y-1">
             {complianceData.violations.map((v: string, idx: number) => (
               <li key={idx}>{v}</li>
             ))}
@@ -79,8 +79,8 @@ export function ComplianceDashboard({ complianceData }: ComplianceDashboardProps
 
       {complianceData.recommendations && complianceData.recommendations.length > 0 && (
         <div>
-          <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2">Recommendations</h4>
-          <ul className="list-disc pl-5 text-sm text-[var(--text-secondary)] space-y-1">
+          <h4 className="text-sm font-semibold text-text-primary mb-2">Recommendations</h4>
+          <ul className="list-disc pl-5 text-sm text-text-secondary space-y-1">
             {complianceData.recommendations.map((r: string, idx: number) => (
               <li key={idx}>{r}</li>
             ))}

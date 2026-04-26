@@ -17,21 +17,21 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-[#050508] text-white flex flex-col md:flex-row selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-background-primary text-text-primary flex flex-col md:flex-row selection:bg-maroon/30">
       {/* Background Gradients */}
       <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[140px] animate-pulse" />
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-maroon/10 blur-[140px] animate-pulse" />
       </div>
 
       {/* Sidebar */}
-      <aside className="w-full md:w-72 border-r border-white/5 bg-[#0a0b0f]/80 backdrop-blur-2xl md:min-h-screen flex flex-col">
+      <aside className="w-full md:w-72 border-r border-white/5 bg-background-surface/80 backdrop-blur-2xl md:min-h-screen flex flex-col">
         <div className="p-6 border-b border-white/5 flex items-center gap-3">
-          <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl shadow-indigo-500/20 group hover:scale-105 transition-transform">
+          <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-maroon to-red shadow-xl shadow-maroon/20 group hover:scale-105 transition-transform">
              <Shield size={20} color="white" />
           </Link>
           <div>
             <h2 className="font-black text-lg tracking-tight">FairnessAudit</h2>
-            <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Documentation</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">Documentation</p>
           </div>
         </div>
 
@@ -44,11 +44,11 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                 href={link.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                   isActive 
-                    ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' 
-                    : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'bg-maroon/10 text-red border border-maroon/20' 
+                    : 'text-text-secondary hover:text-text-primary hover:bg-white/5 border border-transparent'
                 }`}
               >
-                <link.icon size={18} className={isActive ? 'text-indigo-400' : 'opacity-60'} />
+                <link.icon size={18} className={isActive ? 'text-red' : 'opacity-60'} />
                 {link.label}
               </Link>
             );
@@ -56,7 +56,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         </nav>
 
         <div className="p-6 border-t border-white/5">
-           <Link href="/" className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors font-bold uppercase tracking-widest text-[10px]">
+           <Link href="/" className="flex items-center gap-2 text-sm text-text-muted hover:text-text-primary transition-colors font-bold uppercase tracking-widest text-[10px]">
              <ArrowLeft size={14} /> Back to Home
            </Link>
         </div>

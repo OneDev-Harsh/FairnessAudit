@@ -3,9 +3,9 @@ import { GitBranch, EyeOff, ShieldAlert } from 'lucide-react';
 export default function ProxyLogicPage() {
   return (
     <div className="fade-in">
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 mb-8">
-        <GitBranch size={14} className="text-rose-400" />
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-rose-400">Core Protocol</span>
+      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-maroon/10 border border-maroon/20 mb-8">
+        <GitBranch size={14} className="text-red" />
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red">Core Protocol</span>
       </div>
 
       <h1 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter">Proxy Logic</h1>
@@ -14,11 +14,11 @@ export default function ProxyLogicPage() {
         Models can easily infer this information from other variables, known as proxy features.
       </p>
 
-      <div className="glass-card p-10 rounded-3xl border border-rose-500/20 bg-rose-500/5 mb-12 relative overflow-hidden">
-         <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+      <div className="glass-card p-10 rounded-3xl border border-maroon/20 bg-maroon/5 mb-12 relative overflow-hidden">
+         <div className="absolute top-0 right-0 w-64 h-64 bg-maroon/10 rounded-full -mr-32 -mt-32 blur-3xl" />
          <div className="relative z-10">
-            <h2 className="text-3xl font-black mb-6 text-rose-100">Redlining & Hidden Bias</h2>
-            <p className="text-rose-200/70 text-lg leading-relaxed mb-8">
+            <h2 className="text-3xl font-black mb-6 text-text-primary">Redlining & Hidden Bias</h2>
+            <p className="text-text-secondary text-lg leading-relaxed mb-8">
                A classic example of proxy bias is "redlining" in banking. A bank might not use race to determine 
                loan eligibility, but they use ZIP codes. Because ZIP codes in many regions are highly correlated with 
                race, the ZIP code becomes a proxy for race, leading to identical discriminatory outcomes.

@@ -3,9 +3,9 @@ import { Brain, Search, Layers } from 'lucide-react';
 export default function ExplainabilityPage() {
   return (
     <div className="fade-in">
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 mb-8">
-        <Brain size={14} className="text-purple-400" />
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-400">Core Protocol</span>
+      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-maroon/10 border border-maroon/20 mb-8">
+        <Brain size={14} className="text-red" />
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-red">Core Protocol</span>
       </div>
 
       <h1 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter">Explainability (SHAP)</h1>
@@ -18,7 +18,7 @@ export default function ExplainabilityPage() {
          <div className="glass-card p-8 rounded-3xl border border-white/5 flex flex-col md:flex-row gap-8 items-center">
             <div className="flex-1">
                <h3 className="text-2xl font-black mb-4 flex items-center gap-3">
-                  <Layers className="text-purple-400" /> Global Feature Importance
+                  <Layers className="text-red" /> Global Feature Importance
                </h3>
                <p className="text-white/60 mb-6">
                   Calculates the average magnitude of the SHAP values across all samples. This reveals which features 
@@ -31,7 +31,7 @@ export default function ExplainabilityPage() {
          <div className="glass-card p-8 rounded-3xl border border-white/5 flex flex-col md:flex-row gap-8 items-center">
             <div className="flex-1">
                <h3 className="text-2xl font-black mb-4 flex items-center gap-3">
-                  <Search className="text-purple-400" /> Beeswarm Plots
+                  <Search className="text-red" /> Beeswarm Plots
                </h3>
                <p className="text-white/60 mb-6">
                   Provides a high-density visualization of how the value of each feature impacts the model output. 
