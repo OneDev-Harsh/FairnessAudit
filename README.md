@@ -1,8 +1,6 @@
 ```markdown
 # ⚖️ Fairness Audit
 
-![Fairness Audit Logo](logo.png)
-
 ## Introduction
 **FairnessAudit** is a specialized repository designed for auditing machine learning models to detect and analyze bias. This project provides a comprehensive suite of tools and scripts to conduct fairness evaluations on datasets, train machine learning models, and visualize diverse fairness metrics.
 
